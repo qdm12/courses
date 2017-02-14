@@ -32,4 +32,3 @@ input A[1..n] all 0 <= A[i] < k^D integers written in base K with D digits
 for j=D to 1:
     apply countingsort to jth digit
 ```
-This takes time O(MAX(n,k))

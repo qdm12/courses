@@ -1,0 +1,181 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{listings}
+\usepackage{color}
+
+\title{FA homework 3}
+\author{Quentin McGaw (qm301)}
+\date{09 February 2017}
+
+\begin{document}
+
+\maketitle
+
+\begin{quote}
+Well, you see, Haresh Chacha, its like this.  First you have ten, that's
+just ten, that is, ten to the first power.  Then you have a hundred, which
+is ten times ten, which makes it ten to the second power.  Then you have a
+thousand which is ten to the third power.  Then you have ten thousand,
+which is ten to the fourth power - but this is where the problem begins,
+don't you see?  We don't have a special word for that, and we really
+should. \ldots  But you know, said Haresh, I think there is a special
+word for ten thousand.  The Chinese tanners of Calcutta once told me that
+they used the number ten-thousand as a standard unit of counting.  What
+they call it I can't remember \ldots  Bhaskar was electrified.  But Haresh
+Chacha you must find that number for me, he said.  You must find out what
+they call it.  I have to know, he said, his eyes burning with mystical fire
+and his small frog-like features taking on an astonishing radiance.
+\\ -- from A Suitable Boy by Vikran Seth
+\end{quote}
+
+\begin{enumerate}
+\item \textbf{\textcolor{blue}{Write each of the following functions as $\Theta(g(n))$ where
+$g(n)$ is one of the standard forms:}}
+    \begin{enumerate}
+    \item \textbf{\textcolor{blue}{$2n^4-11n+98$}}
+        \newline\newline $\Theta(g(n)) = \Theta(n^4)$
+    \item \textbf{\textcolor{blue}{$6n + 43n\lg n$}}
+        \newline\newline$\Theta(g(n)) = \Theta(n)$\newline
+    \item \textbf{\textcolor{blue}{$63n^2 + 14n\lg^5n$}}
+        \newline\newline$\Theta(g(n)) = \Theta(n^2)$\newline
+    \item \textbf{\textcolor{blue}{$3 + \frac{5}{n}$}}
+        \newline\newline$\Theta(g(n)) = \Theta(1)$\newline
+    \end{enumerate}
+
+\item \textbf{\textcolor{blue}{Illustrate the operation of {\tt RADIX-SORT} on the
+list: COW, DOG, SEA, RUG, ROW, MOB, BOX, TAB, BAR, EAR, TAR, DIG, BIG,
+TEA, NOW, FOX following the Figure in the Radix-Sort section.
+(Use alphabetical order and sort one letter at a time.)}}
+    \newline\newline\textbf{Initial list:} COW, DOG, SEA, RUG, ROW, MOB, BOX, TAB, BAR, EAR, TAR, DIG, BIG, TEA, NOW, FOX
+    \newline\textbf{Pass 1:} ['SEA', 'TEA', 'MOB', 'TAB', 'DOG', 'RUG', 'DIG', 'BIG', 'BAR', 'EAR', 'TAR', 'COW', 'ROW', 'NOW', 'BOX', 'FOX']
+    \newline\textbf{Pass 2:} ['TAB', 'BAR', 'EAR', 'TAR', 'SEA', 'TEA', 'DIG', 'BIG', 'MOB', 'DOG', 'COW', 'ROW', 'NOW', 'BOX', 'FOX', 'RUG']
+    \newline\textbf{Pass 3:} ['BAR', 'BIG', 'BOX', 'COW', 'DIG', 'DOG', 'EAR', 'FOX', 'MOB', 'NOW', 'ROW', 'RUG', 'SEA', 'TAB', 'TAR', 'TEA']
+    \newline\newline The following Python code was used to generate the several passes:
+    \begin{lstlisting}[language=Python]
+    from operator import itemgetter
+                 
+    def radix_sort_alpha(words):
+        l = len(words[0])
+        for w in words:
+            if len(w) != l:
+                raise Exception("Words should have the same length")
+        for i in range(l, 0, -1):
+            words = sorted(words, key=itemgetter(i - 1))
+            words_str = str([''.join(w) for w in words])
+            print "PASS "+str(l - i + 1)+": "+words_str
+        return words_str
+            
+    radix_sort_alpha(["COW", "DOG", "SEA", "RUG", "ROW", "MOB", \
+                      "BOX", "TAB", "BAR", "EAR", "TAR", "DIG", \
+                      "BIG", "TEA", "NOW", "FOX"])
+    \end{lstlisting}
+
+\item \textbf{\textcolor{blue}{Illustrate the operation of {\tt BUCKET-SORT} 
+(with $10$ buckets)
+on the
+array \\ $A=(.79,.13,.16,.64,.39,.20,.89,.53,.71,.43)$ \\  following
+the Figure in the Bucket-Sort section.}}
+    \newline\newline Initial input array A: 
+    \newline [0.79, 0.13, 0.16, 0.64, 0.39, 0.2, 0.89, 0.53, 0.71, 0.43]
+    \newline Initial output buckets array B:
+    \newline [[], [], [], [], [], [], [], [], [], []]
+    \newline Output buckets array B with elements in buckets:
+    \newline [[], [0.13, 0.16], [0.2], [0.39], [0.43], [0.53], [0.64], [0.79, 0.71], [0.89], []]
+    \newline Output buckets array B with elements sorted in buckets:
+    \newline [[], [0.13, 0.16], [0.2], [0.39], [0.43], [0.53], [0.64], [0.71, 0.79], [0.89], []]
+    \newline Final output array B:
+    \newline [0.13, 0.16, 0.2, 0.39, 0.43, 0.53, 0.64, 0.71, 0.79, 0.89]
+    \newline The following Python code was used to generate these stages:
+    \begin{lstlisting}[language=Python]
+    from math import floor
+                 
+    def bucket_sort(A):
+        print "Initial input array A: "+str(A)
+        n = len(A)
+        for i in range(n):
+            assert(A[i] >= 0 and A[i] < 1)
+        B = [[] for _ in range(n)]
+        print "Initial output buckets array B: "+str(B)
+        for i in range(n):
+            place = int(floor(A[i] * n))
+            B[place].append(A[i])
+        print "Output buckets array B with \
+               elements in buckets: "+str(B)
+        for j in range(n):
+            B[j].sort()
+        print "Output buckets array B with \
+               elements sorted in buckets: "+str(B)
+        B_final = []
+        for bucket in B:
+            B_final += bucket
+        print "Final output array B: "+str(B_final)
+        return B_final
+        
+    bucket_sort([.79,.13,.16,.64,.39,.20,.89,.53,.71,.43])
+    \end{lstlisting}
+
+\item \textbf{\textcolor{blue}{Given $A[1\cdots N]$ with $0\leq A[I]<N^N$ for all $I$.}}
+    \begin{enumerate}
+    \item \textbf{\textcolor{blue}{How long will {\tt COUNTING-SORT} take?}}
+        \newline For {\tt COUNTING-SORT}, $n=N$ and $k=N^N$. Hence it will take $O(n+k)=O(N^N)$ time
+    \item \textbf{\textcolor{blue}{How long will {\tt RADIX-SORT} take using base $N$?}}
+        \newline For {\tt RADIX-SORT}, $n=N$, $k=N^N$ and $b=N$. Hence it will take $O((n+b)log_b k)=O((N+N)log_N N^N)=O((N+N)N)=O(N^2)$ time
+    \item \textbf{\textcolor{blue}{How long will {\tt RADIX-SORT} take using base $N^{\sqrt{N}}$?
+    (Assume $\sqrt{N}$ integral.)}}
+        \newline For {\tt RADIX-SORT}, $n=N$, $k=N^N$ and $b=N^\sqrt{N}$. Hence it will take $O((n+b)log_b k)=O((N+N^{\sqrt{N}}) log_{N^\sqrt{N}}$ $N^N)=O((N+N^{\sqrt{N}})2=O(N^{\sqrt{N}})$ time
+    \end{enumerate}
+    
+\item \textbf{\textcolor{blue}{Write the time $T(N)$ (don't worry about the output!) for the following algorithms in the
+form $T(N)=\Theta(g(N))$ for a standard $g(N)$.  
+For time, consider the
+total number of times X++, I=2*I, J++,J=2*J respectively are applied.
+(Note: * means multiplication, ++ means increment one.)  The hardest is the last one,
+there is an outer FOR I loop, write the time it takes inside the loop as a function of $I$ and $N$.
+Then try (!) to add over $I=1$ to $N$.}}
+    \begin{enumerate}
+    \item \textbf{\textcolor{blue}{
+    X=0
+    \\ FOR I=1 TO N
+    \\ \hspace*{1cm} do FOR J=1 TO N
+    \\ \hspace*{2cm} X ++ }}
+        \newline\newline $T(N)=\Theta(N^2)$
+    \item \textbf{\textcolor{blue}{
+    I=1
+    \\ WHILE I $<$ N
+    \\ \hspace*{1cm} do I = 2*I}}
+        \newline\newline $T(N)=\Theta(log_2 N)$
+    \item \textbf{\textcolor{blue}{
+    FOR I=1 TO N
+    \\ \hspace*{1cm} do J=1
+    \\ \hspace*{1cm} WHILE J*J $<$ I
+    \\ \hspace*{2cm} do J ++}}
+        \newline\newline $T(N)=\Theta(N log N)$
+    \item \textbf{\textcolor{blue}{
+    FOR I = 1 to N
+    \\ \hspace*{1cm} J=I
+    \\ \hspace*{1cm} WHILE J $<$ N
+    \\ \hspace*{2cm} do J=2*J}}
+        \newline\newline $T(N)=\Theta(N)$
+    \end{enumerate}
+\item \textbf{\textcolor{blue}{Prof.\ Squander decides to do Bucket Sort on $n$ items with $n^2$ buckets while
+his student Ima Hogg decides to do Bucket Sort on $n$ items with $n^{1/2}$ buckets.
+Assume that the items are indeed uniformly distributed.  Assume that Ima's algorithm
+for sorting inside a bucket takes time $O(m^2)$ when the bucket has $m$ items.}}
+    \begin{enumerate}
+    \item \textbf{\textcolor{blue}{Argue that Prof.\ Squander has made a poor choice of the number of buckets by
+    looking analyzing the time of Bucket Sort in his case.}}
+        \newline\newline For Prof. Squander, we have $n=n$ and $k=n^2$ so we require $\Theta(n + n^2)=\Theta(n^2)$ time, which is the worst case scenario for a bucket sort (upper bond).
+    \item \textbf{\textcolor{blue}{Argue that Ima has made a poor choice of the number of buckets by looking analyzing the time of Bucket Sort in her case.}}
+        \newline\newline For Ima Hogg's bucket sort, because of the uniform distribution, there should be $n^\frac{1}{2}$ items per bucket so sorting each bucket takes $\Theta((n^\frac{1}{2})^2)=\Theta(n)$ thus we require $\Theta(n^\frac{3}{2})$ which is still worst than $\Theta(n + k)$.
+    \item \textbf{\textcolor{blue}{Argue that Ima uses roughly the same amount of {\em space} as someone
+    using $n$ buckets.}}
+        \newline\newline Because there is $n^\frac{1}{2}$ items per bucket and there are $n^\frac{1}{2}$ buckets, the total space used is $n^\frac{1}{2}*n^\frac{1}{2}=n$ which is obviously the same as the space used by someone using $n$ buckets.
+    \end{enumerate}
+\end{enumerate}
+
+\begin{quote}
+Every universe, our own included, begins in conversation.
+\\ -- Michael Chabon
+\end{quote}
+
+\end{document}

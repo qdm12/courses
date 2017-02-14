@@ -6,7 +6,7 @@
 Algorithm:
 ```
 input array A[1..n] unsorted
-assume 0 <= A[I} < 1 "Random"
+assume 0 <= A[I] < 1 "Random"
 output sorted array B[0..(n-1)] of linked lists
 B is initially empty
 
