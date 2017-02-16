@@ -35,7 +35,7 @@ $g(n)$ is one of the standard forms:}}
     \item \textbf{\textcolor{blue}{$2n^4-11n+98$}}
         \newline\newline $\Theta(g(n)) = \Theta(n^4)$
     \item \textbf{\textcolor{blue}{$6n + 43n\lg n$}}
-        \newline\newline$\Theta(g(n)) = \Theta(n)$\newline
+        \newline\newline$\Theta(g(n)) = \Theta(nlg\ n)$\newline
     \item \textbf{\textcolor{blue}{$63n^2 + 14n\lg^5n$}}
         \newline\newline$\Theta(g(n)) = \Theta(n^2)$\newline
     \item \textbf{\textcolor{blue}{$3 + \frac{5}{n}$}}
@@ -117,12 +117,29 @@ the Figure in the Bucket-Sort section.}}
 \item \textbf{\textcolor{blue}{Given $A[1\cdots N]$ with $0\leq A[I]<N^N$ for all $I$.}}
     \begin{enumerate}
     \item \textbf{\textcolor{blue}{How long will {\tt COUNTING-SORT} take?}}
-        \newline For {\tt COUNTING-SORT}, $n=N$ and $k=N^N$. Hence it will take $O(n+k)=O(N^N)$ time
+        \newline For {\tt COUNTING-SORT}, $n=N$ and $k=N^N$. Hence it will take $\Theta(n+k)=\Theta(N^N)$ time.
+		Note that we had to go through the array C of length $N^N$, leading to $\Theta(N^N)$
     \item \textbf{\textcolor{blue}{How long will {\tt RADIX-SORT} take using base $N$?}}
-        \newline For {\tt RADIX-SORT}, $n=N$, $k=N^N$ and $b=N$. Hence it will take $O((n+b)log_b k)=O((N+N)log_N N^N)=O((N+N)N)=O(N^2)$ time
+        \newline For {\tt RADIX-SORT}, $n=N$ and $k=N^N$ and $b=N$.
+		Hence it will take $\Theta((n+b)log_b k)=\Theta((N+N)log_N N^N)=\Theta((N+N)N)=\Theta(N^2)$ time.
+		Note that the array C is of lenght $N$ and that each element has $N$ digits, so this leads to $\Theta(N^2)$
     \item \textbf{\textcolor{blue}{How long will {\tt RADIX-SORT} take using base $N^{\sqrt{N}}$?
     (Assume $\sqrt{N}$ integral.)}}
-        \newline For {\tt RADIX-SORT}, $n=N$, $k=N^N$ and $b=N^\sqrt{N}$. Hence it will take $O((n+b)log_b k)=O((N+N^{\sqrt{N}}) log_{N^\sqrt{N}}$ $N^N)=O((N+N^{\sqrt{N}})2=O(N^{\sqrt{N}})$ time
+        \newline For {\tt RADIX-SORT}, $n=N$, $k=N^N$ and $b=N^\sqrt{N}$.
+		Hence it will take $O((n+b)log_b k)=O((N+N^{\sqrt{N}}) log_{N^\sqrt{N}}\ N^N)=O((N+N^{\sqrt{N}})2=O(N^{\sqrt{N}})$ time.
+		Note that there are $\sqrt{N}$ digits per element, and the length of the array C is $N^{\sqrt{N}}, leading to \Theta(\sqrt(N)N^{\sqrt{N}}).
+		XXX
+	\item \textbf{\textcolor{blue}{(*) Argue that for no base $K$ will {\tt RADIX-SORT} do as well
+	as {\tt HEAP-SORT}.}}
+		\newline If the base $K$ has $K\geq N^2$ then it takes time
+		$N^2$ or more just to go through the array $C$, which is 
+		worse than the $\Theta(N\lg N)$ of {\tt HEAP-SORT}.
+		On the other side, if the base $K$ has $K\leq  N^2$ then 
+		the number of digits is at least $N/2$ (the smaller the base, 
+		the greater the number of digits, and with base $N^2$, there 
+		are $N/2$ digits) and as each digit takes linear time the
+		total time is $\Omega(N^2)$ which is worse than {\tt HEAP-SORT}.
+		XXX
     \end{enumerate}
     
 \item \textbf{\textcolor{blue}{Write the time $T(N)$ (don't worry about the output!) for the following algorithms in the
@@ -138,24 +155,60 @@ Then try (!) to add over $I=1$ to $N$.}}
     \\ FOR I=1 TO N
     \\ \hspace*{1cm} do FOR J=1 TO N
     \\ \hspace*{2cm} X ++ }}
-        \newline\newline $T(N)=\Theta(N^2)$
+        \newline\newline $T(N)=\Theta(N^2)$ because it is a double loop.
     \item \textbf{\textcolor{blue}{
     I=1
     \\ WHILE I $<$ N
     \\ \hspace*{1cm} do I = 2*I}}
-        \newline\newline $T(N)=\Theta(log_2 N)$
+        \newline\newline $T(N)=\Theta(log_2\N)=\Theta(log\ N)$ because we 
+		only need $lg\N$ doublings to get to $N$.
     \item \textbf{\textcolor{blue}{
     FOR I=1 TO N
     \\ \hspace*{1cm} do J=1
     \\ \hspace*{1cm} WHILE J*J $<$ I
     \\ \hspace*{2cm} do J ++}}
-        \newline\newline $T(N)=\Theta(N log N)$
+        \newline\newline 
+		For each $I$ the subloop takes $O(\sqrt{I})$ as after that $J*J>I$.
+		So we need look at $\sqrt{1}+...+\sqrt{N}$. 
+		This is at most $N\sqrt{N}$ as there are $N$ terms and each is 
+		at most $\sqrt{N}$.  As a lower bound cut it off at the middle and 
+		we have $\sqrt{N/2} + ... + \sqrt{N}$. There are $N/2$ terms 
+		here and each is at least $\sqrt{N/2}$ so the total is at 
+		least $N\sqrt{N}/(2\sqrt{2})$. Thus $T(N)=\Theta(N^{3/2})$.
     \item \textbf{\textcolor{blue}{
     FOR I = 1 to N
     \\ \hspace*{1cm} J=I
     \\ \hspace*{1cm} WHILE J $<$ N
     \\ \hspace*{2cm} do J=2*J}}
-        \newline\newline $T(N)=\Theta(N)$
+        \newline\newline For a given $I$ the subloop starts at $I$ 
+		and double until reaching $N$.  We double $t$ times, where $t$ 
+		is the smallest integer $I2^t\geq N$, so 
+		$t=\lceil \lg(N/I) \rceil$. So the total time is
+		\begin{equation}TOTAL = O\left( \sum_{i=1}^n \lceil\lg(n/i)\rceil \right)\end{equation}
+		This is challenging.  
+		\newline Approach One: We get ridof the ceiling by noting that 
+		the ceiling can only affect each term by $1$ and therefore 
+		the sum by at most $n$ and so 
+		\begin{equation}TOTAL = O(n)+O\left( \sum_{i=1}^n \lg(n/i) \right)\end{equation}
+		Now there are a variety of approaches. One is via Stirling's 
+		Formula. The object in parentheses is precisely $\ln(n^n/n!)$ 
+		and by Stirling $n^n/n! \sim e^n(2\pi n)^{-1/2}$.
+		The square root term is inconsequential and 
+		$\lg(n^n/e^n) \sim n\lg 2 = O(n)$. Thus 
+		\begin{equation}TOTAL = O(n) + O(n ) = O(n)\end{equation}
+		This is a linear time algorithm!  Note that the ceiling 
+		actually does have an effect on the constants buried in 
+		the $O$ as both parts are linear in $n$.
+		{\tt Comment:} How did we know that removing the ceilings 
+		would work? We didn't, we tried it and it turned out its 
+		effect was not dominant so we were OK. This is part of 
+		the {\em art} of doing asymptotics!
+		\newline Approach Two: Similar to the analysis of 
+		BUILD-MAX-HEAP we have $1$ doubling $n/2$ times, 
+		$2$ doublings $n/4$ times ($n/4 < i \leq n/2$), 
+		$3$ doublings $n/8$ times so the total doublings is 
+		$n \sum_u u2^{-u}$ but that sum, even to infinity, is $2$
+		so the total doublings is $\sim 2n$.
     \end{enumerate}
 \item \textbf{\textcolor{blue}{Prof.\ Squander decides to do Bucket Sort on $n$ items with $n^2$ buckets while
 his student Ima Hogg decides to do Bucket Sort on $n$ items with $n^{1/2}$ buckets.
@@ -169,7 +222,7 @@ for sorting inside a bucket takes time $O(m^2)$ when the bucket has $m$ items.}}
         \newline\newline For Ima Hogg's bucket sort, because of the uniform distribution, there should be $n^\frac{1}{2}$ items per bucket so sorting each bucket takes $\Theta((n^\frac{1}{2})^2)=\Theta(n)$ thus we require $\Theta(n^\frac{3}{2})$ which is still worst than $\Theta(n + k)$.
     \item \textbf{\textcolor{blue}{Argue that Ima uses roughly the same amount of {\em space} as someone
     using $n$ buckets.}}
-        \newline\newline Because there is $n^\frac{1}{2}$ items per bucket and there are $n^\frac{1}{2}$ buckets, the total space used is $n^\frac{1}{2}*n^\frac{1}{2}=n$ which is obviously the same as the space used by someone using $n$ buckets.
+        \newline\newline Because there is $n^\frac{1}{2}$ items per bucket and there are $n^{\frac{1}{2}}$ buckets, the total space used is $n^\frac{1}{2}*n^\frac{1}{2}=n$ which is obviously the same as the space used by someone using $n$ buckets.
     \end{enumerate}
 \end{enumerate}
 
