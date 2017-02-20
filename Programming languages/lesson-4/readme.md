@@ -48,6 +48,7 @@ Let y = 10        # how y is passed to x
 f(y)
 ```
 For paramater passing mechanisms:
+
 1. Pass by value
     - The value of the actual parameter is copied to the formal parameter.
     - A new memory location is assigned for the formal parameter
