@@ -1,0 +1,51 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{listings}
+\usepackage{color}
+
+\title{FA lesson 4}
+
+\begin{document}
+
+\maketitle
+
+\section{Master Theorem}
+The master theorem \textbf{only} concerns recurrence relations of the form:
+\begin{equation}T(n)=aT(\frac{n}{b}) + f(n) \textnormal{ where } a \geq 1 \textnormal{ and } b > 1\end{equation}
+\newline $n$ is the size of the problem, $a$ the number of subproblems in recursion, 
+$\frac{n}{b}$ the size of each subproblem and $f(n)$ the cost of the work done outside the recursive calls
+such as dividing the problem or merging the solutions of the subproblems.
+
+\subsection{Case 1: Low overhead}
+\begin{equation}
+\left\{
+    \begin{array}{ll}
+        f(n)=O(n^c) \\
+        log_b\ a > c
+    \end{array}
+\right. \Rightarrow T(n) = \Theta(n^{log_b\ a})
+\end{equation}
+ 
+\subsection{Case 2: Perfect case?}
+\begin{equation}
+\left\{
+    \begin{array}{ll}
+        f(n)=\Theta(n^{c}log^{k}n) \textnormal{ for some constant } k \geq 0 \\
+        log_b\ a = c
+    \end{array}
+\right. \Rightarrow T(n) = \Theta(n^{c}log^{k+1}\ n)
+\end{equation}
+
+\subsection{Case 3: High overhead}
+\begin{equation}
+\left\{
+    \begin{array}{ll}
+        f(n)=\Omega(n^c) \\
+        log_b\ a < c \\
+        af(\frac{n}{b}) \leq kf(n) \textnormal{ for } k < 1 \textnormal{ and sufficiently large n}
+    \end{array}
+\right. \Rightarrow T(n) = \Theta(f(n))
+\end{equation}
+
+
+\end{document}

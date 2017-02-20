@@ -38,6 +38,7 @@ T2: MyTask;
 A:array(1..50) of MyTask
 T1.GO;
 T2.GO;
+```
 
 
 ### Math
