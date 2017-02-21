@@ -102,7 +102,7 @@
             push(i);
         end loop;
         for i in 1..y loop
-            z := pop;
+            z := pop();
             put(z);
         end loop;
 	exception

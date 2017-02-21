@@ -3,8 +3,8 @@
 ## Lesson 4: Passing parameters
 
 ```ada
-task Task 1;
-task body Task 1 is:
+task Task1;
+task body Task1 is:
 begin
     ...
     Task2.E(6);
@@ -18,8 +18,8 @@ begin
     ...
     accept E(x:integer)
     do                -- scope
-        ...            -- of
-    end;            -- x
+        ...           -- of
+    end;              -- x
     ...
 ```
 
@@ -33,8 +33,8 @@ begin
     ...
 end
 
-T1: MyTask;
-T2: MyTask;
+T1:MyTask;
+T2:MyTask;
 A:array(1..50) of MyTask
 T1.GO;
 T2.GO;
@@ -43,8 +43,8 @@ T2.GO;
 
 ### Math
 ```
-f(x) = x^2 + 2  # Don't need to think about
-Let y = 10        # how y is passed to x
+f(x) = x^2 + 2   # Don't need to think about
+Let y = 10       # how y is passed to x
 f(y)
 ```
 For paramater passing mechanisms:
@@ -77,8 +77,8 @@ For paramater passing mechanisms:
            w:integer;
            begin
                z := z + 1;
-               f(z+3, w) -- replace that by y = x * 2 => w = (z+3)*2
-                         --                 y = y + 1    w = w + 1
+               f(z+3, w); -- replace that by y = x * 2 => w = (z+3)*2
+                          --                 y = y + 1    w = w + 1
                print(w);
            end;
     
