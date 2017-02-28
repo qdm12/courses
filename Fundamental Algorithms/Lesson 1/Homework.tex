@@ -1,0 +1,104 @@
+\documentclass[11pt]{article}
+\pagestyle{empty}
+\usepackage{color}
+\usepackage{forest}
+\usepackage{listings}
+\addtolength{\oddsidemargin}{-.875in}
+\addtolength{\evensidemargin}{-.875in}
+\addtolength{\textwidth}{1.75in}
+\addtolength{\topmargin}{-.875in}
+\addtolength{\textheight}{1.75in}
+
+\begin{document}
+\begin{center} {\Large\bf FA, Homework 1}  \\ Quentin McGaw (qm301) \\ 01/23/17
+\end{center}
+
+\begin{enumerate}
+\item \textbf{\textcolor{blue}{Let $A$ be a max-heap with heapsize fifty 
+million, being used as a priority queue.  Suppose 
+{\tt HEAP-INCREASE-KEY(A,300,key)} is called. What is the minimum & maximum number 
+of exchanges that can take place?}}
+    \\ The minimal number is zero, if the new key has smaller value than
+    the key of the parent of $300$.  The maximal number is achieved when
+    the new key is the largest key in the heap, and so the exchanges go
+    up to the root.  So there are exchanges with $150$, then $75$, then
+    $37$, then $18$, then $9$, then $4$, then $2$, then $1$ for a total
+    of eight exchanges.  (In general the position $A[i]$ is on row
+    $j$ (counting the root as row zero)
+    where $2^j\leq i < 2^{j+1}$.  Reversing, $j=\lfloor \lg i\rfloor$.
+    The maximum number of exchanges would then be $j$.
+
+\item \textbf{\textcolor{blue}{When $A$ is an array with length fifty 
+million and {\tt MAX-HEAPIFY(A,300)} is called. What is the minimum & maximum 
+number of exchanges that can take place?}}
+    \\ With {\tt MAX-HEAPIFY} we work {\em down} to the leaves.  The minimum
+    is zero, if the key at $300$ is bigger than the keys of both its children.
+    The maximum would be if we have to work all the way down the the leaves.
+    We could exchange with $600,1200,2400,4800,9600,19200,38400$ 
+    then $76800,153600,307200,614400$ then (in rough millions) $1.3,2.6$,$5.2$,
+    $10.4, 20.8,41.6$.  So the total would be seventeen exchanges.  (One might also 
+    exchange with the right children, but as we are examining worst case we
+    consider the left children as they have smaller indexes.)  In general, if
+    the array has length $n$ then starting at $i$ there is a descendent $j$
+    generations down if and only if $i2^j\leq n$, or, equivalently, $j \leq \lg(n/i)$.
+    So the maximal number would be $\lfloor \lg(n/i)\rfloor$.
+
+\item \textbf{\textcolor{blue}{Consider a min-heap $H$ with length $1023$
+\footnote{Did you recognize $1023$ as a special number? It's one less 
+than $1024=2^{10}$. The binary tree with that many nodes just fills 
+out a row!}.
+Assume the elements of the array are distinct. Let $x$ be the third 
+smallest element in the array.}}
+\\ \textbf{\textcolor{blue}{What are the possible positions for $x$.}}
+    \\ It could be in any position in the first two rows, that is, from
+    two to seven.
+\\ \textbf{\textcolor{blue}{Let $y=H[700]$. Can $y$ be the largest element in the array?}}
+    \\ Sure, any leaf could be the largest in a min-heap.
+\\ \textbf{\textcolor{blue}{Can $y$ be the smallest element in the array?}}
+    \\ No way, the smallest in a min-heap must be at the root.
+\\ \textbf{\textcolor{blue}{Give all $i$ for which it is possible that $y$ 
+                            is the $i$-th smallest element of the array.}}
+    \\ Its ancestors ($350,175,87,43,21,10,5,2,1$) must be smaller
+       so it can be at best tenth smallest.  Its descendents must be
+       bigger but it doesn't have any descendents.  A full proof is
+       a bit complicated (did you find it?!) but these are the only
+       conditions and it could be the $i$-th smallest for any 
+       $10\leq i\leq 1023$.
+
+\item \textbf{\textcolor{blue}{Using the figures in the text as a model, illustrate the operation of
+{\tt BUILD-MAX-HEAP} on the array $A=(5,3,17,10,84,19,6,22,9)$}}
+
+\item \textbf{\textcolor{blue}{The operation {\tt HEAP-DELETE(A,t)} deletes the item in node $t$
+from heap $A$.  Give an implementation of {\tt HEAP-DELETE} that runs in
+$O(\lg n)$ time for an $n$-element max-heap.}}
+    \\ First a simple case: If $t$ is $A.heapsize$ then simply decrement
+    $A.heapsize$.  ELSE first reset $A[t]\leftarrow A[A.heapsize]$ and
+    decrement $A.heapsize$.  Now you have the right elements but $A[t]$
+    may be in the wrong places.  First check if $A[t]> A[parent[t]]$
+    (Ignore this if $t$ is the root.)  If so, we have a WHILE loop,
+    exchanging $A[t]$ and $A[parent[t]]$ and then resetting $t\leftarrow parent[t]$
+    while $t$ is not the root and $A[t]> A[parent[t]]$. ELSE (that is, if
+    we did not have $A[t]> A[parent[t]]$, then the only (possible) problem
+    is that $A[t]$ is too small.  So we apply $MAX-HEAPIFY[A,t]$.
+
+\item \textbf{\textcolor{blue}{Let $A$ be an array of length $127$ in which the values are
+distinct and in increasing order.  In the procedure 
+{\tt BUILD-MAX-HEAP(A)} precisely how many times will two elements
+of the array be exchanged?}}
+    \\ BUILD-MAX-HEAP(A) starts from I = LENGTH(A)/2 DOWN to 1, every I will 
+    do Max-Heapify. \\ For $32\leq I\leq 63$ ,there should be one exchange.
+    \\ For $16\leq I \leq 31$, there should be 2 exchanges. 
+    \\ For $8\leq  I \leq 17$, there should be 3 exchanges. 
+    \\ For $I=4,5,6,7$ , there should be 4 exchanges. 
+    \\ For $I = 2,3$ there should be 5 exchanges. 
+    \\ The root goes down to the bottom, 6 exchanges. 
+    \\ Total: $32\cdot 1+16\cdot 2+8\cdot 3+4\cdot 4+2\cdot 5+1\cdot 6 = 120$
+\item \textbf{\textcolor{blue}{Now suppose the values are distinct and in decreasing order. Again, in the procedure 
+{\tt BUILD-MAX-HEAP(A)} precisely how many times will two elements
+of the array be exchanged?}}
+    \\ Never!  Each element will be placed originally in precisely its
+    correct final spot.
+\end{enumerate}
+    
+\end{document}
+

@@ -1,6 +1,8 @@
-# Fundamental algorithms course, Spring 2017
+# Lesson 2
 
-## Lesson 2: Quicksort, countingsort, radix sort
+- Quicksort
+- Countingsort
+- Radixsort
 
 ### Quicksort
 

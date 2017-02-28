@@ -1,6 +1,10 @@
-# Fundamental algorithms course, Spring 2017
+# Lesson 3
 
-## Lesson 3: Bucketsort, Growth of functions, Mergesort
+- Bucketsort
+- Growth of functions
+- Mergesort
+- Counting sort
+- radix sort
 
 ### Bucketsort
 Algorithm:
