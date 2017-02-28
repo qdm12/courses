@@ -27,11 +27,11 @@ begin
 ```ada
 task type MyTask is
     entry Go;
-end
+end;
 task body MyTask is
 begin
     ...
-end
+end;
 
 T1:MyTask;
 T2:MyTask;
