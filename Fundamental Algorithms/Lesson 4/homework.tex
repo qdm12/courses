@@ -1,7 +1,7 @@
 \documentclass[11pt]{article}
 \pagestyle{empty}
 \usepackage{color}
-\usepackage{listings}
+\usepackage{minted}
 \usepackage[options ]{algorithm2e}
 \addtolength{\oddsidemargin}{-.875in}
 \addtolength{\evensidemargin}{-.875in}
@@ -32,7 +32,7 @@ $T(3),T(9),T(27),T(81),T(243)$.}}
         \\ $T(81) = 9T(27) + 81^2 = 32805 = 5(81^2)$
         \\ $T(243) = 9T(81) + 243^2 = 354294 = 6(243^2)$
         \\ We used the following Python code to calculate these values:
-        \begin{lstlisting}[language=Python]
+        \begin{minted}{python}
         def T(n):
             """ Recursive function 
                 T(n)=9T(n/3)+n^2 with T(1) = 1
@@ -51,7 +51,7 @@ $T(3),T(9),T(27),T(81),T(243)$.}}
             print T(27)
             print T(81)
             print T(243)
-        \end{lstlisting}
+        \end{minted}
     \textbf{\textcolor{blue}{Make a good (and correct) guess as to the general formula for $T(3^i)$ and
     write this as $T(n)$.  (Don't worry about when $n$ is not a power
     of three.)}}
@@ -131,7 +131,7 @@ be nonnegative.)}}
         \caption{n-digit decimal subtraction algorithm}
     \end{algorithm}
     Note that we used the following Python code to test it out:
-    \begin{lstlisting}[language=Python]
+    \begin{minted}{python}
     def subtract_n_digit_numbers(A, B):
         N = len(A)
         if N != len(B):
@@ -151,7 +151,7 @@ be nonnegative.)}}
         B = [1,5,3,7,1]
         C = subtract_n_digit_numbers(A, B)
         print C
-    \end{lstlisting}
+    \end{minted}
     \newline
 
     \textbf{\textcolor{blue}{How long does your algorithm take, expressing

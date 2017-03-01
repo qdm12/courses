@@ -1,6 +1,6 @@
 \documentclass{article}
 \usepackage[utf8]{inputenc}
-\usepackage{listings}
+\usepackage{minted}
 \usepackage{color}
 
 \title{FA homework 3}
@@ -51,7 +51,7 @@ TEA, NOW, FOX following the Figure in the Radix-Sort section.
     \newline\textbf{Pass 2:} ['TAB', 'BAR', 'EAR', 'TAR', 'SEA', 'TEA', 'DIG', 'BIG', 'MOB', 'DOG', 'COW', 'ROW', 'NOW', 'BOX', 'FOX', 'RUG']
     \newline\textbf{Pass 3:} ['BAR', 'BIG', 'BOX', 'COW', 'DIG', 'DOG', 'EAR', 'FOX', 'MOB', 'NOW', 'ROW', 'RUG', 'SEA', 'TAB', 'TAR', 'TEA']
     \newline\newline The following Python code was used to generate the several passes:
-    \begin{lstlisting}[language=Python]
+    \begin{minted}{python}
     from operator import itemgetter
                  
     def radix_sort_alpha(words):
@@ -68,7 +68,7 @@ TEA, NOW, FOX following the Figure in the Radix-Sort section.
     radix_sort_alpha(["COW", "DOG", "SEA", "RUG", "ROW", "MOB", \
                       "BOX", "TAB", "BAR", "EAR", "TAR", "DIG", \
                       "BIG", "TEA", "NOW", "FOX"])
-    \end{lstlisting}
+    \end{minted}
 
 \item \textbf{\textcolor{blue}{Illustrate the operation of {\tt BUCKET-SORT} 
 (with $10$ buckets)
@@ -86,7 +86,7 @@ the Figure in the Bucket-Sort section.}}
     \newline Final output array B:
     \newline [0.13, 0.16, 0.2, 0.39, 0.43, 0.53, 0.64, 0.71, 0.79, 0.89]
     \newline The following Python code was used to generate these stages:
-    \begin{lstlisting}[language=Python]
+    \begin{minted}{python}
     from math import floor
                  
     def bucket_sort(A):
@@ -112,7 +112,7 @@ the Figure in the Bucket-Sort section.}}
         return B_final
         
     bucket_sort([.79,.13,.16,.64,.39,.20,.89,.53,.71,.43])
-    \end{lstlisting}
+    \end{minted}
 
 \item \textbf{\textcolor{blue}{Given $A[1\cdots N]$ with $0\leq A[I]<N^N$ for all $I$.}}
     \begin{enumerate}
