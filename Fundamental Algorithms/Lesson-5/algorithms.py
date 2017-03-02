@@ -1,7 +1,52 @@
-class MergeSort(object):
-    def __init__(self):
-        self.A = [54,26,93,17,77,31,44,55,20]
+from string import ascii_uppercase        
 
+class HashingChaining(object):
+    def __init__(self):
+        self.hashtable = [[] for _ in range(7)]
+        
+    def hash(self, key): #key is in the form 'ABCD' in capitals
+        sum = 0
+        for C in key:
+            sum += ascii_uppercase.find(C) + 1
+        digest = sum % 7
+        return digest
+        
+    def insert(self, key):
+        index = self.hash(key)
+        self.hashtable[index].insert(0, key)
+        
+    def search(self, key):
+        index = self.hash(key)
+        for sub_index in range(len(self.hashtable[index])):
+            if key == self.hashtable[index][sub_index]:
+                return index, sub_index
+        return -1, -1
+        
+    def delete(self, key):
+        index, sub_index = self.search(key)
+        if index != -1: #key was found
+            del self.hashtable[index][sub_index]
+            
+    def print_hashtable(self):
+        print "Index Key"
+        for i in range(7):
+            print i, "   ", self.hashtable[i]
+            
+    def run(self):
+        self.print_hashtable()
+        self.insert("COBB")
+        self.print_hashtable()
+        self.insert("RUTH")
+        self.print_hashtable()
+        self.insert("ROSE")
+        self.print_hashtable()
+        self.search("BUZ")
+        self.insert("DOC")
+        self.print_hashtable()
+        self.delete("COBB")
+        self.print_hashtable()
+
+class MergeSort(object):
     def merge(self, L, R):
         C = []
         i, j = 0, 0
@@ -30,13 +75,10 @@ class MergeSort(object):
             return merge(L, R)
             
     def run(self):
-        print mergeSort(self.A)
-        
+        A = [54,26,93,17,77,31,44,55,20]
+        print mergeSort(A)        
         
 class BinarySearchTree(object):
-    def __init__(self):
-        pass
-        
     class Node(object):
         def __init__(self, key):
             self.left = None
