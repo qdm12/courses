@@ -3,10 +3,10 @@
 - Bucketsort
 - Growth of functions
 - Mergesort
-- Counting sort
-- radix sort
 
 ### Bucketsort
+It takes 
+
 Algorithm:
 ```
 input array A[1..n] unsorted
@@ -25,6 +25,8 @@ for j=0 to n-1:
 See latex document
 
 ### Mergesort
+It takes 
+
 Algorithm:
 ```
 MERGE[A, p, q, r]
@@ -44,9 +46,7 @@ create Aux
         else:
             A[k] <- R[Rpoint]
             Rpoint++
-```
-and 
-```
+
 MERGESORT[A, p, r] (p<=r unsorted)
 if p < r:
     q = floor((p+r)/2)

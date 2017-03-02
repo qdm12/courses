@@ -55,7 +55,7 @@ for j=n to 1:
 ```
 
 In Python:
-```
+```python
 class CountingSort(object):
     def sort(self, A, k=None):
         """
