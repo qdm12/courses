@@ -3,7 +3,7 @@
 ## Assignment 1
 Design of an ER diagram according to provided specifications, using Visio 2010.
 
-The resulting *VSD* file is [Assignment_1_ERDiagram.vsd][/Assignment_1_ERDiagram.vsd]
+The resulting *VSD* file is [Assignment_1_ERDiagram.vsd](/Assignment_1_ERDiagram.vsd)
 
 It looks like the following:
 
@@ -13,7 +13,7 @@ It looks like the following:
 Design of a relational database diagram using Crow's feet notation from
 a provided ER diagram (similar to assignment 1).
 
-The resulting *VSD* file is [Assignment_2.vsd][/Assignment_2.vsd]
+The resulting *VSD* file is [Assignment_2.vsd](/Assignment_2.vsd)
 
 It looks like the following:
 

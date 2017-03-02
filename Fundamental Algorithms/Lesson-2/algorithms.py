@@ -1,13 +1,3 @@
-# Lesson 2
-
-- Quicksort
-- Countingsort
-- Radixsort
-
-### Quicksort
-It takes time O(n^2) at worst, and O(n log(n)) at average and best.
-
-```python
 class QuickSort(object):
     def sort(self, A):
        self.quickSortHelper(A, 0, len(A)-1)
@@ -32,30 +22,12 @@ class QuickSort(object):
             A[leftmark], A[rightmark] = A[rightmark], A[leftmark]
         A[first], A[rightmark] = A[rightmark], A[first]
         return rightmark
-```
-
-### Countingsort
-It takes time O(n+k)
-
-Algorithm
-```
-input A[1..n] with all 0 <= A[i] <= k
-output B[1..n]
-auxiliary C[0..k]
-initialize C[i] <- 0 <= i <= k
-for i = 1 to n:
-    C[A[i]]++
-for s=1 to k:
-    C[s] += C[s-1]
-for j=n to 1:
-    value <- A[j]
-    place <- C[value]
-    B[place] <- value
-    C[value]--
-```
-
-In Python:
-```
+        
+    def run(self):
+        A = [54,26,93,17,77,31,44,55,20]
+        self.sort(A)
+        print A
+        
 class CountingSort(object):
     def sort(self, A, k=None):
         """
@@ -84,20 +56,7 @@ class CountingSort(object):
         A = [54,26,93,17,77,31,44,55,20]
         self.sort(A)
         print A
-```
-
-### Radixsort
-It takes time O(nk) where k is the base with D digits (0 <= A[i] < k^D)
-
-Algorithm
-```
-input A[1..n] all 0 <= A[i] < k^D integers written in base K with D digits
-for j=D to 1:
-    apply countingsort to jth digit
-```
-
-In Python:
-```python
+        
 class RadixSort(object):
     def sort(self, A, RADIX=10):
         placement = 1
@@ -118,4 +77,6 @@ class RadixSort(object):
         A = [54,26,93,17,77,31,44,55,20]
         self.sort(A)
         print A
-```
+
+qs = RadixSort()
+qs.run()
