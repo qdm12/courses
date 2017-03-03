@@ -130,6 +130,9 @@ class BinarySearchTree(object):
                 else:
                     self.insert_verbose(root.left, node)
 
+    def delete(self):
+        pass
+
     def inorder(self, root):
         if root:
             self.inorder(root.left)
