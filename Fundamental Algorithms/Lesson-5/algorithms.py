@@ -70,13 +70,13 @@ class MergeSort(object):
             return A
         else:
             middle = len(A) / 2
-            L = mergeSort(A[:middle])
-            R = mergeSort(A[middle:])
-            return merge(L, R)
+            L = self.mergeSort(A[:middle])
+            R = self.mergeSort(A[middle:])
+            return self.merge(L, R)
             
     def run(self):
         A = [54,26,93,17,77,31,44,55,20]
-        print mergeSort(A)        
+        print self.mergeSort(A)        
         
 class BinarySearchTree(object):
     class Node(object):
@@ -89,9 +89,9 @@ class BinarySearchTree(object):
         if root is None or root.val == key: # root is null or key is present at root
             return root
         if root.val < key: # Key is greater than root's key
-            return search(root.right, key)
+            return self.search(root.right, key)
         else: # Key is smaller than root's key
-            return search(root.left, key)
+            return self.search(root.left, key)
             
     def insert(self, root, node):
         if root is None:
