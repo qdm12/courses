@@ -2,7 +2,12 @@
 \pagestyle{empty}
 \usepackage{color}
 \usepackage{minted}
-\usepackage[options ]{algorithm2e}
+\usepackage[options]{algorithm2e}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{0pt}
+\cfoot[R]{\thepage~of~\pageref{LastPage}}
 \addtolength{\oddsidemargin}{-.875in}
 \addtolength{\evensidemargin}{-.875in}
 \addtolength{\textwidth}{1.75in}
