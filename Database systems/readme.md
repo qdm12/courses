@@ -18,3 +18,14 @@ The resulting *VSD* file is [Assignment_2.vsd](Assignment_2.vsd)
 It looks like the following:
 
 ![Assignment_2.jpg](screenshots/Assignment_2.jpg)
+
+## Assignment 3
+Design of a SQL script to create a database on Oracle.
+
+The resulting *SQL* file is [Assignment_3.sql](Assignment_3.sql)
+
+It looks like the following:
+
+```sql
+
+```
