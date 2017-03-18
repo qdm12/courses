@@ -3,6 +3,8 @@
 ## Lesson 3: Scoping and Ada
 
 ### Scoping
+- **Scoping**: Rules that determine the visibility of names in a program.
+- **Scope**: The portion of the program where a particular name is visible.
 - **Static scoping**
     - The body of a function is evaluated in the **environment** 
     in which the function is **defined**.
@@ -19,6 +21,10 @@
 		f();
 	end
 	```
+    - Bindings can be determined at compile time, **early binding**
+        - We choose the most recent active binding made at compile time.
+        - Bindings for identifiers can be resolved by examining the program.
+    - All modern languages use Static Scoping
 - **Dynamic scoping**
     - The body of a function is evaluated in the **environment** 
     in which the function is **called**.
@@ -35,6 +41,10 @@
             x := x + 1;
         end
     ```
+    - Bindings depend on the flow of control at run time (order in which subroutines are called), **late binding**.
+    - Very few languages implement dynamic scoping, such as *Lisp* or *postscript*.
+    - Easy to implement in interpreters, programming convenience
+    - Bad readability, error prone, bad detection of binding errors
 
 ### Ada
 - Modularity (*packages*)
@@ -123,3 +133,42 @@
 		  C		Y
 		  D		Z
 	- Consumer/Producer problem
+    
+### Another Ada scoping example
+```ada
+task Task1;
+task body Task1 is:
+begin
+    ...
+    Task2.E(6);
+    ...
+
+task Task2 is:
+    entry E(x:integer);
+end Task2;
+task body Task2 is:
+begin
+    ...
+    accept E(x:integer)
+    do                -- scope
+        ...           -- of
+    end;              -- x
+    ...
+```
+
+### Task type
+```ada
+task type MyTask is
+    entry Go;
+end;
+task body MyTask is
+begin
+    ...
+end;
+
+T1:MyTask;
+T2:MyTask;
+A:array(1..50) of MyTask
+T1.GO;
+T2.GO;
+```
