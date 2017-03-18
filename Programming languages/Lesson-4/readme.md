@@ -2,52 +2,17 @@
 
 ## Lesson 4: Passing parameters
 
-```ada
-task Task1;
-task body Task1 is:
-begin
-    ...
-    Task2.E(6);
-    ...
-
-task Task2 is:
-    entry E(x:integer);
-end Task2;
-task body Task2 is:
-begin
-    ...
-    accept E(x:integer)
-    do                -- scope
-        ...           -- of
-    end;              -- x
-    ...
+- Formal parameters a, b
+```c++
+int func(int a, int b){
+    //...
+}
+- Actual parameters 3, x
+```c++
+func(3,x);
 ```
 
-### Task type
-```ada
-task type MyTask is
-    entry Go;
-end;
-task body MyTask is
-begin
-    ...
-end;
-
-T1:MyTask;
-T2:MyTask;
-A:array(1..50) of MyTask
-T1.GO;
-T2.GO;
-```
-
-
-### Math
-```
-f(x) = x^2 + 2   # Don't need to think about
-Let y = 10       # how y is passed to x
-f(y)
-```
-For paramater passing mechanisms:
+### Paramater passing mechanisms
 
 1. Pass by value
     - The value of the actual parameter is copied to the formal parameter.
@@ -81,6 +46,7 @@ For paramater passing mechanisms:
                           --                 y = y + 1    w = w + 1
                print(w);
            end;
+           ```
     
 
     

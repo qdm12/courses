@@ -39,7 +39,7 @@
 ### Grammars used to define the syntax of PL
 1. Regular expressions
 	- Used to define the valid words in the PL
-	- Regular Operators: `|`, `\*`
+	- Regular Operators: `|`, `*`
 	- Notation: Regular expressions
 	- Set
 	- Correspondances notation to set
@@ -47,11 +47,11 @@
 		- `a` -> `{a}`
 		- `ab` -> `{ab}`
 		- `(a|b)b` -> `{ab, bb}`
-		- `(a|b)\*` -> `{€, a, b, aa, ab, bb, aab, ...}`
+		- `(a|b)*` -> `{€, a, b, aa, ab, bb, aab, ...}`
 		- *Note*: `€` (Epsilon) is the empty stems
 	- `for|while|let|do`
-	- digit -> `(0|1|2|3...|9)`  (Shortcut:* `[0-9]`)
-	- `[0-9][0-9]\*.[0-9][0-9]\*`
+	- digit -> `(0|1|2|3...|9)`  (Shortcut: `[0-9]`)
+	- `[0-9][0-9]*.[0-9][0-9]*`
 	- Not use for syntactic relationships like brackets, not nesting as well
 2. Context free grammar
     - Consists of
