@@ -64,7 +64,7 @@ end;
 ```
 
 We would have the following call stack:
-[illustration stack 1][stack_1]
+![illustration stack 1][stack_1]
 
 - Since *B* is defined in *A*, static scoping requires that the *x* referenced by *B* is the *x* declared in *A*.
 - *B* must follow its static link one hop to get to *A*'s stack frame.
@@ -94,7 +94,7 @@ end;
 ```
 
 We would have the following call stack:
-[illustration stack 2][stack_2]
+![illustration stack 2][stack_2]
 
 - **Dynamic chain** is a sequence of dynamic links.
 - There may be stack frames for other procedures between stack frames A, B, C, D
@@ -123,7 +123,7 @@ end;
 ```
 
 We would have the following call stack:
-[illustration stack 3][stack_3]
+![illustration stack 3][stack_3]
 
 - When *A* calls *B*, it passes a **closure** to represent the procedure *C* being passed as the parameter.
 - Functions passed as parameters ae passed using closures.
