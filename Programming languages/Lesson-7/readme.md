@@ -21,7 +21,7 @@
 y ; y is undefined
 ```
 Because the new variables introduced by a `let` are only
-visible in the **BODY** of the `let, a new variable cannot be
+visible in the **BODY** of the `let`, a new variable cannot be
 used in the definition of a subsequent new variable
 ```scheme
 (let ((x 3) (y (+ x 1)))
@@ -105,6 +105,7 @@ L ; This results in (#<procedure> #<procedure> #<procedure>)
 ```scheme
 (let ((f (lambda (x) (if (= x 0) 1 (* x (f (- x 1)))))))
   (f 5)) ; that won't work, as there is a recursive definition
+```
 - Solution: `letrec`
 ```scheme
 (letrec ((f (lambda (x) (if (= x 0) 1 (* x (f (- x 1)))))))

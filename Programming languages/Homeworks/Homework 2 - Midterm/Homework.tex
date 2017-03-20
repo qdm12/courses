@@ -1,0 +1,158 @@
+\documentclass[11pt]{article}
+\usepackage{color}
+\usepackage{minted}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{drawstack}
+\usepackage[options]{algorithm2e}
+\pagestyle{fancy}
+\cfoot[R]{\thepage~of~\pageref{LastPage}}
+\addtolength{\oddsidemargin}{-.875in}
+\addtolength{\evensidemargin}{-.875in}
+\addtolength{\textwidth}{1.75in}
+\addtolength{\topmargin}{-.875in}
+\addtolength{\textheight}{1.75in}
+
+\begin{document}
+\begin{center} {\Large\bf Programming Languages, Homework 2}  \\ Quentin McGaw (qm301) \\ 03/13/17
+\end{center}
+
+\begin{enumerate}
+\item \textbf{\textcolor{blue}{Provide regular expressions for defining the syntax of the following. You can only use concatenation, $|$, parentheses, $\epsilon$ (the empty string), and expressions of the form [A-Z], [a-z0-9], etc., to create regular expressions. For example, you cannot use $+$ or any kind of count variable.}}
+    \begin{enumerate}
+    \item \textbf{\textcolor{blue}{Passwords consisting of letters and digits that contain at least one upper case letter and one digit. They can be of any length (obviously at least two characters)}}
+        \\ $([A-Z]|[a-z]|[0-9])*[A-Z]([A-Z]|[a-z]|[0-9])*[0-9]*([A-Z]|[a-z]|[0-9])*)$
+    \item \textbf{\textcolor{blue}{Floating point literals that specify an exponent, such as the following: 243.876E11 (representing $243.867 x 10^{11}$).}}
+        \\ $[0-9][0-9]*.[0-9][0-9]*E[0-9][0-9]*$
+    \item \textbf{\textcolor{blue}{Procedure names that: must start with a letter; may contain letters, digits, and \_ (underscore); and must be no more than 7 characters.}}
+        \\ $[a-zA-Z]([a-zA-Z]|[0-9]|_|\epsilon)([a-zA-Z]|[0-9]|_|\epsilon)([a-zA-Z]|[0-9]|_|\epsilon)([a-zA-Z]|[0-9]|_|\epsilon)([a-zA-Z]|[0-9]|_|\epsilon)([a-zA-Z]|[0-9]|_|\epsilon)$
+    \end{enumerate}
+\item 
+    \begin{enumerate}
+    \item \textbf{\textcolor{blue}{Provide a simple context-free grammar for the language in which the following program is written. You can assume that the syntax of names and numbers are already defined using regular expressions (i.e. you don't have to define the syntax for names and numbers). You only have to create grammar rules that are sufficient to parse the above program.}}
+    \begin{minted}{Ada}
+program one;
+    
+    var x;
+    
+    function f(var x, var y)
+        var z;
+    begin
+        z := x+y-1;
+        z := z * 2.0;
+        return z;
+    end f;
+
+    procedure g()
+        var a;
+    begin
+        a := 3;
+        x := a;
+    end g;
+begin
+    g();
+    print(f(x));
+end one;
+    \end{minted}
+    \item \textbf{\textcolor{blue}{Draw the parse tree for the above program.}}
+    \end{enumerate}
+\item 
+    \begin{enumerate}
+    \item \textbf{\textcolor{blue}{Define the terms static scoping and dynamic scoping.}}
+        \\ Static scoping is when the body of a function is evaluated in the environment in which the function is defined.
+        \\ Dynamic scoping is when the body of a function is evaluated in the environment in which the function is called.
+    \item \textbf{\textcolor{blue}{Give a simple example, in any language you like (actual or imaginary), that would illustrate the difference between static and dynamic scoping. That is, write a short piece of code whose result would be different depending on whether static or dynamic scoping was used.}}
+        \begin{minted}{Ada}
+x:integer := 7; -- Static scoping
+procedure f()
+begin
+    x := x + 1;
+end
+procedure g()
+    x:integer := 20; -- dynamic scoping
+begin
+    f();
+end
+        \end{minted}
+        In this Ada code, if static scoping is used, the procedure $g$ gives $x=7+1=8$.
+        If dynamic scoping is use, the procedure $g$ gives $x=21$.
+    \item  \textbf{\textcolor{blue}{In a block structured, statically scoped language, what is the rule for resolving variable references (i.e. given the use of a variable, how does one find the declaration of that variable)?}}
+        \\ The declaration of a variable is first searched for in the current block. If it is not present, the global declaration of that variable name is used. If this variable name is declared somewhere else such as in another function, it has no effect.
+    \item  \textbf{\textcolor{blue}{In a block structured but dynamically scoped language, what would the rule for resolving
+    variable references be?}}
+        \\ The variable reference is resolved with the identifier associated with the most recent environment of this variable. 
+    \end{enumerate}
+\item 
+    \begin{enumerate}
+    \item \textbf{\textcolor{blue}{Draw the state of the stack, including all relevant values (e.g. variables, return address,
+    dynamic link, static link, closures), during the execution of procedure D.}}
+        \begin{minted}{Ada}
+procedure A;
+    procedure B(procedure C)
+        procedure D(x:integer);
+        begin
+            writeln(x);
+        end;
+    begin
+        C(D);
+    end;
+    procedure F;
+        procedure G(procedure H);
+        begin
+            H(6);
+        end;
+    begin
+        B(G);
+    end;
+begin
+    F;
+end;
+        \end{minted}
+        \\\\
+        \begin{drawstack}
+        \cell{D where $x = 6$}
+        \cell{C}
+        \cell{G}
+        \cell{B}
+        \cell{G}
+        \cell{F}
+        \cell{A}
+        \end{drawstack}
+    \item \textbf{\textcolor{blue}{Explain what the two parts of a closure (as shown in your diagram) are for.}}
+        \\ Functions passed as parameters such as H are passed using closures. Closures are a combination of a code pointer and an environment pointer.
+    \item \textbf{\textcolor{blue}{If both the dynamic link and the return address in a stack frame point back to the calling procedure, what is the difference between them?}}
+        \\ The dynamic link points to the top of the caller and is only restored on the subroutine return while the return address is local to the stack frame.
+    \end{enumerate}
+\item \textbf{\textcolor{blue}{For each of these parameter passing mechanims, state what the following program (in some Pascal-like language) would print if that parameter passing mechanism was used:}}
+\begin{minted}{Pascal}
+program foo;
+    var i,j: integer;
+        a: array[1..5] of integer;
+    procedure f(x,y:integer)
+    begin
+        x := x * 2;
+        i := i + 1;
+        y := a[i] + 1;
+    end
+begin
+    for j := 1 to 5 do a[j] = 10*j;
+    i := 1;
+    f(i,a[i]);
+    for j := 1 to 5 do print(a[j]);
+end.
+\end{minted}
+    \begin{enumerate}
+    \item \textbf{\textcolor{blue}{Pass by value}}
+    \\ 10\ 20\ 30\ 40\ 50
+    \item \textbf{\textcolor{blue}{Pass by reference}}
+    \\ 31\ 20\ 30\ 40\ 50
+    \item \textbf{\textcolor{blue}{Pass by value-result}}
+    \\ 21\ 20\ 30\ 40\ 50
+    \item \textbf{\textcolor{blue}{Pass by name}}
+    \\ 10\ 21\ 30\ 40\ 50
+    \end{enumerate}
+    
+\end{enumerate}
+
+\end{document}
+
