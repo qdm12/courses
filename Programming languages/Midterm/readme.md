@@ -23,7 +23,25 @@
 - Concurrency: Inability to know the order in which things happen
 - Express modules and concurrency in Ada (Task, packages)
   ```ada
-  TO DO
+  procedure A is
+      task One;
+      task Two;
+      task body One is
+      begin
+          loop
+              Put("One"); New_line;
+          end loop;
+      end One;
+      
+      task body Two is
+      begin
+          loop
+              Put("Two"); New_Line;
+          end loop;
+      end Two;
+  begin
+      null;
+  end A;
   ```
 
 - [The 4 passing mechanisms](../Lesson-4)
