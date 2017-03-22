@@ -8,7 +8,7 @@
 - Necessary properties of a PL:
     - implementable
     - unambiguous 
-    - Turing complete (sufficiently powerful to express only computable function) 
+    - Turing complete (sufficiently powerful to express only computable function)
 - Desirable properties of a PL:
     - High level
     - System independent 
