@@ -6,7 +6,7 @@
 - Dynamically typed
 
 ### Requirements    
-- racket v6.6
+- [Racket](https://racket-lang.org/download/) and install **DrRacket**
 
 ### Basic types
 ```scheme
@@ -33,7 +33,7 @@
   #t
   #f
   ;; The empty list
-  ()
+  '()
   ;; Variable names
   x
   y
@@ -43,21 +43,18 @@
   ```scheme
   ;; Defining variables
   (define x 6) ; declares a variable x whose value is 6
-  #<procedure:>> ; XXX
-  '(define y 7)
-  y ;XXX
-  (define y 7)
-  y ;XXX
+  '(define y 7) ; yield (define y 7) and y is undefined
   ```
 - Aritmetic expressions
   ```scheme
   (+ x y)
+  ; Yields 13 
   + x y
-  #<procedure:+>
-  6
-  7
-  (quote x)
-  'x
+  ; Yields the following:
+  ;; #<procedure:+>
+  ;; 6
+  ;; 7
+  (quote x) ; Yields x
   ```
   
 ### Functions
@@ -70,30 +67,30 @@
 ```scheme
 ;; (if <condition> <then-part> <else-part>
 (if (= x y) 'yes (* x y))
-;; (cond (<condition1> <result1>)
-;;		 (<condition2> <result2>)
-;;		 (else <result>)
-(cond ((= x y) 'first)
-	  ((< x y) 'second)
-	  (else 'third))
+;; (cond    (<condition1> <result1>)
+;;		    (<condition2> <result2>)
+;;		    (else <result>)
+(cond   ((= x y) 'first)
+        ((< x y) 'second)
+        (else 'third))
 ```
 
 ### Example: *Hanoi* function
 ```scheme
 ;;; Towers of Hanoi in Scheme
 (define (hanoi N from to temp)
-	(cond ((= N 1) (display "Move fisk from ") (display from)
-                   (display " to ") (display to) (newline))
-        (else (hanoi (- N 1) from temp to)
-			  (display "Move disk from ") (display from)
-			  (display " to ") (display to) (newline)
-			  (hanoi (- N 1) temp to from))))
+	(cond ((= N 1)  (display "Move fisk from ") (display from)
+                    (display " to ") (display to) (newline))
+        (else   (hanoi (- N 1) from temp to)
+                (display "Move disk from ") (display from)
+                (display " to ") (display to) (newline)
+                (hanoi (- N 1) temp to from))))
 (hanoi 1 'a 'b 'c)
 (hanoi 4 'a 'b 'c)
 ```
 
 ### Lists
-```
+```scheme
 '(1 2 3 4) ; first way to create a list
 (list 1 (+ 2 3) (* x y)) ;;; args are evaluated and put in a list
 ;;; (cons x L) where is a value and L is a list, creates a new list with x followed by L's elements
@@ -116,33 +113,31 @@
 (null? myList) ;; will return #f
 
 (define (nth n L)
-	(cond ((= n 1) (car L))
-		(else (nth (- n 1) (cdr L)))))
+	(cond   ((= n 1) (car L))
+            (else (nth (- n 1) (cdr L)))))
 (nth 5 '(2 4 6 8 10 12))
 
 ;;; Append can be written in Scheme
 (define (myappend L1 L2)
-	(cond ((null? L1) L2)
-		(else (cons (car L1) (append (cdr L1) L2)))))
+	(cond   ((null? L1) L2)
+            (else (cons (car L1) (append (cdr L1) L2)))))
 (myappend '(2 3 4) '(7 8 9))
 
 ;;; put an element at the end of a list
 (define (atEnd x L) ;;; returns a list containing all the elements of L followed by x at the end
-	(cond ((null? L) (list x))
-		(else (cons (car L) (atEnd x (cdr L))))))
-
+	(cond   ((null? L) (list x))
+            (else (cons (car L) (atEnd x (cdr L))))))
 (atEnd 3 '(4 5 6 7 8))
 
-(reverse '(1 2 3 4 5)
+(reverse '(1 2 3 4 5))
 
 (define (myReverse L) ; Quadratic complexity
-    (cond ((null? L) '())
-          (else (append (myReverse (cdr L)) (list (car L))))))
+    (cond   ((null? L) '())
+            (else (append (myReverse (cdr L)) (list (car L))))))
 
 (define (myRev from to) ; Linear complexity
-    (cond ((null? from) to)
-        (else (myRev (cdr from) (cons (car from) to)))))
-        
+    (cond   ((null? from) to)
+            (else (myRev (cdr from) (cons (car from) to)))))
 (myRev '(1 2 3 4 5) '())
 
 (let ((x 12) (y 3)) ;; define nested scopes (new var within expressions)

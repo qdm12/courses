@@ -3,8 +3,8 @@
 ## Lesson 2: Syntax
 
 ### Semantics
-- State semantics: Rules governing the user of types and the declaration of names
-- Dynamic semantics: defines the execution behavior of each variable construct
+- Static semantics are rules governing the use of types and the declaration of names
+- Dynamic semantics define the execution behavior of each variable construct
 
 ### Compiler
 - Translates from one PL to another
@@ -19,7 +19,7 @@
 	- forms *words* (tokens) from sequences of characters
 	- Examples
 		- `for(` => "**for**" (*keyword*)
-		- `xyz` => "**xyz** (*id*)
+		- `xyz` => "**xyz**" (*id*)
 		- `1.629` => **1.629** (*num*)
 - Parsing or *syntactic analysis* called **parser**
 	- forms sentences from sequences of tokens
@@ -40,7 +40,6 @@
 1. Regular expressions
 	- Used to define the valid words in the PL
 	- Regular Operators: `|`, `*`
-	- Notation: Regular expressions
 	- Set
 	- Correspondances notation to set
 		- `R1 | R2` -> `R1 U R2`
@@ -48,12 +47,12 @@
 		- `ab` -> `{ab}`
 		- `(a|b)b` -> `{ab, bb}`
 		- `(a|b)*` -> `{€, a, b, aa, ab, bb, aab, ...}`
-		- *Note*: `€` (Epsilon) is the empty stems
+		- *Note*: `€` (Epsilon) is the empty string
 	- `for|while|let|do`
 	- digit -> `(0|1|2|3...|9)`  (Shortcut: `[0-9]`)
-	- `[0-9][0-9]*.[0-9][0-9]*`
-	- Not use for syntactic relationships like brackets, not nesting as well
-2. Context free grammar
+	- Decimal number `[0-9][0-9]*.[0-9][0-9]*`
+	- Can't be used for syntactic relationships (i.e. *brackets*) or nesting
+2. Context free grammar (CFG)
     - Consists of
         - Non-terminal symbols
             - one of which is designated as the *start* non-terminal

@@ -7,6 +7,7 @@
 int func(int a, int b){
     //...
 }
+```
 - Actual parameters 3, x
 ```c++
 func(3,x);

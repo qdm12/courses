@@ -50,7 +50,7 @@
 - Modularity (*packages*)
 - Module
 	- A collection of code
-	- Has a resitrcted **interface** to code outside of the module
+	- Has a restricted **interface** to code outside of the module
 - Ada "*package*"
 	- **Package specification** (*stack.ads*)
     

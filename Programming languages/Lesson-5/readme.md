@@ -40,7 +40,7 @@ FP (Frame Pointer) -> ¦ DYNAMIC LINK    ¦
     - The old value of the FP when the calling procedure was executing
     - The saved value of the FP which will be restored on subroutine return
 - *Notes*:
-    - Parameters and local variables are accessed using offsets from the FP, such as *[FP+]
+    - Parameters and local variables are accessed using offsets from the FP, such as *[FP+10]*
     - For a recursive function, there are many stack frames, each for each call not returned yet
     - On Intel x86 CPUs, the stack grows **down** in memory (SP address is decremented with a push instruction).
     
@@ -140,7 +140,7 @@ We would have the following call stack:
 ### Functional programming and recursive thinking
 - Evaluation of functions analogous to mathematical functions.
 - Use **declarations and expressions** rather than *statements and instructions*.
-- *Variables* represent **values** and not *moemory locations*, so no **mutable data**.
+- *Variables* represent **values** and not *memory locations*, so no **mutable data**.
 - Heavy use of **recursion** instead of *loops*
 - Functions are *first-class* values
 
@@ -154,8 +154,7 @@ We would have the following call stack:
 1. Handle base case.
 2. Assume the function works on input of size **n-1**.
 3. Create the solution for size **n** under above assumption.
-
-Examples: Fibonacci, Factorial, Append 2 lists, reverse, maximum...
+- Examples: Fibonacci, Factorial, Append 2 lists, reverse, maximum...
 
 
 [stack_1]: stack_1.jpg
