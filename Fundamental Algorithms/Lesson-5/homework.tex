@@ -35,16 +35,17 @@ horror.
 the answer in terms of $n$.  (Answers in $\Theta$-land.)}}
     \begin{enumerate}
     \item \textbf{\textcolor{blue}{How long does {\tt MERGE-SORT} on $n^2$ items take?}}
-        \\ For $n$ items, {\tt MERGE-SORT} takes $\Theta(n log\ n)$.
-        \\ Hence for $n^2$ items, it takes $\Theta(n^2 log\ n^2) = \Theta(2n^2 log\ n) = \Theta(n^2 log\ n)$.
+        \\ For $n$ items, {\tt MERGE-SORT} takes $\Theta(n\log(n))$.
+        \\ Hence for $n^2$ items, it takes $\Theta(n^2 \log(n^2)) = \Theta(2n^2 \log(n)) = \Theta(n^2 \log(n))$.
     \item \textbf{\textcolor{blue}{Suppose that when $n=2^m$, {\tt ANNA} takes time $\Theta(m^22^m)$.
     How long does it take as a function of $n$.}}
-        \\ $n=2^m \Rightarrow m=log_2\ n$
-        \\ Hence {\tt ANNA} takes $\Theta((log_2\ n)^2\ 2^{log_2\ n}) = \Theta((log_2\ n)^2\ n^{log_2\ 2}) = \Theta(n(log_2\ n)^2)$.
+        \\ $n=2^m \Rightarrow m=\log_2(n)$
+        \\ Hence {\tt ANNA} takes $\Theta((\log_2(n))^2\ 2^{\log_2(n)}) = \Theta((\log_2(n))^2\ n^{\log_2(2)}) = \Theta(n(\log_2(n))^2)$.
     \item \textbf{\textcolor{blue}{Suppose that when $n=2^m$, {\tt BOB} takes time $\Theta(5^m)$.
     How long does it take as a function of $n$.}}
-        \\ $n=2^m \Rightarrow m=log_2\ n$
-        \\ Hence {\tt BOB} takes $\Theta(5^{log_2\ n})$.
+        \\ $n=2^m \Rightarrow m=\log_2(n)$
+        \\ Hence {\tt BOB} takes $\Theta(5^{\log_2(n)})$.
+        \\ Or we can do $5^m = (2^{m})^c = n^c$ with $c = \log_2(5)$ so {\tt BOB} takes $\Theta(n^{\log_2(5)})$.
     \item \textbf{\textcolor{blue}{How long does {\tt COUNTING-SORT} take to sort $n^2$ items with
     each item in the range $0$ to $n^3-1$.}}
         \\ {\tt COUNTING-SORT} takes $\Theta(n+k)$ where $n$ is the number of items and $k$ is the maximum value of each item such that each item belongs to the range $[0, k-1]$.
@@ -53,7 +54,8 @@ the answer in terms of $n$.  (Answers in $\Theta$-land.)}}
     \item \textbf{\textcolor{blue}{How long does {\tt RADIX-SORT} take to sort $n^2$ items with
     each item in the range $0$ to $n^3-1$ and base $n$ is used.}}
         \\ The input array A has now a length of $n^2$ and we have $0 <= A[i] <= k^D = n^D = n^3 - 1$.
-        \\ We have therefore $D = 3$ digits, each taking $n^2$ {\tt RADIX-SORT} takes therefore $\Theta(n^2)$.
+        \\ We have therefore $D = 3$ digits, each taking $n^2$.
+        \\ {\tt RADIX-SORT} takes therefore $\Theta(3n^2) = \Theta(n^2)$.
     \end{enumerate}
 \item \textbf{\textcolor{blue}{Consider hashing with chaining using as hash function 
 the sum of the numerical values of the letters (A=1,B=2,...,Z=26) mod 7. 

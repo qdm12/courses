@@ -44,10 +44,11 @@ class CountingSort(object):
             C[A[i]] += 1
         for s in range(1, k+1):
             C[s] += C[s-1]
-        for j in range(n-1, -1, -1): #n to 0
-            value = A[j]
+        for i in range(n-1, -1, -1): #n to 0
+            value = A[i]
             place = C[value]
             B[place] = value
+            # or simply B[C[A[i]]] = A[i]
             C[value] -= 1
         for i in range(n):
             A[i] = B[i+1] #we skip first one (Python thing)

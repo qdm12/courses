@@ -1,0 +1,116 @@
+\documentclass[11pt]{article}
+\pagestyle{empty}
+\usepackage{color}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{amsmath}
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{0pt}
+\cfoot[R]{\thepage~of~\pageref{LastPage}}
+\addtolength{\oddsidemargin}{-.875in}
+\addtolength{\evensidemargin}{-.875in}
+\addtolength{\textwidth}{1.75in}
+\addtolength{\topmargin}{-.875in}
+\addtolength{\textheight}{1.75in}
+
+\begin{document}
+\begin{center} {\Large\bf FA, Homework 7}  \\ Quentin McGaw (qm301) \\ 03/24/17
+\end{center}
+
+\begin{quote}
+What you need is that your brain is open.  -- Paul Erd\H{o}s
+\end{quote}
+
+\begin{enumerate}
+\item \textbf{\textcolor{blue}{Determine an LCS of $10010101$ and $010110110$ using the algorithm studied.}}
+    \\ Solution
+    
+    
+\item \textbf{\textcolor{blue}{Write all the parenthesizations of $ABCDE$.
+Associate them in a natural way with (setting $n=5$) the
+terms $P(i)P(n-i)$, $i=1,2,3,4$ given in the recursion for $P(n)$.}}
+    \\ For $P(1)P(4)$, we have $4$ parenthesizations:
+    \\ $A(B(C(DE)))$
+    \\ $A(B((CD)E))$
+    \\ $A((BC)(DE))$
+    \\ $A((B(CD))E)$
+    \\ $A(((BC)D)E)$
+    \\ For $P(2)P(3)$, we have $2$ parenthesizations:
+    \\ $(AB((CD)E)$
+    \\ $(AB)(C(DE))$
+    \\ For $P(3)P(2)$, we have $2$ parenthesizations:
+    \\ $((AB)C)(DE)$
+    \\ $(A(BC))(DE)$
+    \\ For $P(4)P(1)$, we have $5$ parenthesizations:
+    \\ $(A(B(CD)))E$
+    \\ $(A((BC)D))E$
+    \\ $((AB)(CD))E$
+    \\ $(((AB)C)D)E$
+    \\ $((A(BC))D)E$
+
+
+
+    
+    
+    
+\item \textbf{\textcolor{blue}{Let $x_1,\ldots,x_m$ be a sequence of distinct real numbers. For $1\leq i\leq m$ let $INC[i]$ denote the length of the longest
+increasing subsequence ending with $x_i$.  Let $DEC[i]$ denote the 
+length of the longest decreasing subsequence ending with $x_i$.  
+{\tt Caution:} The subsequence must {\em use} $x_i$.  For example,
+$20,30,4,50, 10$.  Now $INC[5]=2$ because of $4,10$ -- we do
+{\em not} count $20,30,50$.}}
+    \begin{enumerate}
+    \item \textbf{\textcolor{blue}{Find an efficient method for finding the values $INC[i]$, $1\leq i\leq n$. (You should find $INC[i]$ based on the previously found $INC[j]$, $1\leq j< i$.  Your algorithm should take time $O(i)$ for each
+    particular $i$ and thus $O(n^2)$ overall.)}}
+        \\ Solution
+    \item \textbf{\textcolor{blue}{Let $LIS$ denote the length of the longest increasing subsequence of $x_1,\ldots,x_m$.  Show how to find $LIS$ from
+    the values $INC[i]$. Your algorithm, {\em starting with} the $INC[i]$,
+    should take time $O(n)$. Similarly, let $DIS$ denote the length of the longest
+    decreasing subsequence of $x_1,\ldots,x_m$.  Show how to find $DIS$ from
+    the values $DEC[i]$. }}
+        \\ Solution
+    \item \textbf{\textcolor{blue}{Suppose $i<j$.  {\em Prove} that it is impossible to have $INC[i]=INC[j]$ {\em and} $DEC[i]=DEC[j]$.  ({\tt Hint:} Show that {\em if} $x_i < x_j$ then $INC[j] \geq INC[i] + 1$.)}}
+        \\ Solution
+    \item \textbf{\textcolor{blue}{Deduce the following celebrated result (called the Monotone Subsequence Theorem) of Paul Erd\H{o}s and George Szekeres:  Let $m=ab+1$.  Then any sequence $x_1,\ldots,x_m$ of distinct real numbers either $LIS>a$ or $DIS>b$.  (Idea: Assume not and look at the pairs $(INC[i],DEC[i])$.)  Paul Erd\H{o}s was a great twentieth century mathematician,  whose work remains highly influential in many areas.}}
+        \\ Solution
+    \end{enumerate}
+    
+    
+\item \textbf{\textcolor{blue}{Find an optimal parenthesization of a matrix-chain product whose sequence of dimensions is $5,10,3,12,5,50,6$.}}
+    
+\item \textbf{\textcolor{blue}{Some exercises in logarithms:}}
+    \begin{enumerate}
+    \item \textbf{\textcolor{blue}{Write $\lg(4^n/\sqrt{n})$ in simplest form.  What is its asymptotic value.}}
+        \\ $\lg(4^n/\sqrt{n}) = \lg(4^n) - \lg(n^{1/2}) = \lg(4)n - \frac{1}{2}\lg(n)$ so its asymptotic value is infinity as $n$ dominates $\lg(n)$.
+    \item \textbf{\textcolor{blue}{Which is bigger, $5^{313340}$ or $7^{271251}$? Give reason. (You can use a calculator but you can't use any numbers bigger than $10^9$.)}}
+        \\ Suppose $5^{313340}$ is lower than $7^{271251}$.
+        \\ $5^{313340} < 7^{271251} \Rightarrow 313340\lg(5) < 271251\lg(7) \Rightarrow 219015.26 < 229233.68$
+        \\ Our assumption was correct, so $7^{271251}$ is bigger.
+    \item \textbf{\textcolor{blue}{Simplify $n^2\lg(n^2)$ and $\lg^2(n^3)$.}}
+        \\ $n^2\lg(n^2) = 2n^2\lg(n)$
+        \\ $\lg^2(n^3) = (3\lg(n))(3\lg(n)) = 9\lg^2(n)$
+    \item \textbf{\textcolor{blue}{Solve (for $x$) the equation $e^{-x^2/2}=\frac{1}{n}$.}}
+        \\ $e^{-x^2/2}=\frac{1}{n} \Rightarrow 1=\frac{e^{x^2/2}}{n} \Rightarrow \ln(1)=\ln(\frac{e^{x^2/2}}{n}) \Rightarrow 0 = \ln(e^{x^2/2}) - \ln(n) \Rightarrow 0 = \frac{x^2}{2} - \ln(n) \Rightarrow 2\ln(n) = x^2 \Rightarrow x = \mp \sqrt{2\ln(n)}$
+    \item \textbf{\textcolor{blue}{Write $\log_n2^n$ and $\log_nn^2$ in simple form.}}
+        \\ $\log_n2^n = \frac{\log(2^n)}{\log(n)} = \frac{n\log(2)}{\log(n)}$
+        \\ $\log_nn^2 = \frac{\log(n^2)}{\log(n)} = \frac{2\log(n)}{\log(n)} = 2$
+    \item \textbf{\textcolor{blue}{What is the relationship between $\lg n$ and $\log_3n$?}}
+        \\ $\lg n = \frac{\log(n)}{\log(10)}$ and $\log_3n = \frac{\log(n)}{\log(3)}$.
+        \\\\ So the base of $\lg n$ is 10 whereas the base of $\log_3n$ is 3.
+    \item \textbf{\textcolor{blue}{Assume $i< n$.  How many times need $i$ be doubled before it reaches (or exceeds) $n$?}}
+        \\ $\log_2(\frac{n}{i})$
+    \item \textbf{\textcolor{blue}{Write $\lg[n^ne^{-n}\sqrt{2\pi n}]$ precisely as a sum in simplest form.  What is it asymptotic to as $n\ra \infty$?  What is interesting about the bracketed expression?}}
+        \\ $\lg[n^ne^{-n}\sqrt{2\pi n}] = \lg(n^n) + \lg(e^{-n}) + \lg(\sqrt{2\pi n}) = n\lg(n) - n\lg(e) + 0.5\lg(2\pi n)$ so the asymptotic as $n$ goes to $\infty$ is $\infty$.
+    \end{enumerate}
+\end{enumerate}
+
+\begin{quote}
+There is a theory which states that if ever anybody discovers exactly what
+the Universe is for and why it is here, it will instantly disappear and be
+replaced by something even more bizarre and inexplicable. There is another
+theory which states that this has already happened.
+\\ Douglas Adams
+\end{quote}
+
+\end{document}
+

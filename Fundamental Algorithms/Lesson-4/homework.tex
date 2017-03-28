@@ -29,7 +29,7 @@ $\Theta(\lg^bn)$ or $\Theta(n^a\lg^bn)$ for some reals $a,b$.
 
 \begin{enumerate}
 \item  \textbf{\textcolor{blue}{Consider the recursion $T(n)=9T(n/3) + n^2$ 
-with initial value $T(1)=1$.Calculate the {\em precise} values of 
+with initial value $T(1)=1$. Calculate the {\em precise} values of 
 $T(3),T(9),T(27),T(81),T(243)$.}}
         \\\\ $T(3) = 9T(1) + 3^2 = 9(1) + 3^2 = 18 = 2(3^2)$
         \\ $T(9) = 9T(3) + 9^2 = 9(9(1) + 3^2) + 9^2 = 243 = 3(9^2)$
@@ -62,12 +62,17 @@ $T(3),T(9),T(27),T(81),T(243)$.}}
     of three.)}}
         \\\\ From our calculations, it seems that $T(3^i) = (i + 1)3^2i$
         \\ We need to express $i$ and $3^2i$ as a function of $n$
-        \\ First, $n = 3^i \Rightarrow i = lg_3\ n$
+        \\ First, $n = 3^i \Rightarrow i = \log_3(n)$
         \\ Also, $n = 3^i \Rightarrow n^2 = 3^{2i}$
-        Hence $T(n) = (1 + lg_3\ n)n^2$ \\\\
+        Hence $T(n) = (1 + \log_3(n))n^2$.
+        \\\\ Another way is to use the auxiliary function $S(n) = \frac{T(n)}{n^2}$ so that we have \\
+        $T(n)=9T(n/3) + n^2 \Rightarrow \frac{T(n)}{n^2} = \frac{T(\frac{n}{3})}{(\frac{n}{3})^2} + 1 \Rightarrow 
+        S(n) = S(\frac{n}{2}) + 1$ with $S(1)=\frac{T(1)}{1^2}=1$.
+        \\ Hence $S(n)=1+\log_3(n)$ and $T(n)=n^2(1+\log_3(n))$.
+        \\\\
     \textbf{\textcolor{blue}{Now use the Master Theorem to give, in Thetaland, the asymptotics of $T(n)$.
     Check that the two answers are consistent.}}
-        \\\\ In Thetaland, $T(n) = \Theta(n^2 lg\ n)$. With the Master Theorem, we are in the special case because $lg_3\ 9 = 2$ so $T(n) = \Theta(n^2 lg\ n)$ \\
+        \\\\ In Thetaland, $T(n) = \Theta(n^2 log\ n)$. With the Master Theorem, we are in the special case because $log_3\ 9 = 2$ so $T(n) = \Theta(n^2 log\ n)$ \\
 
 \item \textbf{\textcolor{blue}{Use the Master Theorem to give, in Thetaland, the asymptotics of
 these recursions:}}
@@ -109,11 +114,14 @@ needn't be optimal) positive $c_1,c_2$ so that the sum is between
 $c_1g(n)$ and $c_2g(n)$ for $n$ large.}}
     \begin{enumerate}
     \item \textbf{\textcolor{blue}{$n^2+(n+1)^2+\ldots + (2n)^2$}}
-        \\\\ $\Theta(g(n)) = \Theta(n^3)$ and we have $c1 = 0.5$ and $c2 = 1.5$ \\
+        \\\\ $\Theta(g(n)) = \Theta(n^3)$. There are about $n$ terms between $n^2$ and $4n^2$ so the sum is between $c1 = n^3(1+o(1))$ and $c2 = 4n^3(1+o(1))$ \\
     \item \textbf{\textcolor{blue}{$\lg^2(1)+\lg^2(2)+\ldots + \lg^2(n)$}}
-        \\\\ $\Theta(g(n)) = \Theta(nlg^{2}\ n)$ and we have $c1 = 0.5$ and $c2 = 1.5$ \\
+        \\\\ $\Theta(g(n)) = \Theta(n\lg^2(n))$.
+        \\ Lopping off bottom half yields $\frac{n}{2}$ terms, each at least $\lg^2(\frac{n}{2}) = (\lg(n)-1)^2 \approx \lg^2(n)$ so $c1 = \frac{n}{2}\lg^2(n)(1 + o(1))$.
+        \\ There are $n$ terms all at most $\lg^2(n)$ so $c2 = n\lg^2(n)$ \\
     \item \textbf{\textcolor{blue}{$1^3+\ldots+n^3$.}}
-        \\\\ $\Theta(g(n)) = \Theta(n^4)$ and we have $c1 = 0.5$ and $c2 = 1.5$ \\
+        \\\\ $\Theta(g(n)) = \Theta(n^4)$. There are $n$ terms so the upper bound is $c2=n^4$.
+        \\ Lopping off bottom half yields $\frac{n}{2}$ terms, each at least $(\frac{n}{2})^3$ so $c1 = \frac{n}{2}(\frac{n}{2})^3$. \\
     \end{enumerate}
 
 

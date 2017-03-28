@@ -23,30 +23,17 @@
 million, being used as a priority queue.  Suppose 
 {\tt HEAP-INCREASE-KEY(A,300,key)} is called. What is the minimum & maximum number 
 of exchanges that can take place?}}
-    \\ The minimal number is zero, if the new key has smaller value than
-    the key of the parent of $300$.  The maximal number is achieved when
-    the new key is the largest key in the heap, and so the exchanges go
-    up to the root.  So there are exchanges with $150$, then $75$, then
-    $37$, then $18$, then $9$, then $4$, then $2$, then $1$ for a total
-    of eight exchanges.  (In general the position $A[i]$ is on row
-    $j$ (counting the root as row zero)
-    where $2^j\leq i < 2^{j+1}$.  Reversing, $j=\lfloor \lg i\rfloor$.
-    The maximum number of exchanges would then be $j$.
+    \\ The minimum number of exchanges is $0$ if the $key < A[300/2]$ (parent's key). 
+    \\ The maximum number of exchanges occurs when $key$ is the largest key in the heap. 
+    There would then be exchanges with $A[150]$, $A[75]$, $A[37]$, $A[18]$, $A[9]$, $A[4]$, $A[2]$ and $A[1]$.
+    This is a total of $8$ exchanges.
 
 \item \textbf{\textcolor{blue}{When $A$ is an array with length fifty 
 million and {\tt MAX-HEAPIFY(A,300)} is called. What is the minimum & maximum 
 number of exchanges that can take place?}}
-    \\ With {\tt MAX-HEAPIFY} we work {\em down} to the leaves.  The minimum
-    is zero, if the key at $300$ is bigger than the keys of both its children.
-    The maximum would be if we have to work all the way down the the leaves.
-    We could exchange with $600,1200,2400,4800,9600,19200,38400$ 
-    then $76800,153600,307200,614400$ then (in rough millions) $1.3,2.6$,$5.2$,
-    $10.4, 20.8,41.6$.  So the total would be seventeen exchanges.  (One might also 
-    exchange with the right children, but as we are examining worst case we
-    consider the left children as they have smaller indexes.)  In general, if
-    the array has length $n$ then starting at $i$ there is a descendent $j$
-    generations down if and only if $i2^j\leq n$, or, equivalently, $j \leq \lg(n/i)$.
-    So the maximal number would be $\lfloor \lg(n/i)\rfloor$.
+    \\ The minimum number of exchanges is $0$ if the key at $300$ is bigger than the keys of both its children.
+    \\ The maximum number of exchanges occurs when we have to work all the way down to the leaves.
+    \\ We would have to exchange (Worst case) with $A[600]$, $A[1200]$, $A[2400]$, $A[4800]$, $A[9600]$, $A[19200]$, $A[38400]$, $A[76800]$, $A[153600]$, $A[307200]$, $A[614400]$, $A[1228800]$, $A[2457600]$, $A[4915200]$, $A[9830400]$, $A[19660800]$ and $A[39321600]$, so a total of $17$ exchanges (We chose the left side as indexes are smaller than on the right side).
 
 \item \textbf{\textcolor{blue}{Consider a min-heap $H$ with length $1023$
 \footnote{Did you recognize $1023$ as a special number? It's one less 
@@ -58,20 +45,131 @@ smallest element in the array.}}
     \\ It could be in any position in the first two rows, that is, from
     two to seven.
 \\ \textbf{\textcolor{blue}{Let $y=H[700]$. Can $y$ be the largest element in the array?}}
-    \\ Sure, any leaf could be the largest in a min-heap.
+    \\ Yes because any leaf could be the largest in a min-heap.
 \\ \textbf{\textcolor{blue}{Can $y$ be the smallest element in the array?}}
-    \\ No way, the smallest in a min-heap must be at the root.
-\\ \textbf{\textcolor{blue}{Give all $i$ for which it is possible that $y$ 
-                            is the $i$-th smallest element of the array.}}
+    \\ No because the smallest in a min-heap is the root.
+\\ \textbf{\textcolor{blue}{Give all $i$ for which it is possible that $y$ is the $i$-th smallest element of the array.}}
     \\ Its ancestors ($350,175,87,43,21,10,5,2,1$) must be smaller
        so it can be at best tenth smallest.  Its descendents must be
-       bigger but it doesn't have any descendents.  A full proof is
-       a bit complicated (did you find it?!) but these are the only
+       bigger but it doesn't have any descendents. These are the only
        conditions and it could be the $i$-th smallest for any 
        $10\leq i\leq 1023$.
 
 \item \textbf{\textcolor{blue}{Using the figures in the text as a model, illustrate the operation of
 {\tt BUILD-MAX-HEAP} on the array $A=(5,3,17,10,84,19,6,22,9)$}}
+    \\
+    \begin{forest}
+    for tree={circle,draw, l sep=20pt}
+    [5
+        [3
+            [10
+                [22]
+                [9]
+            ]
+            [84]
+        ]
+        [17
+            [19]
+            [6]
+        ]
+    ]
+    \end{forest}
+    \begin{forest}
+    for tree={circle,draw, l sep=20pt}
+    [5
+        [3
+            [22
+                [10]
+                [9]
+            ]
+            [84]
+        ]
+        [17
+            [19]
+            [6]
+        ]
+    ]
+    \end{forest}
+    \begin{forest}
+    for tree={circle,draw, l sep=20pt}
+    [5
+        [3
+            [22
+                [10]
+                [9]
+            ]
+            [84]
+        ]
+        [19
+            [17]
+            [6]
+        ]
+    ]
+    \end{forest}
+    \begin{forest}
+    for tree={circle,draw, l sep=20pt}
+    [5
+        [84
+            [22
+                [10]
+                [9]
+            ]
+            [3]
+        ]
+        [19
+            [17]
+            [6]
+        ]
+    ]
+    \end{forest}
+    \begin{forest}
+    for tree={circle,draw, l sep=20pt}
+    [84
+        [5
+            [22
+                [10]
+                [9]
+            ]
+            [3]
+        ]
+        [19
+            [17]
+            [6]
+        ]
+    ]
+    \end{forest}
+    \begin{forest}
+    for tree={circle,draw, l sep=20pt}
+    [84
+        [22
+            [5
+                [10]
+                [9]
+            ]
+            [3]
+        ]
+        [19
+            [17]
+            [6]
+        ]
+    ]
+    \end{forest}
+    \begin{forest}
+    for tree={circle,draw, l sep=20pt}
+    [84
+        [22
+            [10
+                [5]
+                [9]
+            ]
+            [3]
+        ]
+        [19
+            [17]
+            [6]
+        ]
+    ]
+    \end{forest}
 
 \item \textbf{\textcolor{blue}{The operation {\tt HEAP-DELETE(A,t)} deletes the item in node $t$
 from heap $A$.  Give an implementation of {\tt HEAP-DELETE} that runs in
