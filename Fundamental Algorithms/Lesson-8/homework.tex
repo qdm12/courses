@@ -1,6 +1,8 @@
 \documentclass[11pt]{article}
 \pagestyle{empty}
 \usepackage{color}
+\usepackage{listings}
+\usepackage{minted}
 \usepackage{fancyhdr}
 \usepackage{lastpage}
 \usepackage[options]{algorithm2e}
@@ -31,7 +33,25 @@ Use an auxilliary array $R[J]$, $0\leq J\leq N^2$, where $R[J]$ will give the
 optimal revenue for a rod of length $J$.  You may {\bf not} use
 the term {\tt MAX} nor {\tt MIN} in your program  Explain, in clear words, how your program is working.
 (You can and should use {\tt MAX} in your explanations.)}}
-    \\ S
+    \\ We have prices for rods of length up to $W=\lfloor{\sqrt{N}}\rfloor$ hence we need each cut piece to be of 
+    length $W$ at most. Given that we have a rod of length $N^2$, we first cut it into $N^{3/2}$ different pieces.
+    We then find the optimal revenue for each piece of length $W$ with the following algorithm:
+    \begin{algorithm}[H]
+        R = [0..W] \\
+        R[0] = 0 \\
+        \For{i from 1 to W}{
+            q = PRICE[i] \\
+            \For{j from 1 to i - 1}{
+                \If{PRICE[j] + R[i - j] $>$ q}{
+                    q = PRICE[j] + R[i - j]
+                }
+            }
+            R[j] = q
+        }
+        \Return{R[W]}
+    \end{algorithm}
+    \\ The optimal revenue is then $N^{3/2}$ times the result returned from this algorithm.
+    \\ Algorithm takes $\Theta(n^2)$.
 \item  \textbf{\textcolor{blue}{(*) {\bf DO NOT SUBMIT -- NOT YET COVERED}
 Suppose that the Huffman Code for $\{v,w,x,y,z\}$ has $0$ or $1$ as the
 code word for $z$.  {\em Prove} that the frequency for $z$ cannot be less than
@@ -42,7 +62,10 @@ instead select the last activity to start that is compatible with all previously
 selected activities. Describe how this
 approach works, write a program for it (psuedocode allowed) and prove that it
 yields an optimal algorithm.}}
-    \\ S
+    \\ Let $S$ be the set of activities and $A$ be the maximum-size subset of mutually compatible activities of $S$. We first arrange the activities in order of decreasing start time. Let $a_k = [s_k, f_k)$ be the last activity in $A$. Let $a_m$ be the activity with the earliest finish time. At every step, we discard any overlapping activities with already chosen activities. The latest starting activities remains chosen.
+    \\\\ If $a_k = a_m$ then we found an optimal solution
+    \\ Else, we build the new set starting with $a_k$ and go up until $a_m \leq a_k$. This set has the same number of activities and is mutually compatible with the original set. The optimal solution for $S$ maps directly to the optimal solution in the new set.    
+
 \item \textbf{\textcolor{blue}{Students (professors too!) often come up with very clever ideas for
 optimization programs.  The problem (often!) is that they (sometimes, but that
 is enough) give the wrong answer.  Here are three approaches and {\em your} problem,
@@ -50,13 +73,16 @@ in each case, is to give an example where it yields the wrong answer.}}
     \begin{enumerate}
     \item \textbf{\textcolor{blue}{Pick the activity of the shortest duration 
     from amongst those which do not overlap previously selected activities.}}
-        \\ S
+        \\ With the set of activities $A = \{a_1, a_2, a_3\}$ where their start times are $s = \{2, 0, 3\}$ and finish times are $f = \{4, 3, 6\}$. Then their respective durations are $d = \{2, 3, 3\}$.
+        \\ The solution obtained would be $\{a_1\}$ whilst the optimal solution is actually $\{a_2, a_3\}$.
     \item \textbf{\textcolor{blue}{(*) Pick the activity which overlaps the fewest other remaining activities
     from amongst those which do not overlap previously selected activities.}}
-        \\ S
+        \\ With the set of activities $A = \{a_1, a_2, a_3, ..., a_9\}$ where their start times are $s = \{0, 1, 1, 2, 3, 4, 5, 5, 6\}$ and finish times are $f = \{2, 3, 3, 4, 5, 6, 7, 7, 8\}$. Then their respective number of overlaps are $L = \{2, 3, 3, 3, 2, 3, 3, 3, 2\}$
+        \\ The solution obtained would be $\{a_1, a_5, a_9\}$ whilst the optimal solution is actually $\{a_1, a_9, a_4, a_6\}$.
     \item \textbf{\textcolor{blue}{Pick the activity with the earliest start time
     from amongst those which do not overlap previously selected activities.}}
-        \\ S
+        \\ With the set of activities $A = \{a_1, a_2, a_3\}$ where their start times are $s = \{0, 1, 3\}$ and finish times are $f = \{4, 2, 4\}$.
+        \\ The solution obtained would be $\{a_1\}$ whilst the optimal solution is actually $\{a_2, a_3\}$.
     \end{enumerate}
 \item \textbf{\textcolor{blue}{{\bf DO NOT SUBMIT -- NOT YET COVERED}}}
     \begin{enumerate}
