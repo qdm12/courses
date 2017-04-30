@@ -1,0 +1,314 @@
+\documentclass[11pt]{article}
+\pagestyle{empty}
+\usepackage{color}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{0pt}
+\cfoot[R]{\thepage~of~\pageref{LastPage}}
+\addtolength{\oddsidemargin}{-.875in}
+\addtolength{\evensidemargin}{-.875in}
+\addtolength{\textwidth}{1.75in}
+\addtolength{\topmargin}{-.875in}
+\addtolength{\textheight}{1.75in}
+
+\begin{document}
+\begin{center} {\Large\bf Database Systems Homework} \\ Quentin McGaw (qm301) \\ Due 2017-04-24
+\end{center}
+
+\begin{enumerate}
+\item \textbf{\textcolor{blue}{Given a relation schema ABCDEFG satisfying the following functional dependencies, find all the keys and show that the relation is not in BCNF.
+\begin{itemize}
+  \item A $\rightarrow$ B
+  \item D $\rightarrow$ E
+  \item EF $\rightarrow$ D
+  \item D $\rightarrow$ CF
+\end{itemize}}}
+    Let's first classify the attributes in the 4 classes:
+    \begin{itemize}
+        \item [1.] Both sides of FDs: D, E, F (may appear)
+        \item [2.] Left side only: A (appear)
+        \item [3.] Right side only: B, C (does not appear)
+        \item [4.] Not appearing in FDs: G (appear)
+    \end{itemize}
+    Classes 2 and 4 must appear in every key, class 3 does not appear in any key and class 1 may or may not appear in keys. 
+    Therefore the keys must contain A and G, and can't contain B or C. 
+    \\\\ Let's start with $AG^+ = AGB$ so we are missing C, D, E, F but we can only add D, E or F.
+    Possible keys are thus $AGD$ and $AGEF$ because $AGD^+ = AGBDECF = ABCDEFG$ and $AGEF^+ = AGBEFDC = ABCDEFG$.
+    \\\\ There is a non-trivial FD, A $\rightarrow$ B, and A does not contain a key of R because $A^+ = AB \neq ABCDEFG$. Therefore R is not in BCNF.
+\item \textbf{\textcolor{blue}{Given a relation schema ABCDEFGH, show that the given functional dependencies is a minimal cover.
+\begin{itemize}
+  \item A $\rightarrow$ B
+  \item ACD $\rightarrow$ E
+  \item E $\rightarrow$ BG
+  \item F $\rightarrow$ H
+\end{itemize}}}
+    Let $F_m$ be the set of FDs given.
+    \begin{itemize}
+        \item There is no trivial FDs in $F_m$.
+        \item No two FDs in $F_m$ can be combined using the union rule.
+        \item No attribute can be removed from a RHS of any FD in $F_m$ without changing the power of $F_m$.
+        \item No attribute can be removed from a LHS of any FD in $F_m$ without changing the power of $F_m$.
+    \end{itemize}
+    $F_m$ is thus a minimal cover.
+\item \textbf{\textcolor{blue}{Given a relation schema ABCD satisfying the following functional dependencies, and following exactly the procedure we covered in class find a minimal cover. Generally, you also need to show that the set is indeed a minimal cover. But as this was covered in item 2 above, you do not need to do it here.
+\begin{itemize}
+  \item A $\rightarrow$ BC
+  \item B $\rightarrow$ C
+  \item AB $\rightarrow$ DB
+\end{itemize}}}
+    \begin{enumerate}
+        \item There is the trivial FD, AB $\rightarrow$ DB, which can be expressed as AB $\rightarrow$ D.
+        \item We initially have $A^+ = ABCD$. For FD 1, if we remove C and make it A $\rightarrow$ B, then $A^+ = ABCD$ so we can actually remove C from FD1 because it is redundant.
+    \end{enumerate}
+    Finally we have:
+    \begin{itemize}
+        \item A $\rightarrow$ B
+        \item B $\rightarrow$ C
+        \item AB $\rightarrow$ D
+    \end{itemize}
+\item \textbf{\textcolor{blue}{Given a relation schema ABCDEFGH satisfying the following functional dependencies, and following exactly the procedure we covered in class find a minimal cover. Generally, you also need to show that the set is indeed a mininal cover. But as this was covered in item 2 above, you do not need to do it here. 
+\begin{itemize}
+  \item A $\rightarrow$ E
+  \item BE $\rightarrow$ D
+  \item BDH $\rightarrow$ E
+  \item F $\rightarrow$ A
+  \item E $\rightarrow$ B
+  \item D $\rightarrow$ H
+  \item CED $\rightarrow$ A
+  \item BG $\rightarrow$ FA
+\end{itemize}}}
+    \begin{enumerate}
+        \item There is no trivial FD.
+        \item We initially have $BG^+ = BGFAEBDH$. For FD 8, if we remove A from the RHS and make it BG $\rightarrow$ F, then $BG^+ = BGFAEBDH$ so we can actually remove A from the last FD because it is redundant.
+        \item In FD 2, BE $\rightarrow$ D, if we remove B from the LHS, $E^+ = EBDH$ so we can derive B $\rightarrow$ D from E $\rightarrow$ D. We therefore replace FD 2 with E $\rightarrow$ D.
+        \item In FD 3, BDH $\rightarrow$ E, if we remove H from the LHS, $BD^+ = BDHE$ so we can derive H $\rightarrow$ E from BD $\rightarrow$ E. We therefore replace FD 3 with BD $\rightarrow$ E.
+        \item In FD 7, CED $\rightarrow$ A, if we remove D from the LHS, $CE^+ = CEBDA$ so we can derive D $\rightarrow$ A from CE $\rightarrow$ A. We therefore replace FD 2 with CE $\rightarrow$ A.
+        \item Now with the union rule, we can put together FD 2, E $\rightarrow$ D, and FD 5, E $\rightarrow$ B, in E $\rightarrow$ BD.
+    \end{enumerate}
+    Finally we have:
+    \begin{itemize}
+        \item A $\rightarrow$ E
+        \item E $\rightarrow$ BD
+        \item BD $\rightarrow$ E
+        \item F $\rightarrow$ A
+        \item D $\rightarrow$ H
+        \item CE $\rightarrow$ A
+        \item BG $\rightarrow$ F
+    \end{itemize}\textbf{}
+    
+\item \textbf{\textcolor{blue}{Given a relation schema ABCDEFG and the following minimal cover, create a lossless-join, dependencies-preserving 3NF decomposition.
+\begin{itemize}
+  \item AD $\rightarrow$ B
+  \item B $\rightarrow$ FG
+  \item E $\rightarrow$ C
+  \item F $\rightarrow$ E
+\end{itemize}}}
+    \begin{enumerate}
+        \item We have the following minimal cover:
+        \begin{itemize}
+          \item AD $\rightarrow$ B
+          \item B $\rightarrow$ FG
+          \item E $\rightarrow$ C
+          \item F $\rightarrow$ E
+        \end{itemize}
+        \item From these we create the obtain the tables:
+        \begin{itemize}
+          \item [1.] ADB
+          \item [2.] BFG
+          \item [3.] EC
+          \item [4.] FE
+        \end{itemize}
+        \item We remove redundant tables (there is none here).
+        \item We need to ensure the storage of the global key, and we have:
+        \begin{itemize}
+          \item [1.] $ADB^+ = ADBFGEC = ABCDEFG$
+          \item [2.] $BFG^+ = BFGEC$
+          \item [3.] $EC^+ = EC$
+          \item [4.] $FE^+ = FEC$
+        \end{itemize}
+        So ADB contains a key, hence this is the final decomposition which is lossless-join and dependencies-preserving 3NF.
+    \end{enumerate}
+
+\item \textbf{\textcolor{blue}{Given a relation schema ABCDEFGH and the following minimal cover, create a lossless-join, dependencies-preserving 3NF decomposition.
+\begin{itemize}
+    \item B $\rightarrow$ A
+    \item CF $\rightarrow$ E
+    \item E $\rightarrow$ F
+    \item A $\rightarrow$ F
+    \item BC $\rightarrow$ DH
+\end{itemize}}}
+    \begin{enumerate}
+        \item We have the following minimal cover:
+        \begin{itemize}
+            \item B $\rightarrow$ A
+            \item CF $\rightarrow$ E
+            \item E $\rightarrow$ F
+            \item A $\rightarrow$ F
+            \item BC $\rightarrow$ DH
+        \end{itemize}
+        \item From these we create the obtain the tables:
+        \begin{itemize}
+            \item [1.] BA
+            \item [2.] CFE
+            \item [3.] EF
+            \item [4.] AF
+            \item [5.] BCDH
+        \end{itemize}
+        \item We remove redundant tables (EF in CFE) and we obtain these tables:
+        \begin{itemize}
+            \item [1.] BA
+            \item [2.] CFE
+            \item [3.] AF
+            \item [4.] BCDH
+        \end{itemize}
+        \item We need to ensure the storage of the global key:
+        \begin{enumerate}
+            \item We check if the tables we have contain a key:
+            \begin{itemize}
+                \item [1.] $BA^+ = BAF$
+                \item [2.] $CFE^+ = CFE$
+                \item [3.] $AF^+ = AF$
+                \item [4.] $BCDH^+ = BCDHAFE$ (G is missing)
+            \end{itemize}
+            So there is no key in the tables.
+            \item We thus need to create a table containing a key.
+            \begin{enumerate}
+                \item As a reminder, we have the following FDs for a relation schema ABCDEFGH:
+                    \begin{itemize}
+                      \item B $\rightarrow$ A
+                      \item CF $\rightarrow$ E
+                      \item E $\rightarrow$ F
+                      \item A $\rightarrow$ F
+                      \item BC $\rightarrow$ DH
+                    \end{itemize}
+                \item Let's classify the attributes in the 4 following classes:
+                \begin{itemize}
+                    \item [1.] Both sides of FDs: A, E, F (may appear)
+                    \item [2.] Left side only: B, C (appear)
+                    \item [3.] Right side only: D (does not appear)
+                    \item [4.] Not appearing in FDs: G, H (appear)
+                \end{itemize}
+                Classes 2 and 4 must appear in every key, class 3 do not appear in any key and class 1 may or may not appear in keys. 
+                Therefore the keys must contain B, C, G and H, and can't contain D.
+                \item Let's start with the requirements previously found:
+                $BCGH^+ = BCGHAFED = ABCDEFGH$ so BCGH contains a key. The table that has to be added is thus BCGH.
+            \end{enumerate}
+        \end{enumerate}
+        \item The final lossless-join, dependencies-preserving 3NF decomposition is thus made of the following tables:
+        \begin{itemize}
+            \item BA with primary key B
+            \item CFE with primary key CF
+            \item AF with primary key A
+            \item BCDH with primary key BC
+            \item BCGH with primary key BCGH
+        \end{itemize}
+    \end{enumerate}
+   
+\item \textbf{\textcolor{blue}{A customer gave your colleague an ER diagram that had only one relation schema R = EGS, which satisfies the following functional dependencies
+\begin{itemize}
+    \item [] E $\rightarrow$ G
+    \item [] E $\rightarrow$ S
+    \item [] G $\rightarrow$ S
+\end{itemize}
+The relation is not in 3NF and (not following the algorithm taught in the class) your colleague decomposed it into relations
+\begin{itemize}
+    \item [] R1 = EG with primary key E
+    \item [] R2 = ES with primary key E
+\end{itemize}
+so that
+\begin{itemize}
+    \item The decomposition is lossless-join.
+    \item Each relation in the decomposition is in 3NF.
+\end{itemize}
+However
+\begin{itemize}
+    \item Dependencies are \textit{not} preserved.
+\end{itemize}
+The customer does not know anything about this decomposition and from time to time asks your colleague to modify R. Your colleague runs queries modifying R1 and R2 appropriately. The customer asks your colleague to insert (101,c,4) into R, which translates into inserting (101,c) into EG and inserting (101,4) into ES respectively. Of course, the system will “automatically” check that these inserts do not violate the primary key conditions in the two relations. The current instances of the two relations are such that these conditions would not be violated by the inserts operations.
+\\\\ In order to process this request, additional test(s) need to be performed. What are they? Sketch how they could be performed.
+\\\\ Do not write any SQL and be specific and concise in your answer.}}
+    \\ Because the dependencies are not preserved, we cannot check inserts by examining only what happens in each individual table.
+    We need to perform non-local tests to check updates for validity. What we can do is to combine EG and ES and reconstruct GS with primary key G and check that the insert operation is legal. If it is illegal, then the insert operation has to be rejected.
+    \\ This is how it would work:
+    \begin{enumerate}
+        \item We have the following tables initially:
+        \\
+        \begin{tabular}{|c|c|} 
+            \hline
+            \underline{E} & G \\
+            \hline
+            100 & 4 \\ 
+            \hline
+        \end{tabular}
+        \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 
+        \begin{tabular}{|c|c|} 
+            \hline
+            \underline{E} & S \\
+            \hline
+            100 & d \\ 
+            \hline
+        \end{tabular}
+        \item We now try to insert (101,c,4) into R so we reconstruct GS with primary key G.
+        \\
+        \begin{tabular}{|c|c|} 
+            \hline
+            \underline{G} & S \\
+            \hline
+            4 & d \\ 
+            \textcolor{red}{4} & \textcolor{red}{c} \\
+            \hline
+        \end{tabular}
+        \\\\ And the insert is rejected and is thus not inserted in the tables EG and ES.     
+    \end{enumerate}
+    \\ On the other hand, this check would allow the insert in the following case:
+    \begin{enumerate}
+        \item We have the following tables initially:
+        \\
+        \begin{tabular}{|c|c|} 
+            \hline
+            \underline{E} & G \\
+            \hline
+            100 & 3 \\ 
+            \hline
+        \end{tabular}
+        \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 
+        \begin{tabular}{|c|c|} 
+            \hline
+            \underline{E} & S \\
+            \hline
+            100 & c \\ 
+            \hline
+        \end{tabular}
+        \item We now try to insert (101,c,4) into R so we reconstruct GS with primary key G.
+        \\
+        \begin{tabular}{|c|c|} 
+            \hline
+            \underline{G} & S \\
+            \hline
+            3 & c \\ 
+            \textcolor{green}{4} & \textcolor{green}{c} \\
+            \hline
+        \end{tabular}
+        \\\\ And the insert is accepted and is thus also inserted in the tables EG and ES:
+        \\
+        \begin{tabular}{|c|c|} 
+            \hline
+            \underline{E} & G \\
+            \hline
+            100 & 3 \\ 
+            101 & 4 \\
+            \hline
+        \end{tabular}
+        \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 
+        \begin{tabular}{|c|c|} 
+            \hline
+            \underline{E} & S \\
+            \hline
+            100 & c \\ 
+            101 & c \\ 
+            \hline
+        \end{tabular}
+    \end{enumerate}
+\end{enumerate}
+\end{document}
