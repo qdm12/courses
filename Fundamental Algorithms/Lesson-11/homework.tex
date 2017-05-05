@@ -1,0 +1,139 @@
+\documentclass[11pt]{article}
+\pagestyle{empty}
+\usepackage{color}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{amsfonts}
+\usepackage{minted}
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{0pt}
+\cfoot[R]{\thepage~of~\pageref{LastPage}}
+\addtolength{\oddsidemargin}{-.875in}
+\addtolength{\evensidemargin}{-.875in}
+\addtolength{\textwidth}{1.75in}
+\addtolength{\topmargin}{-.875in}
+\addtolength{\textheight}{1.75in}
+
+\begin{document}
+\begin{center} {\Large\bf FA, Homework 11} \\ Quentin McGaw (qm301) \\ 04/27/17
+\end{center}
+
+\begin{quote}
+My work has always tried to unite the true with the beautiful and
+when I had to choose one or the other I usually chose the beautiful.
+--  Hermann Weyl
+\end{quote}
+
+\begin{enumerate}
+\item \textbf{\textcolor{blue}{Consider {\tt Dumb Prim} for MST.  The high level idea is the same but to find the minimal weight of an edge $\{v,w\}$, $v\in S$, $w\not\in S$, one looks at all the weights and finds the minimum in the usual way. (There is no updating in {\tt Dumb Prim}.) Assume that all pairs $\{v,w\}$ have a weight.  Let $n$ be the number of vertices.}}
+\begin{enumerate}
+    \item \textbf{\textcolor{blue}{When $|S|=i$ what is the time to add a vertex to $S$ as a function of $n$ and $i$.}}
+    Blabla
+    \item \textbf{\textcolor{blue}{What is the total time for {\tt Dumb Prim} as a sum over $i$.}}
+    Blabla
+    \item \textbf{\textcolor{blue}{Evaluate the above sum as $\Theta(g(n))$ for some nice function $g(n)$. (Caution:  The time is {\em not} an increasing function of $i$.  For example, when $i=n-1$ the time is quite quick.)}}
+    Blabla
+    \item \textbf{\textcolor{blue}{Compare the time for {\tt Dumb Prim} with {\tt Prim} as discussed in class}}
+    Blabla
+\end{enumerate}
+
+\item \textbf{\textcolor{blue}{Consider Prim's Algorithm for MST on the complete graph with vertex set $\{1,\ldots,n\}$.  Assume that edge $\{i,j\}$ has weight $(j-i)^2$.  Let the root vertex $r=1$.  Show the pattern as Prim's Algorithm is applied. In particular, Let $n=100$ and consider the situation when the tree created has $73$ elements and $\pi$ and $key$ have been updated.}}
+\begin{enumerate}
+    \item \textbf{\textcolor{blue}{What are these $73$ elements.}}
+        \\ 
+    \item \textbf{\textcolor{blue}{What are $\pi[84]$ and $key[84]$.}}
+\end{enumerate}
+
+\item \textbf{\textcolor{blue}{Find $d=\gcd(89,55)$ and $x,y$ with $89x+55y=1$. [Remark: This is part of a pattern with two consecutive numbers from the Fibonacci sequence $0,1,1,2,3,5,8,13,21,34,55,89,\ldots$]}}
+    \begin{enumerate}
+        \item First method (Fibonacci)
+        \begin{itemize}
+            \item We prove that any two consecutive terms  of the Fibonacci sequence are relatively prime with the following:
+            \\ We have $f_1 = 1$, $f_2 = 1$ so $\gcd(f_1, f_2) = 1$.
+            \\ Suppose $\gcd(f_n, f_{n+1}) = 1$. We will prove that $\gcd(f_{n+1}, f_{n+2}) = 1$.
+            \\ Because $f_{n+2} = f_{n+1} + f_n$, we have $\gcd(f_{n+1}, f_{n+2}) = \gcd(f_{n+1}, f_{n+1} + f_n)$.
+            \\ Using the gcd property, we obtain $\gcd(f_{n+1}, f_{n+1} + f_n) = \gcd(f_{n+1}, f_n) = 1$.
+            \\ Hence $\gcd(f_n, f_{n+1}) = 1$ for all $n > 0$.
+            \item Because 55 and 89 are two consecutive numbers from the Fibonacci sequence, they are hence relatively prime and their gcd $d$ is $1$.
+        \end{itemize}
+        \item Second method (Euclidian algorithm)
+        \begin{itemize}
+            \item $89 = 55 \times 1 + 34$
+            \item $55 = 34 \times 1 + 21$
+            \item $34 = 21 \times 1 + 13$
+            \item $21 = 13 \times 1 + 8$
+            \item $13 = 8 \times 1 + 5$
+            \item $8 = 5 \times 1 + 3$
+            \item $5 = 3 \times 1 + 2$
+            \item $3 = 2 \times 1 + 1$
+            \item $2 = 1 \times 1 + 1$
+            \item $1 = \textcolor{red}{1} \times 1 + 0$ so the gcd is 1. Therefore $d = \gcd(89, 55) = 1$
+        \end{itemize}
+    \end{enumerate}
+    Now to solve $89x+55y=1$, we first need to see that $89x+55y=1 \Rightarrow 89x+55y=\gcd(89, 55)$.
+    Because $\gcd(89, 55) = 1$, it divides $1$ and thus $89x + 55y$ so there is an infinite set of solutions $x, y$.
+    \begin{itemize}
+        \item $1 = 3 - 1(2)$
+        \item $1 = 3 - 1(5-3)$
+        \item $1 = 2(3) - 1(5)$
+        \item $1 = 2(8-5) - 1(5)$
+        \item $1 = 2(8) - 3(5)$
+        \item $1 = 2(8) - 3(13-8)$
+        \item $1 = 5(8) - 3(13)$
+        \item $1 = 5(21-13) - 3(13)$
+        \item $1 = 5(21) - 8(13)$
+        \item $1 = 5(21) - 8(34-21)$
+        \item $1 = 13(21) - 8(34)$
+        \item $1 = 13(55-34) - 8(34)$
+        \item $1 = 13(55) - 21(34)$
+        \item $1 = 13(55) - 21(89-55)$
+        \item $1 = 34(55) - 21(89)$
+    \end{itemize}
+     Now we can see that $1 = 89 \times (-21) + 55 \times 34 $ therefore one solution is $(x, y) = (-21, 34)$.
+     The general solutions have the form:
+     \\ $x = -21 + \frac{55r}{1} = -21 + 55r$
+     \\ $y = 34 - \frac{89r}{1} = 34 - 89r$
+     \\ with $r\ \epsilon\ \mathbb{Z}$
+
+
+\item \textbf{\textcolor{blue}{Find $\frac{211}{507}$ in $Z_{1000}$.}}
+    \\ Let $x$ such that $x = \frac{211}{507}$
+    \\ We want to solve $507x = 211$ in $Z_1000$.
+    \\ We multiply $507$ by an integer $x$,  starting from $0$ up to $999$ and we perform a modulo on the result operation with $1000$. If the final result is $211$, then $x$ is the solution.
+    \\ I wrote a very simple Python program to do that:
+    \begin{minted}{python}
+def division_ring(a, b, Z_length):
+    """ Performs the division of a/b in the ring Z of length Z_length    
+    """
+    for x in range(Z_length):
+        if (b * x) % Z_length == a:
+            return x
+    return None
+
+if __name__ == '__main__':
+    print division_ring(211, 507, 1000)
+    \end{minted}
+    And this gives the result 673. To verify, we check that $673 \times 507 \bmod 1000 = 211$.
+    
+
+\item \textbf{\textcolor{blue}{Solve the system \\ $x\equiv 34 \bmod{101}$\\ $x\equiv 59 \bmod{103}$.}}
+    \begin{itemize}
+        \item The second equation gives $x \equiv 59 \bmod{103} \Rightarrow x = 103q + 59$, for $q\ \epsilon\ \mathbb{Z}$.
+        \item We substitute this $x$ into the first equation, giving: $103q + 59 \equiv 34 \bmod{101} \Rightarrow 103q \equiv 76 \bmod{101} \Rightarrow 2q \equiv 76 \bmod{101}$.
+        \item Because 2 and 101 are relatively prime, we obtain $q \equiv 38 \bmod{101}$
+        \item Hence the solution is $x \equiv 103 \times 38 + 59 \bmod{101 \times 103} \equiv 3973 \bmod{10403}$
+    \end{itemize}
+
+\item \textbf{\textcolor{blue}{Using the Island-Hopping Method to find $2^{1000}$ modulo $1001$ using a Calculator but NOT using multiple precision arithmetic. (You should never have an intermediate value more than a million.)}}
+
+\item \textbf{\textcolor{blue}{(extra from last week!) Suppose that during Kruskal's Algorithm (for MST) and some point we have $SIZE[v]=37$. What is the interpretation of that in the case when $\pi[v]=v$? What is the interpretation
+of that in the case when $\pi[v]=u\neq v$? Let $w$ be a vertex. How many different values can $\pi[w]$ have during the course of Kruskal's algorithm? How many different values (as a function of $V$, the number of vertices) can $SIZE[w]$ have during the course of Kruskal's algorithm? (That is, the maximal number possible.)}}
+
+\end{enumerate}
+
+\begin{quote}
+The universe is not only queerer than we suppose but queerer than we {\em can}
+suppose.  \\ -- J.B.S. Haldane
+\end{quote}
+
+\end{document}

@@ -29,39 +29,71 @@ The search for truth is more precious than its possession
 We are {\em given} $PRICE[I]$, $1\leq I\leq W$, the price of a rod of length $I$. 
 Give a program that will output the optimal revenue for a rod of length $N^2$ 
 and give the time, in $\Theta$-land,  of the algorithm.
-Use an auxilliary array $R[J]$, $0\leq J\leq N^2$, where $R[J]$ will give the
+Use an auxiliary array $R[J]$, $0\leq J\leq N^2$, where $R[J]$ will give the
 optimal revenue for a rod of length $J$.  You may {\bf not} use
 the term {\tt MAX} nor {\tt MIN} in your program  Explain, in clear words, how your program is working.
 (You can and should use {\tt MAX} in your explanations.)}}
-    \\ We have prices for rods of length up to $W=\lfloor{\sqrt{N}}\rfloor$ hence we need each cut piece to be of 
-    length $W$ at most. Given that we have a rod of length $N^2$, we first cut it into $N^{3/2}$ different pieces.
-    We then find the optimal revenue for each piece of length $W$ with the following algorithm:
+    \\\\ We have $R[J] = max[PRICE[I] + R[J-I]]$ where $1 \leq I \leq min[I, W]$. \\\\
     \begin{algorithm}[H]
-        R = [0..W] \\
         R[0] = 0 \\
-        \For{i from 1 to W}{
-            q = PRICE[i] \\
-            \For{j from 1 to i - 1}{
-                \If{PRICE[j] + R[i - j] $>$ q}{
-                    q = PRICE[j] + R[i - j]
+        R[1] = PRICE[1] \\
+        \For{J = $2$ to $N^2$}{
+            S = J \\
+            \If{W $\leq$ S}{
+                S = W \\
+            }
+            \\ (* So S = min(J,W) *) \\
+            TEMP = 0 \\
+            \For{I = 1 to S}{
+                \If{TEMP $\leq$ PRICE[I] + R[J-I]}{
+                    TEMP $\leftarrow$ PRICE[I] + R[J - I] \\          
                 }
             }
-            R[j] = q
+            \\ (* Here TEMP is the maximal value *) \\
+            R[j] $\leftarrow$ TEMP \\
         }
-        \Return{R[W]}
+        \Return{R[$N^2$]}
+        \caption{Algorithm to find the optimal revenue for a rod of length I}
     \end{algorithm}
-    \\ The optimal revenue is then $N^{3/2}$ times the result returned from this algorithm.
-    \\ Algorithm takes $\Theta(n^2)$.
-\item  \textbf{\textcolor{blue}{(*) {\bf DO NOT SUBMIT -- NOT YET COVERED}
-Suppose that the Huffman Code for $\{v,w,x,y,z\}$ has $0$ or $1$ as the
-code word for $z$.  {\em Prove} that the frequency for $z$ cannot be less than
-$\frac{1}{3}$.  {\em Give an example} where the frequency for $z$ is $0.36$ and
-$z$ does get code word $0$ or $1$.}}
+    \\ The outer loop executes $1 \leq J \leq N^2$ times.
+    \\ The time of the inner loop is min(J,W) and there are thus two ranges:
+    \begin{itemize}
+        \item $1 \leq J < W$ : J steps and it adds up to $1 + 2 + ... + (W - 1) \approx \frac{W^2}{2} = \Theta(N)$.
+        \item $W \leq J \leq N^2$ : W steps and it adds up to W($N^2$ - W) = $\Theta(N^{2.5})$.
+    \end{itemize}
+    The total time is therefore $\Theta(N + N^{2.5}) = \Theta(N^{2.5})$.
+    
 \item  \textbf{\textcolor{blue}{Suppose, in the Activity Selector problem, we
 instead select the last activity to start that is compatible with all previously
-selected activities. Describe how this
-approach works, write a program for it (psuedocode allowed) and prove that it
-yields an optimal algorithm.}}
+selected activities. Describe how this approach works, write a program for it 
+(pseudo-code allowed) and prove that it yields an optimal algorithm.}}
+    \\ At each point, the last activity to start is selected. There is a recursion down to the single optimal subproblem to find the optimal solution for all remaining activities compatible (proof by induction). \\
+    \begin{algorithm}[H]
+    RECURSIVE-ACTIVITY-SELECTOR(s, f, i): \\
+    $m \leftarrow i - 1$ \\
+    \While{m $>$ 0 and $s_i < f_m$}{
+        m $\leftarrow$ m - 1   
+    }
+    \eIf{m $>$ 0}{
+        \Return{$\{a_m\}\ \cup $ RECURSIVE-ACTIVITY-SELECTOR(s, f, m)}
+    }{
+        \Return{$\emptyset$}
+    }
+    \caption{Recursive activity selector}
+    \end{algorithm}
+    
+    \\ We start with i = n (number of tasks). Consider a nonempty subproblem $S_{ij}$ and let $a_m$ be the activity in $S_{ij}$ with the latest start time $s_m = \max(s_k : a_k \in S_{ij})$.
+    \begin{itemize}
+        \item $a_m$ is used in a maximum-size subset of mutually compatible activities $S_{ij}$.
+        \\ \textbf{Proof: } Suppose $A_{ij}$ is a maximum-size subset of mutually compatible activies of $S_{ij}$.
+        Suppose activities in $A_{ij}$ are ordered in monotonically increasing order of starting time.
+        Let $a_k$ be the last activity of $A_{ij}$. If $a_k = a_m$, we are done since $a_m$ is used in constructing the schedule. Otherwise, we construct $A^{'}_{ij} = A_{ij} - \{a_k\}\ \in \ \{a_m\}$. The activities are disjoint since $a_k$ is the last activity to start and $s_m \geq s_k$. The number of activities in the subset are the same, so it is a maximum-size subset of activities including $a_m$.
+        \item The subproblem $S_{mj}$ is empty, so choosing $a_m$ leaves the subproblem $S_im$ as the only one that may be nonempty.
+        \\ \textbf{Proof: } Suppose $S_{mj}$ is non-empty, so there is an activity $a_k$ such that $f_m \leq s_k < f_k \leq s_j < f_j$. As a consequence, $a_k \in S_{ij}$ which has a later start time than $a_m$, contradicting our initial assumption.
+    \end{itemize}
+    
+
+
     \\ Let $S$ be the set of activities and $A$ be the maximum-size subset of mutually compatible activities of $S$. We first arrange the activities in order of decreasing start time. Let $a_k = [s_k, f_k)$ be the last activity in $A$. Let $a_m$ be the activity with the earliest finish time. At every step, we discard any overlapping activities with already chosen activities. The latest starting activities remains chosen.
     \\\\ If $a_k = a_m$ then we found an optimal solution
     \\ Else, we build the new set starting with $a_k$ and go up until $a_m \leq a_k$. This set has the same number of activities and is mutually compatible with the original set. The optimal solution for $S$ maps directly to the optimal solution in the new set.    
@@ -84,23 +116,6 @@ in each case, is to give an example where it yields the wrong answer.}}
         \\ With the set of activities $A = \{a_1, a_2, a_3\}$ where their start times are $s = \{0, 1, 3\}$ and finish times are $f = \{4, 2, 4\}$.
         \\ The solution obtained would be $\{a_1\}$ whilst the optimal solution is actually $\{a_2, a_3\}$.
     \end{enumerate}
-\item \textbf{\textcolor{blue}{{\bf DO NOT SUBMIT -- NOT YET COVERED}}}
-    \begin{enumerate}
-    \item \textbf{\textcolor{blue}{What is an optimal Huffman code for the following code when the
-    frequencies are the first eight Fibonacci number?
-    \[ a:1, b:1, c:2, d:3, e:5, f:8, g:13, h:21  \]}}
-    \item \textbf{\textcolor{blue}{The Fibonacci sequence is defined by initial values $0,1$ 
-    with each further term the sum of the previous two terms.  Generalize
-    the previous answer to find the optimal code when there are $n$ letters with
-    frequencies the first $n$ (excluding the $0$) Fibonacci numbers.}}
-    \end{enumerate}
-\item \textbf{\textcolor{blue}{{\bf DO NOT SUBMIT -- NOT YET COVERED} 
-Suppose that in implementing the Huffman code we weren't
-so clever as to use Min-Heaps.  Rather, at each step we found
-the two letters of minimal frequency and replaced them by
-a new letter with frequency their sum.  How long would that
-algorithm take, in Thetaland, as a function of the initial number of
-letters $n$.}}
 \end{enumerate}
 
 

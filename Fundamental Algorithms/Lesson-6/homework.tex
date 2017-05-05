@@ -1,6 +1,9 @@
 \documentclass[11pt]{article}
 \pagestyle{empty}
 \usepackage{color}
+\usepackage{forest}
+\usepackage{listings}
+\usepackage{minted}
 \usepackage{fancyhdr}
 \usepackage{lastpage}
 \usepackage[options]{algorithm2e}
@@ -14,91 +17,467 @@
 \addtolength{\textheight}{1.75in}
 
 \begin{document}
-\begin{center} {\Large\bf FA, Homework 8} \\ Quentin McGaw (qm301) \\ 04/06/17
+\begin{center} {\Large\bf FA, Homework 6}  \\ Quentin McGaw (qm301) \\ 03/09/17
 \end{center}
 
 \begin{quote}
-The search for truth is more precious than its possession
-\\ --  Albert Einstein
+I am slow to learn and slow to forget that which I have learned.  My
+mind is like a piece of steel; very hard to scratch anything on it
+and almost impossible after you get it there to rub it out.
+\\ -- Abraham Lincoln
 \end{quote}
 
 \begin{enumerate}
-\item \textbf{\textcolor{blue}{Set $W=\lfloor{\sqrt{N}}\rfloor$.  
-We are {\em given} $PRICE[I]$, $1\leq I\leq W$, the price of a rod of length $I$. 
-Give a program that will output the optimal revenue for a rod of length $N^2$ 
-and give the time, in $\Theta$-land,  of the algorithm.
-Use an auxilliary array $R[J]$, $0\leq J\leq N^2$, where $R[J]$ will give the
-optimal revenue for a rod of length $J$.  You may {\bf not} use
-the term {\tt MAX} nor {\tt MIN} in your program  Explain, in clear words, how your program is working.
-(You can and should use {\tt MAX} in your explanations.)}}
-    \\ S
-\item  \textbf{\textcolor{blue}{(*) {\bf DO NOT SUBMIT -- NOT YET COVERED}
-Suppose that the Huffman Code for $\{v,w,x,y,z\}$ has $0$ or $1$ as the
-code word for $z$.  {\em Prove} that the frequency for $z$ cannot be less than
-$\frac{1}{3}$.  {\em Give an example} where the frequency for $z$ is $0.36$ and
-$z$ does get code word $0$ or $1$.}}
-\item  \textbf{\textcolor{blue}{Suppose, in the Activity Selector problem, we
-instead select the last activity to start that is compatible with all previously
-selected activities. Describe how this
-approach works, write a program for it (psuedocode allowed) and prove that it
-yields an optimal algorithm.}}
-    \\ S
-\item \textbf{\textcolor{blue}{Students (professors too!) often come up with very clever ideas for
-optimization programs.  The problem (often!) is that they (sometimes, but that
-is enough) give the wrong answer.  Here are three approaches and {\em your} problem,
-in each case, is to give an example where it yields the wrong answer.}}
+\item \textbf{\textcolor{blue}{(Continuation of Problem from Last Assignment)
+Consider a Binary Search Tree $T$ with vertices $a,b,c,d,e,f,g,h$
+and $ROOT[T]=a$ and with the following values ($N$ means NIL)
+\begin{center}
+\begin{tabular}{r|rrrrrrrr} 
+vertex & a&b&c&d&e&f&g&h \\
+parent & N&e&e&a&d&g&c&a  \\
+left & h & N & N & e & c & N & f & N \\
+right & d & N & g & N & b & N & N & N
+\end{tabular}
+\end{center}}}
+    \\ We have the following tree:
+    \\\\
+    \begin{center}
+    \begin{forest}
+    for tree={circle,draw, l sep=20pt}
+    [
+    [80,edge label={node[midway,left] {a}}
+        [70,edge label={node[midway,left] {h}}]
+        [200,edge label={node[midway,right] {d}}
+          [150,edge label={node[midway,left] {e}}
+            [140,edge label={node[midway,left] {c}}
+              [,phantom]
+              [148,edge label={node[midway,right] {g}}
+                [143,edge label={node[midway,left] {f}}]
+                [,phantom]
+              ]
+            ]
+            [170,edge label={node[midway,right] {b}}]
+          ]
+          [,phantom]
+        ]
+      ] 
+    ]
+    ]
+    \end{forest}
+    \end{center}
+
     \begin{enumerate}
-    \item \textbf{\textcolor{blue}{Pick the activity of the shortest duration 
-    from amongst those which do not overlap previously selected activities.}}
-        \\ S
-    \item \textbf{\textcolor{blue}{(*) Pick the activity which overlaps the fewest other remaining activities
-    from amongst those which do not overlap previously selected activities.}}
-        \\ S
-    \item \textbf{\textcolor{blue}{Pick the activity with the earliest start time
-    from amongst those which do not overlap previously selected activities.}}
-        \\ S
+    \item \textbf{\textcolor{blue}{Which is the successor of $c$.  
+    Illustrate how the program {\tt SUCCESSOR} will find it.}}
+        \\ We want to find the successor of node $150$ on its left side (vertex $x$). We therefore search 
+        for the node with value $150$ and its left child is the successor, otherwise there is no successor.
+        \\ To do this, the following Python code was implemented with the recursive function SuccessorVerbose.
+        \\ Note that you can also implement the SUCCESSOR algorithm in an iterative way or by keeping track of the parent pointer, but this way is neater I think.
+        \begin{minted}{python}
+class BinarySearchTree:
+    class Node(object):
+        def __init__(self, key):
+            self.val = key
+            self.left = None
+            self.right = None
+            
+    def SuccessorVerbose(self, root, parent_key):
+        while root.left is not None:
+            if root.val == parent_key:
+                print "Parent found and has left successor", root.left.val
+                return root.left
+            elif parent_key < root.val:
+                print "Parent's value is on left side of node", root.val
+                return self.SuccessorVerbose(root.left, parent_key)
+            else:
+                print "Parent's value is on right side of node", root.val
+                return self.SuccessorVerbose(root.right, parent_key)
+        print "No successor found."
+        
+    def insert(self, root, node):
+        if root is None:
+            root = node
+        else:
+            if root.val < node.val:
+                if root.right is None:
+                    root.right = node
+                else:
+                    self.insert(root.right, node)
+            else:
+                if root.left is None:
+                    root.left = node
+                else:
+                    self.insert(root.left, node)
+            
+bst = BinarySearchTree()
+root = bst.Node(80)
+bst.insert(root, bst.Node(70))
+bst.insert(root, bst.Node(200))
+bst.insert(root, bst.Node(150))
+bst.insert(root, bst.Node(140))
+bst.insert(root, bst.Node(170))
+bst.insert(root, bst.Node(148))
+bst.insert(root, bst.Node(143))
+bst.SuccessorVerbose(root, parent_key=150)
+        \end{minted}
+        \\\\ The following standard output is thus generated:
+        \\ Parent's value is on right side of node 80
+        \\ Parent's value is on left side of node 200
+        \\ Parent found and has left successor 140
+        \\\\ The successor of $c$ is thus the node with value $140$.
+        
+    \item \textbf{\textcolor{blue}{Which is the minimal element?
+    Illustrate how the program {\tt MIN} will find it.}}
+        \\ To find the minimum, the MIN program has been implemented in Python 2.7.
+        \\ It basically starts at the root and searches for the leftmost node.
+        \\ It is implemented in the function minValueVerbose(root).
+        \begin{minted}{python}
+class BinarySearchTree:
+    class Node(object):
+        def __init__(self, key):
+            self.val = key
+            self.left = None
+            self.right = None
+        
+    def minValueVerbose(self, root):
+        while root.left is not None:
+            print "There is a node on the left of node with value", root.val
+            root = root.left    
+        print "No more node on the left of node with value", root.val
+        print "The minimum is therefore the node with value", root.val
+        return root.val
+        
+    def insert(self, root, node):
+        if root is None:
+            root = node
+        else:
+            if root.val < node.val:
+                if root.right is None:
+                    root.right = node
+                else:
+                    self.insert(root.right, node)
+            else:
+                if root.left is None:
+                    root.left = node
+                else:
+                    self.insert(root.left, node)
+            
+bst = BinarySearchTree()
+root = bst.Node(80)
+bst.insert(root, bst.Node(70))
+bst.insert(root, bst.Node(200))
+bst.insert(root, bst.Node(150))
+bst.insert(root, bst.Node(140))
+bst.insert(root, bst.Node(170))
+bst.insert(root, bst.Node(148))
+bst.insert(root, bst.Node(143))
+bst.minValueVerbose(root)
+        \end{minted}
+        \\\\\\ The following standard output is hence generated:
+        \\ There is a node on the left of node with value 80
+        \\ No more node on the left of node with value 70
+        \\ The minimum is therefore the node with value 70
+        \\
+    \item \textbf{\textcolor{blue}{Illustrate the program {\tt DELETE[e]}}}
+        \\ The program DELETE[e] searches for the node with the key equal to $e$.
+        \\ Once found, there are three cases:
+        \\ 1. The node has no childs, in this case it is just removed.
+        \\ 2. The node has only one child, which will replace it once it is removed.
+        \\ 3. The node has two childs. The minimum child of its right sub-tree will replace it once it is removed.
+        \\\\ This program was again implemented in Python 2.7 in the function delete(root, key):
+        \begin{minted}{python}
+class BinarySearchTree:
+    class Node(object):
+        def __init__(self, key):
+            self.val = key
+            self.left = None
+            self.right = None
+        
+    def minValue(self, root):
+        while root.left is not None:
+            root = root.left
+        return root.val
+        
+    def delete(self, root, key):
+        if root is None:
+            return None
+        if root.val == key:
+            if root.left is not None and root.right is not None: # 2 childs
+                minValue = self.minValue(root.right)
+                root.val = minValue
+                root.right = self.delete(root.right, minValue)                    
+            elif root.left is not None: # only left child
+                return root.left
+            elif root.right is not None: # only right child
+                return root.right
+            else: # no child
+                return None
+        elif root.val < key:
+            root.right = self.delete(root.right, key)
+        else:
+            root.left = self.delete(root.left, key)
+        return root
+        
+    def insert(self, root, node):
+        if root is None:
+            root = node
+        else:
+            if root.val < node.val:
+                if root.right is None:
+                    root.right = node
+                else:
+                    self.insert(root.right, node)
+            else:
+                if root.left is None:
+                    root.left = node
+                else:
+                    self.insert(root.left, node)
+                    
+    def print_inOrder(self, root):
+        if root:
+            self.print_inOrder(root.left)
+            print root.val,
+            self.print_inOrder(root.right)
+            
+bst = BinarySearchTree()
+root = bst.Node(80)
+bst.insert(root, bst.Node(70))
+bst.insert(root, bst.Node(200))
+bst.insert(root, bst.Node(150))
+bst.insert(root, bst.Node(140))
+bst.insert(root, bst.Node(170))
+bst.insert(root, bst.Node(148))
+bst.insert(root, bst.Node(143))
+bst.print_inOrder(root)
+print
+bst.delete(root, 140)
+bst.print_inOrder(root)
+        \end{minted}
+        \\\\\\ As you may see, the delete function is recursive and uses the minValue function previously described.
+        \\ The standard output generated from running this code is the following:
+        \\\\ 70 80 140 143 148 150 170 200
+        \\ 70 80 143 148 150 170 200
     \end{enumerate}
-\item \textbf{\textcolor{blue}{{\bf DO NOT SUBMIT -- NOT YET COVERED}}}
-    \begin{enumerate}
-    \item \textbf{\textcolor{blue}{What is an optimal Huffman code for the following code when the
-    frequencies are the first eight Fibonacci number?
-    \[ a:1, b:1, c:2, d:3, e:5, f:8, g:13, h:21  \]}}
-    \item \textbf{\textcolor{blue}{The Fibonacci sequence is defined by initial values $0,1$ 
-    with each further term the sum of the previous two terms.  Generalize
-    the previous answer to find the optimal code when there are $n$ letters with
-    frequencies the first $n$ (excluding the $0$) Fibonacci numbers.}}
-    \end{enumerate}
-\item \textbf{\textcolor{blue}{{\bf DO NOT SUBMIT -- NOT YET COVERED} 
-Suppose that in implementing the Huffman code we weren't
-so clever as to use Min-Heaps.  Rather, at each step we found
-the two letters of minimal frequency and replaced them by
-a new letter with frequency their sum.  How long would that
-algorithm take, in Thetaland, as a function of the initial number of
-letters $n$.}}
+    
+\item \textbf{\textcolor{blue}{Draw binary search trees of height 
+2,3,4,5,6 on the set of keys \{1,4,5,10,16,17,21\}.}}
+    \begin{forest}
+    for tree={circle,draw, l sep=10pt}
+    [10
+        [4
+            [1]
+            [5]
+        ]
+        [17
+            [16]
+            [21]
+        ]
+    ]
+    \end{forest}
+    \begin{forest}
+    for tree={circle,draw, l sep=10pt}
+    [10
+        [1
+            [,phantom]
+            [4
+                [,phantom]
+                [5]
+            ]
+        ]
+        [21
+            [16
+                [,phantom]
+                [17]
+            ]
+            [,phantom]
+        ]
+    ]
+    \end{forest}
+    \begin{forest}
+    for tree={circle,draw, l sep=10pt}
+    [1
+        [,phantom]
+        [10
+            [5
+                [4]
+                [,phantom]
+            ]
+            [21
+                [16
+                    [,phantom]
+                    [17]
+                ]
+                [,phantom]
+            ]
+        ]
+    ]
+    \end{forest}
+    \begin{forest}
+    for tree={circle,draw, l sep=10pt}
+    [1
+        [,phantom]
+        [5
+            [4]
+            [10
+                [,phantom]
+                [16
+                    [,phantom]
+                    [17
+                        [,phantom]
+                        [21]
+                    ]
+                ]
+            ]
+        ]
+    ]
+    \end{forest}
+    \begin{forest}
+    for tree={circle,draw, l sep=10pt}
+    [1
+        [,phantom]
+        [4
+            [,phantom]
+            [5
+                [,phantom]
+                [10
+                    [,phantom]
+                    [16
+                        [,phantom]
+                        [17
+                            [,phantom]
+                            [21]
+                        ]
+                    ]
+                ]
+            ]
+        ]
+    ]
+    \end{forest}
+    \\ \space Height 2 \hfill Height 3 \hfill Height 4 \hfill Height 5 \hfill Height 6
+
+\item \textbf{\textcolor{blue}{What is the difference between 
+the binary-search property and the heap property?
+(*) Can the heap property be used to print out the keys of 
+an $n$-node tree in sorted order in $O(n)$ time? Explain how or why not.}}
+    \\ Heap property guarantees elements on higher levels are greater (for max-heap) than elements on lower levels.
+    \\ Binary Search property guarantees order, from "left" to "right".
+    \\ The heap property can print out the keys of an $n$-node tree in sorted order in $O(n\ log\ n)$.
+    \\ This is due to the fact that this property will require us to swap and reheapify each time so 
+    it would require $log(n) + log(n-1) + log(n-2) + ... + 1$ which results in $O(n\ log\ n)$.
+    
+\item \textbf{\textcolor{blue}{You are given an array $A[1\cdots n]$, 
+whose values come from a universe $\Omega$. (In application, the values 
+would be the keys of records.) You want to test if there are any
+duplicates, if there are any $1\leq i < j \leq n$ such that
+$A[i]=A[j]$.  You are given a hash function $h:\Omega\ra \{1,\ldots,n\}$
+and a table $T[1\cdots n]$ of linked lists, initially all empty.
+Using the hash function,  give an algorithm that returns {\tt BAD}
+if there is a duplicate and {\tt GOOD} if there is no duplicate.
+Discuss the time of the algorithm under the assumption that
+calculating the hash function takes unit time.}}
+    \\\\ The following algorithm adds elements to the table and check for duplicates.
+    \\ If a duplicate is found, the element is not added.
+    \\
+    \begin{algorithm}[H]
+        \For{i from 1 to N}{
+            index \leftarrow h(A[i])\\
+            head \leftarrow T[index]\\
+            \If{head == NULL}{
+                head.value \leftarrow A[i]\\
+                head.next \leftarrow NULL\\
+                \Return "GOOD"\\
+            }
+            node \leftarrow head\\
+            \While{node != NULL}{
+                \If{node.value == A[i]}{
+                    \Return "BAD"\\
+                }
+                \If{node.next == NULL}{
+                    node.next \leftarrow Node(value=A[i], next=NULL)\\
+                    \Return "GOOD"\\
+                }
+                node \leftarrow node.next\
+            }                
+        }
+        \caption{Duplicate check and hash table algorithm}
+    \end{algorithm}
+    \\ The outer loop is executed $n$ times, and the inner loop is executed $m$ times where
+    $m$ is the number of elements of $A$ hashing to the same index of the table $T$.
+    \\ In the worst case, if all the elements of $A$ hash to the same index in $T$, 
+    the time required is $(n-1)1 + n = 2n - 1$ which is $O(n)$.
+    
+    
+\item \textbf{\textcolor{blue}{What would the BST tree look like if you 
+start with the root $a_1$ with $key[a_1]=1$ (and nothing else)
+and then you apply \[ INSERT[a_2],\ldots,INSERT[a_n] \]  in
+that order where $key[a_i]=i$ for each $2\leq i\leq n$?  
+Suppose the same assumptions of starting with $a_1$ and
+the key values but the INSERT commands were done in
+{\em reverse} order \[ INSERT[a_n],\ldots,INSERT[a_2] \]}}
+    \\ For the first case, the BST tree would then be a straight line from left to right. 
+    Its nodes would be $1, 2, 3, ..., n$ from top to bottom.
+    It would look like the following tree:
+    \\
+    \begin{center}
+    \begin{forest}
+    for tree={circle,draw, l sep=10pt}
+    [1
+        [,phantom]
+        [2
+            [,phantom]
+            [3
+                [,phantom]
+                [...
+                    [,phantom]
+                    [n]
+                ]
+            ]
+        ]
+    ]
+    \end{forest}
+    \end{center}
+    \\ In the second case, the root is 1 but we insert elements in the reverse order.
+    \\ The BST tree would simply look like the following:
+    \\
+    \begin{center}
+    \begin{forest}
+    for tree={circle,draw, l sep=10pt}
+    [1
+        [,phantom]
+        [n
+            [n - 1
+                [...
+                    [3
+                        [2]
+                        [,phantom]
+                    ]
+                    [,phantom]
+                ]
+                [,phantom]
+            ]
+            [,phantom]
+        ]
+    ]
+    \end{forest}
+    \end{center}
+    
+
 \end{enumerate}
 
-
 \begin{quote}
-Dear Sir,
-\\  I beg to introduce myself to you as a clerk in the Accounts Department
-of the Port Trust Office at Madras on a salary of only \pounds 20 per
-annum.  I am now about 25 years of age.  I have no University education but
-I have undergone the ordinary school course.  After leaving school I have
-been employing the spare time at my disposal to work at Mathematics\ldots
-I am striking out a new path for myself.  I have made a special investigation
-of divergent series in general and the results I get are termed
-by the local mathematicians as ``startling"  \\ -- Ramanujan
-
-\end{quote}
-
-\begin{quote}
-The truth is that the theory of primes is full of pitfalls, to surmount which requires the 
-fullest of trainings in modern rigorous methods. This you are naturally without. I hope 
-you will not be discouraged by my criticisms. I think your argument a very remarkable 
-and ingenious one. To have proved what you claimed to have proved would have been
- about the most remarkable mathematical feat in the whole history of mathematics.
-\\ G.H. Hardy, letter to Ramanujan, 1913 [after finding error in Ramanujan argument]
+In the novel I never wrote, I wanted the hero to be a computer programmer
+because it was the most poetic and romantic occupation I could think
+of [...] I conceived of him, whose professional life was spent in the
+sanctum of the night (when, I was told, the computers, too valuable to be
+unemployed by industry during the day, are free, as it were, to frolic)
+devising idioms whereby problems might be fed to the machines and emerge,
+under binary percussion, as the music of truth - I conceived of him as
+being too fine, transluscent, and scrupulous to live in our coarse age.
+He was to be, if the metaphor is biological, an evolutionary abortion,
+a mammalian mutation crushed underfoot by dinosours, and, if the metaphor
+is mathematical, a hypothetical ultimate, one digit beyond the last real
+number.  The title of the book was to be $N+1$.
+\\ from {\em The Music School} by John Updike
 \end{quote}
 
 \end{document}
-

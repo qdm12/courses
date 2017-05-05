@@ -1,0 +1,138 @@
+\documentclass[11pt]{article}
+\pagestyle{empty}
+\usepackage{color}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage[options]{algorithm2e}
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{0pt}
+\cfoot[R]{\thepage~of~\pageref{LastPage}}
+\addtolength{\oddsidemargin}{-.875in}
+\addtolength{\evensidemargin}{-.875in}
+\addtolength{\textwidth}{1.75in}
+\addtolength{\topmargin}{-.875in}
+\addtolength{\textheight}{1.75in}
+
+\begin{document}
+\begin{center} {\Large\bf FA, Homework 10} \\ Quentin McGaw (qm301) \\ 04/20/17
+\end{center}
+
+\begin{quote}
+The world is teeming; anything can happen
+\\ John Cage, Silence
+\end{quote}
+
+\begin{itemize}
+    \item \textbf{Kruskal's algorithm:}
+    \begin{enumerate}
+        \item Sort all the edges in increasing order of their weight in the array $A$
+        \item Pick the smallest edge from $A$. If it forms a cycle with the spanning tree formed $S$ so far, discard it. Otherwise include it in $S$.
+        \item Repeat step 2 until there are $V-1$ edges in $S$, where $V$ is the number of vertices in the graph.
+    \end{enumerate}
+    \item \textbf{Kruskal's algorithm pseudo-code:}
+    \begin{enumerate}
+        \item We sort the edges $e_1, ..., e_E$ by weight
+        \item $x_i$ and $y_i$ are the vertices of $e_i$.
+        \item For any vertex $x$, initially all $\pi[x] \leftarrow x$ and all $SIZE(x) \leftarrow 1$.
+        \item 
+        \begin{algorithm}[H]
+            $S = \{\}$ \\
+            \For{i from 1 to E}{
+                \While{$\pi[x_i] \neq x_i$}{
+                    $x_i \leftarrow \pi[x_i]$ (finds its parent)
+                }
+                \While{$\pi[y_i] \neq y_i$}{
+                    $y_i \leftarrow \pi[y_i]$ (finds its parent)
+                }
+                \If{$x_i \neq y_i$}{
+                    \If{$SIZE(x_i) \leq SIZE(y_i)$}{
+                        $\pi[x_i] \leftarrow y_i$ \\
+                        $SIZE(y_i) \leftarrow SIZE(y_i) + SIZE(x_i)$
+                    }
+                    \Else{
+                        $\pi[y_i] \leftarrow x_i$ \\
+                        $SIZE(x_i) \leftarrow SIZE(x_i) + SIZE(y_i)$
+                    }
+                    Add $e_i$ to $S$.
+                }
+            }
+            \Return{$S$}
+        \end{algorithm}
+        
+    \end{enumerate}
+    
+\end{itemize}
+
+\begin{enumerate}
+\item \textbf{\textcolor{blue}{Suppose we are given the Minimal Spanning Tree $T$ of a graph
+$G$.  Now we take an edge $\{x,y\}$ of $G$ which is not in $T$ and
+reduce its weight $w(x,y)$ to a new value $w$.  Suppose the path from
+$x$ to $y$ in the Minimal Spanning Tree contains an edge whose weight
+is bigger than $w$.  Prove that the old Minimal Spanning Tree is no
+longer the Minimal Spanning Tree.}}
+    \\ It is stated that the path from $x$ to $y$ contains an edge whose weight is bigger than $w$ so the weight of of the path 
+    from $x$ to $y$ must be greater than $w$. On the other hand, we reduce the weight $w$ of the edge $\{x,y\}$ therefore the path from $x$ to $y$ with the lowest weight has now changed with this new graph and has a weight of $w$. The MST based on the initial graph is therefore invalid with this modified graph as there is now a path from $x$ to $y$ with a lower weight.
+    
+\item \textbf{\textcolor{blue}{Suppose we ran Kruskal's algorithm on a graph $G$ with $n$ vertices
+and $m$ edges, no two costs equal.  {\em Assume} that the $n-1$ edges of
+minimal cost form a tree $T$.}}
+\begin{enumerate}
+    \item \textbf{\textcolor{blue}{Argue that $T$ will be the minimal cost tree.}}
+        \\ First we know that every edge cost is unique from the problem. From the minimum-cost edge property of the MST, we know that if the minimum cost edge e of a graph is unique, then this edge is included in any MST. Therefore, $T$ is a minimal cost tree.
+        \\ From the uniqueness property of the MST and because each edge cost is unique, there is only one MST which must be $T$.
+        \\ Therefore $T$ is the minimal cost tree.
+    \item \textbf{\textcolor{blue}{How much time will Kruskal's Algorithm take. {\em Assume} that the
+    edges are {\em given} to you as an array in increasing order of weight.
+    Further, {\em assume} the Algorithm  stops when
+    it finds the MST. Note that the total number $m$ of edges is irrelevant as the
+    algorithm will only look at the first $n-1$ of them.}}
+        \\ Because the edges are already sorted in increasing order of weight, we only need to add edges to the MST from the edge with the smallest weight until the edge of the largest weight (or $n-1$ edges) that don't form a cycle. To do this we use disjoint-set data structures which require $n$ UNION[x,y] each taking $O(\ln(n))$ hence we need a total time of $O(n\ln(n))$.
+    \item \textbf{\textcolor{blue}{We define Dumb Kruskal.  It is Kruskal without the SIZE
+    function.  For  $UNION[u,v]$ we follow $u,v$ down to their 
+    roots $x,y$ as with regular Kruskal but now, if $x\neq y$,
+    we simply reset $\pi[y]=x$.  We have the same
+    assumptions on $G$ as above.  How long could dumb Kruskal take.  
+    Describe an example where it takes that long.  (You can imagine that
+    when the edge $u,v$ is given an adversary puts them in the worst
+    possible order to slow down your algorithm.)}}
+        \\ As there are $n$ vertices, UNION[x,y] takes $O(n)$ time so the algorithm takes $O(n^2)$ time.
+        \\ To make this happen, we can suppose the edges are given in the following order: $\{2,1\}$, $\{3,1\}$, ..., $\{n,1\}$.
+        We set $\pi[1] = 2$ for the first edge. We follow 1 down to 2 and we set $\pi[2] = 3$. For the $i^{th}$ step we need $i$ time so this would effectively take $\Theta(n^2)$ time overall.
+\end{enumerate}
+
+
+\item \textbf{\textcolor{blue}{Consider Kruskal's Algorithm for MST on a graph with vertex set
+$\{1,\ldots,n\}$.  Assume that the order of the weights of the edges
+begins $\{1,2\}, \{2,3\}, \{3,4\},\ldots, \{n-1,n\}$.  (Note: When 
+$SIZE[x]=SIZE[y]$ make the first value the parent of the second.
+In particular, set $\pi[2]=1$, not the other way around.)}}
+    \begin{enumerate}
+    \item \textbf{\textcolor{blue}{Show the pattern as the edges are processed.  In particular,
+    let $n=100$ and stop the program when the edge $\{72,73\}$ has
+    been processed.  Give the values of $SIZE[x]$ and $\pi[x]$ for all
+    vertices $x$.}}
+        \begin{itemize}
+            \item We start with $x_i = 1$ and $y_i = 2$. Because $SIZE(x_i) = SIZE(y_i)$, $\pi[y_i] = x_i= \pi[2] = 1$ and $SIZE[x_i] = SIZE[x_i] + SIZE[y_i] = 1 + 1 = SIZE[1] = 2$. 
+            \item For $i = 3,4,...$ when we process $1,i$ we have $\pi[i] = i$ and $\pi[i - 1] = 1$.
+            \item The WHILE loop thus sends $i-1$ to ! with $SIZE[1] = i-1$ and $i$ to itself with $SIZE[i] = 1$.
+            \item So we set $\pi[i] = 1$ and reset $SIZE[1] = i-1+1 = i$.
+            ($SIZE[1]$ is incremented at each iteration).
+            \item With $n=100$ after {1,73} is processed we have $\pi[i] = 1$ for $2 \leq i \leq 73$.
+            \item For the (untouched) $i$ from 74 to 100 we still have $SIZE[i] = 1$ and $\pi[i] = i$.
+        \end{itemize}
+    \item \textbf{\textcolor{blue}{Now let $n$ be large and stop the program after $\{n-1,n\}$ has
+    been processed.  Assume the ordering of the weights of the edges
+    was {\em given} to you, so it took zero time.  How long, as an
+    asymptotic function of $n$, would this program take.  (Reasons, please!)}}
+        \\ At each iteration, the WHILE loop is not applied for 1 and applied one time for $i$ so it takes constant time. This program has to run for $n - 1$ edges so it takes $\Theta(n)$ time.
+    \end{enumerate}
+
+\end{enumerate}
+
+\begin{quote}
+Humans are allergic to change.  They love to say, "We've always done it this way."
+I try to fight that.
+\\ Grace Hopper
+\end{quote}
+
+\end{document}

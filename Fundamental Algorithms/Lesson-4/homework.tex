@@ -133,12 +133,12 @@ be nonnegative.)}}
     \\\\
     \begin{algorithm}[H]
         \For{$i$ from $0$ to $N$}{
-            X = A[i] - B[i]\
-            \eIf{X >= 0}{
-                C[i] = X\
+            X = A[i] - B[i] \\
+            \eIf{X $>=$ 0}{
+                C[i] = X \\
             }{
-                C[i-1]--\
-                C[i] = 10 + X\
+                C[i-1]-- \\
+                C[i] = 10 + X \\
             }
         }
         \caption{n-digit decimal subtraction algorithm}
