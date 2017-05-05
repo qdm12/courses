@@ -1,0 +1,101 @@
+\documentclass[11pt]{article}
+\pagestyle{empty}
+\usepackage{color}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{0pt}
+\cfoot[R]{\thepage~of~\pageref{LastPage}}
+\addtolength{\oddsidemargin}{-.875in}
+\addtolength{\evensidemargin}{-.875in}
+\addtolength{\textwidth}{1.75in}
+\addtolength{\topmargin}{-.875in}
+\addtolength{\textheight}{1.75in}
+
+\begin{document}
+\begin{center} {\Large\bf Database Systems Homework} \\ Quentin McGaw (qm301) \\ Due 2017-04-24
+\end{center}
+
+\begin{enumerate}
+\item \textbf{\textcolor{blue}{You are given a disk containing $2^{38}$ bytes. The disk is organized into blocks each containing $2^9$ bytes. You are supposed to store a file consisting of 600,000 records each of 40 bytes. Among the fields of the record there is one field F of interest to us. This field stores the primary key and is stored in 9 bytes.}}
+    \begin{enumerate}
+        \item \textbf{\textcolor{blue}{Following the example we covered in class, design a $B^+$ tree for this problem.}}
+            \begin{enumerate}
+                \item There are $ \frac{2^{38}}{2^9} = 2^{29}$ blocks and each block address can thus be stored in 29 bits. Because $\frac{29\ bits}{8} = 3.625$ bytes, we need 4 bytes to be allocated to a block address.
+                \item The size of the key is $9$ bytes.
+                \item We need to find the largest value for $m$ such that a node in the $B^+$ tree will contain $m$ pointers (each storing a block address) and $m-1$ keys.
+                \\ We thus need to solve the following equation: $m(size\ of\ pointer) + (m-1)(size\ of\ key) \leq size\ of\ block$.
+                \\ In our situation:
+                \begin{itemize}
+                    \item size of pointer = 4 bytes
+                    \item size of key = 9 bytes
+                \end{itemize}
+                Hence we have:
+                \\ $4m + 9(m-1) \leq 2^9 
+                \\ \Rightarrow 13m - 9 \leq 512 \Rightarrow m \leq \frac{521}{13} \Rightarrow m \leq 40.0769...$
+                \\ Because $m$ is an integer, we obtain $m = 40$.
+                \item The root will have between 2 and $m = 40$ children, an internal node between ${\lceil}\frac{m}{2}{\rceil} = 20$ and $m = 40$ children.
+            \end{enumerate}        
+        \item \textbf{\textcolor{blue}{Assuming that the root is on level 1, its children on level 2, etc., what is the smallest and what is the largest number of nodes on level 3?}}
+            \\ The minimum number of nodes on level 3 is reached when the root has only 2 children, and each of these children have 20 children. This minimum is thus $2(20) = 40$ nodes. The maximum number of nodes on level 3 is reached when the root has 40 children, each of them having 40 children. This maximum is thus $40(40) = 1600$ nodes.
+    \end{enumerate}
+
+\item \textbf{\textcolor{blue}{A particular database system uses the write-ahead-log protocol with delayed write, to manage recovery. We will use the notation in the slides for the tuples in the log. The database contains 3 items: x, y, z. All are initially 0.
+\\\\The system crashed. After examining the log, you see that it is the sequence of the following tuples:
+\\ T1 s
+\\ T1 x 0 1
+\\ T1 y 0 1
+\\ T2 s
+\\ T3 s
+\\ T1 c
+\\ T2 y 1 2
+\\ checkpoint T2 T3
+\\ T3 y 2 3
+\\ T3 z 0 1
+\\ T4 s
+\\ T3 c
+\\\\ You now proceed to look at the database itself (on the disk). What are all the possible values of the items x, y, z on the database disk?}}
+    \\\\ The possible values of the items x, y, z on the database disk are:
+    \\ x: 1
+    \\ y: 2 or 3
+    \\ z: 0 or 1
+    \\\\ The redo list is [T3] (T3 has a commit record between the checkpoint and the crash) and the undo list is [T4, T2] (T4 and T2 don't have a commit record between the checkpoint and the crash) so we do the following
+    \begin{itemize}
+        \item [1.] Going backwards from the end of the log, for each record belonging to an “undo” transaction perform undo
+        \item [2.] Going forwards from the checkpoint record to the end of the log, for each record belonging to a “redo” transaction perform redo
+    \end{itemize}
+    \\ And we have the following actual writes:
+    \begin{itemize}
+        \item y := 1
+        \item y := 3
+        \item z := 1
+    \end{itemize}
+    The final values are thus:
+    \begin{itemize}
+        \item x = 1
+        \item y = 3
+        \item z = 1
+    \end{itemize}
+
+\item \textbf{\textcolor{blue}{Assume that the log of the system is as follows after the system crashes:
+\\ T1 s
+\\ T1 x 1 -5
+\\ T1 y -1 0
+\\ T1 c
+\\ T2 s
+\\ T2 z 8 12
+\\ checkpoint T2
+\\ T2 x 5 10
+\\ T3 s
+\\ T3 y 0 15
+\\ T2 c}}
+    \begin{enumerate}
+        \item \textbf{\textcolor{blue}{Which transactions need to be redone?}}
+            \\ The redo list is [T2] because T2 has its commit record between the checkpoint and the crash. T2 has thus to be redone.
+        \item \textbf{\textcolor{blue}{Which transactions need to be undone?}}
+            \\ The undo list is [T3] because T3 does not have a commit record between the checkpoint and the crash. T3 has thus to be undone.
+        \item \textbf{\textcolor{blue}{Which transactions are not affected by the failure?}}
+            \\ The transaction T1 is not affected as its start and commit records are before the checkpoint.
+    \end{enumerate}
+\end{enumerate}
+\end{document}

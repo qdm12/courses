@@ -60,13 +60,21 @@
     \begin{enumerate}
         \item There is the trivial FD, AB $\rightarrow$ DB, which can be expressed as AB $\rightarrow$ D.
         \item We initially have $A^+ = ABCD$. For FD 1, if we remove C and make it A $\rightarrow$ B, then $A^+ = ABCD$ so we can actually remove C from FD1 because it is redundant.
+        \item The closure of A is $A^+ = ABCD$. For FD 3, if we remove B from the LHS, we have A $\rightarrow$ D which gives the same closure as before so we can replace AB $\rightarrow$ D by A $\rightarrow$ D.
     \end{enumerate}
-    Finally we have:
+    We now have
     \begin{itemize}
         \item A $\rightarrow$ B
         \item B $\rightarrow$ C
-        \item AB $\rightarrow$ D
+        \item A $\rightarrow$ D
     \end{itemize}
+    With the union rule, we put FD 1 and FD 3 together, giving the final result:
+    \begin{itemize}
+        \item A $\rightarrow$ BD
+        \item B $\rightarrow$ C
+    \end{itemize}
+    
+    
 \item \textbf{\textcolor{blue}{Given a relation schema ABCDEFGH satisfying the following functional dependencies, and following exactly the procedure we covered in class find a minimal cover. Generally, you also need to show that the set is indeed a mininal cover. But as this was covered in item 2 above, you do not need to do it here. 
 \begin{itemize}
   \item A $\rightarrow$ E
@@ -114,10 +122,10 @@
         \end{itemize}
         \item From these we create the obtain the tables:
         \begin{itemize}
-          \item [1.] ADB
-          \item [2.] BFG
-          \item [3.] EC
-          \item [4.] FE
+          \item [1.] ADB with key AD
+          \item [2.] BFG with key B
+          \item [3.] EC with key E
+          \item [4.] FE with key F
         \end{itemize}
         \item We remove redundant tables (there is none here).
         \item We need to ensure the storage of the global key, and we have:
@@ -149,11 +157,11 @@
         \end{itemize}
         \item From these we create the obtain the tables:
         \begin{itemize}
-            \item [1.] BA
-            \item [2.] CFE
-            \item [3.] EF
-            \item [4.] AF
-            \item [5.] BCDH
+            \item [1.] BA with key B
+            \item [2.] CFE with key CF
+            \item [3.] EF with key E
+            \item [4.] AF with key A
+            \item [5.] BCDH with key BC
         \end{itemize}
         \item We remove redundant tables (EF in CFE) and we obtain these tables:
         \begin{itemize}
@@ -171,7 +179,7 @@
                 \item [3.] $AF^+ = AF$
                 \item [4.] $BCDH^+ = BCDHAFE$ (G is missing)
             \end{itemize}
-            So there is no key in the tables.
+            So there is no global key in the tables.
             \item We thus need to create a table containing a key.
             \begin{enumerate}
                 \item As a reminder, we have the following FDs for a relation schema ABCDEFGH:
@@ -186,13 +194,13 @@
                 \begin{itemize}
                     \item [1.] Both sides of FDs: A, E, F (may appear)
                     \item [2.] Left side only: B, C (appear)
-                    \item [3.] Right side only: D (does not appear)
-                    \item [4.] Not appearing in FDs: G, H (appear)
+                    \item [3.] Right side only: D, H (does not appear)
+                    \item [4.] Not appearing in FDs: G (appear)
                 \end{itemize}
                 Classes 2 and 4 must appear in every key, class 3 do not appear in any key and class 1 may or may not appear in keys. 
-                Therefore the keys must contain B, C, G and H, and can't contain D.
+                Therefore the keys must contain B, C and G and can't contain D or H.
                 \item Let's start with the requirements previously found:
-                $BCGH^+ = BCGHAFED = ABCDEFGH$ so BCGH contains a key. The table that has to be added is thus BCGH.
+                $BCG^+ = BCGAFEDH = ABCDEFGH$ so BCG contains a key. The table that has to be added is thus BCG.
             \end{enumerate}
         \end{enumerate}
         \item The final lossless-join, dependencies-preserving 3NF decomposition is thus made of the following tables:
@@ -201,7 +209,7 @@
             \item CFE with primary key CF
             \item AF with primary key A
             \item BCDH with primary key BC
-            \item BCGH with primary key BCGH
+            \item BCG with primary key BCG
         \end{itemize}
     \end{enumerate}
    
