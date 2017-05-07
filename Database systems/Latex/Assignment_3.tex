@@ -1,0 +1,154 @@
+\pagestyle{empty}
+\documentclass[10pt]{article}
+\usepackage{minted}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{listings}
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{0pt}
+\cfoot[R]{\thepage~of~\pageref{LastPage}}
+\addtolength{\oddsidemargin}{-.875in}
+\addtolength{\evensidemargin}{-.875in}
+\addtolength{\textwidth}{1.75in}
+\addtolength{\topmargin}{-.875in}
+\addtolength{\textheight}{1.75in}
+
+\begin{document}
+
+\begin{minted}[fontsize=\normalsize]{sql}
+/* DROPs of tables were removed as they are not required to understand the SQL without running it */
+
+CREATE TABLE PERSON(
+	LNUMBER CHAR(30) PRIMARY KEY,
+	NAME CHAR(30) NOT NULL,
+	EMAIL CHAR(30)
+);
+CREATE TABLE LIBRARIAN(
+	LNUMBER CHAR(30) PRIMARY KEY,
+	SALARY CHAR(30),
+	SSN CHAR(30) NOT NULL,
+	SUPERVISOR CHAR(30),
+	FOREIGN KEY(LNUMBER) REFERENCES PERSON(LNUMBER) ON DELETE CASCADE 
+);
+CREATE TABLE PATRON(
+	LNUMBER CHAR(30) PRIMARY KEY,
+	TYPE CHAR(30) NOT NULL,
+	VALUE CHAR(30) NOT NULL,
+	FOREIGN KEY(LNUMBER) REFERENCES PERSON(LNUMBER) ON DELETE CASCADE	
+);
+CREATE TABLE ADVISES(
+	LIBRARIAN CHAR(30),
+	PATRON CHAR(30),
+	LATESTDATE DATE NOT NULL,
+	PRIMARY KEY(LIBRARIAN, PATRON),
+	FOREIGN KEY(LIBRARIAN) REFERENCES LIBRARIAN(LNUMBER) ON DELETE CASCADE,
+	FOREIGN KEY(PATRON) REFERENCES PATRON(LNUMBER) ON DELETE CASCADE
+);
+CREATE TABLE CITY(
+	NAME CHAR(30),
+	STATE CHAR(30),
+	PRIMARY KEY(STATE, NAME)
+);
+CREATE TABLE PUBLISHER(
+	NAME CHAR(30) PRIMARY KEY,
+	EDITOR CHAR(30)
+);
+CREATE TABLE BOOK(
+	ISBN CHAR(30),
+	NAME CHAR(30) NOT NULL,
+	STATE CHAR(30) NOT NULL,
+	PUBNAME CHAR(30) NOT NULL,
+	TITLE CHAR(30) NOT NULL,
+	YEAR CHAR(30) NOT NULL,
+	PRIMARY KEY(ISBN),
+	FOREIGN KEY(STATE, NAME) REFERENCES CITY(STATE, NAME) ON DELETE CASCADE,
+	FOREIGN KEY(PUBNAME) REFERENCES PUBLISHER(NAME) ON DELETE CASCADE
+);
+CREATE TABLE COPY(
+	COPYNUMBER CHAR(30),
+	ISBN CHAR(30),
+	PRIMARY KEY(COPYNUMBER, ISBN),
+	FOREIGN KEY(ISBN) REFERENCES BOOK(ISBN) ON DELETE CASCADE
+);
+CREATE TABLE BORROWS(
+	LNUMBER CHAR(30),
+	COPYNUMBER CHAR(30),
+	ISBN CHAR(30),
+	DUE DATE,
+	PRIMARY KEY(LNUMBER, COPYNUMBER, ISBN),
+	FOREIGN KEY(LNUMBER) REFERENCES PATRON(LNUMBER) ON DELETE CASCADE,
+	FOREIGN KEY(COPYNUMBER, ISBN) REFERENCES COPY(COPYNUMBER, ISBN) ON DELETE CASCADE
+);
+CREATE TABLE AUTHOR(
+	AUTHOR CHAR(30),
+	ISBN CHAR(30),
+	PRIMARY KEY(AUTHOR, ISBN),
+	FOREIGN KEY(ISBN) REFERENCES BOOK(ISBN) ON DELETE CASCADE
+);
+
+/* INSERTs were removed as they are not required to understand the queries without running it */
+
+/* 1. Produce table Answer01 (Person_Lnumber, Person_Name) which contains all the persons */
+/*    who are both librarian and patron. */
+CREATE TABLE ANSWER01 AS
+    SELECT DISTINCT p.LNUMBER AS PERSON_LNUMBER, p.NAME AS PERSON_NAME
+    FROM PERSON p, LIBRARIAN l, PATRON q
+    WHERE p.LNUMBER = l.LNUMBER and l.LNUMBER = q.LNUMBER
+    ORDER BY p.LNUMBER ASC;
+
+/* 2. Produce table Answer02 (Person_Name) which contains all the persons who don’t */
+/*    have a supervisor. */
+CREATE TABLE ANSWER02 AS
+    SELECT DISTINCT p.NAME AS PERSON_NAME
+    FROM PERSON p, LIBRARIAN l
+    WHERE p.LNUMBER = l.LNUMBER AND l.SUPERVISOR IS NULL
+    ORDER BY p.NAME ASC;
+
+/* 3. Produce table Answer03 (Person_Name) which contains all the persons (librarians + patrons) */
+/*    who haven’t borrowed any books. */
+CREATE TABLE ANSWER03 AS
+    SELECT DISTINCT p.NAME AS PERSON_NAME
+    FROM PERSON p
+    WHERE NOT EXISTS
+    (SELECT b.LNUMBER
+    FROM BORROWS b
+    WHERE b.LNUMBER = p.LNUMBER
+    )
+    ORDER BY p.NAME ASC;
+
+/* 4. Produce table Answer04 (Person_Lnumber, Num_of_Books) counts the total number of books */
+/*    a person has borrowed. */
+CREATE TABLE ANSWER04 AS 
+    SELECT DISTINCT LNUMBER AS PERSON_LNUMBER, COUNT(LNUMBER) AS NUM_OF_BOOKS
+    FROM BORROWS
+    GROUP BY LNUMBER
+    ORDER BY LNUMBER ASC;
+    
+
+/* 5. Produce table Answer05 (Publisher_Name, Author_Name) which contains all the Publishers */
+/*    and the authors of the books that they have published. */
+CREATE TABLE ANSWER05 AS
+    SELECT DISTINCT b.PUBNAME AS PUBLISHER_NAME, a.AUTHOR AS AUTHOR_NAME
+    FROM BOOK b, AUTHOR a
+    WHERE b.ISBN = a.ISBN
+    ORDER BY b.PUBNAME ASC;
+
+/* 6. Assume that in Copy, the maximum Number of an ISBN represents the total number of physical */
+/*   copies stored for the book corresponding to that ISBN. Produce table Answer06 */
+/*   (Book ISBN, Num of Copies) which contains the total number of copies stored for each book.*/
+CREATE TABLE ANSWER06 AS
+    SELECT DISTINCT ISBN AS BOOK_ISBN, COUNT(ISBN) AS NUM_OF_COPIES
+    FROM COPY
+    GROUP BY ISBN
+    ORDER BY ISBN ASC;
+
+/* 7. Produce table Answer07 (Person Lnumber) who used Passport to borrow more at */
+/*    least 3 books from the library. */
+CREATE TABLE ANSWER07 AS
+    SELECT DISTINCT p.LNUMBER AS PERSON_LNUMBER
+    FROM PATRON p, ANSWER04 a4
+    WHERE p.TYPE = 'Passport' and a4.PERSON_LNUMBER = p.LNUMBER and a4.NUM_OF_BOOKS > 2
+    ORDER BY p.LNUMBER ASC;
+\end{minted}
+
+\end{document}

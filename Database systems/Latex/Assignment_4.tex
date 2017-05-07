@@ -1,0 +1,212 @@
+\documentclass[10pt]{article}
+\pagestyle{empty}
+\usepackage{minted}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{listings}
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{0pt}
+\cfoot[R]{\thepage~of~\pageref{LastPage}}
+\addtolength{\oddsidemargin}{-.875in}
+\addtolength{\evensidemargin}{-.875in}
+\addtolength{\textwidth}{1.75in}
+\addtolength{\topmargin}{-.875in}
+\addtolength{\textheight}{1.75in}
+
+\begin{document}
+
+\begin{minted}[fontsize=\normalsize]{sql}
+CREATE TABLE PERSON(
+	LNUMBER CHAR(30) PRIMARY KEY,
+	NAME CHAR(30) NOT NULL,
+	EMAIL CHAR(30)
+);
+CREATE TABLE LIBRARIAN(
+	LNUMBER CHAR(30) PRIMARY KEY,
+	SALARY CHAR(30),
+	SSN CHAR(30) NOT NULL,
+	SUPERVISOR CHAR(30),
+	FOREIGN KEY(LNUMBER) REFERENCES PERSON(LNUMBER) ON DELETE CASCADE
+);
+CREATE TABLE PATRON(
+	LNUMBER CHAR(30) PRIMARY KEY,
+	TYPE CHAR(30) NOT NULL,
+	VALUE CHAR(30) NOT NULL,
+	FOREIGN KEY(LNUMBER) REFERENCES PERSON(LNUMBER) ON DELETE CASCADE
+);
+CREATE TABLE ADVISES(
+	LIBRARIAN CHAR(30),
+	PATRON CHAR(30),
+	LATESTDATE DATE NOT NULL,
+	PRIMARY KEY(LIBRARIAN, PATRON),
+	FOREIGN KEY(LIBRARIAN) REFERENCES LIBRARIAN(LNUMBER) ON DELETE CASCADE,
+	FOREIGN KEY(PATRON) REFERENCES PATRON(LNUMBER) ON DELETE CASCADE
+);
+CREATE TABLE CITY(
+	NAME CHAR(30),
+	STATE CHAR(30),
+	PRIMARY KEY(STATE, NAME)
+);
+CREATE TABLE PUBLISHER(
+	NAME CHAR(30) PRIMARY KEY,
+	EDITOR CHAR(30)
+);
+CREATE TABLE BOOK(
+	ISBN CHAR(30),
+	NAME CHAR(30) NOT NULL,
+	STATE CHAR(30) NOT NULL,
+	PUBNAME CHAR(30) NOT NULL,
+	TITLE CHAR(30) NOT NULL,
+	YEAR CHAR(30) NOT NULL,
+	PRIMARY KEY(ISBN),
+	FOREIGN KEY(STATE, NAME) REFERENCES CITY(STATE, NAME) ON DELETE CASCADE,
+	FOREIGN KEY(PUBNAME) REFERENCES PUBLISHER(NAME) ON DELETE CASCADE
+);
+CREATE TABLE COPY(
+	COPYNUMBER CHAR(30),
+	ISBN CHAR(30),
+	PRIMARY KEY(COPYNUMBER, ISBN),
+	FOREIGN KEY(ISBN) REFERENCES BOOK(ISBN) ON DELETE CASCADE
+);
+CREATE TABLE BORROWS(
+	LNUMBER CHAR(30),
+	COPYNUMBER CHAR(30),
+	ISBN CHAR(30),
+	DUE DATE,
+	PRIMARY KEY(LNUMBER, COPYNUMBER, ISBN),
+	FOREIGN KEY(LNUMBER) REFERENCES PATRON(LNUMBER) ON DELETE CASCADE,
+	FOREIGN KEY(COPYNUMBER, ISBN) REFERENCES COPY(COPYNUMBER, ISBN) ON DELETE CASCADE
+);
+CREATE TABLE AUTHOR(
+	AUTHOR CHAR(30),
+	ISBN CHAR(30),
+	PRIMARY KEY(AUTHOR, ISBN),
+	FOREIGN KEY(ISBN) REFERENCES BOOK(ISBN) ON DELETE CASCADE
+);
+
+/* INSERTs were removed as they are irrelevant to understand the SQL queries without a computer */
+
+/* 1. Produce table Answer01 (Person_Name) which contains all the patrons who don't have an */
+/*    advisor and who have borrowed at least 2 books. (While your query specifically assumes */
+/*    2 books, write in a sufficiently general way that it would work for 20 books by simply */
+/*    replacing "2" by "20", but do not write this second query.) */
+
+/* LNUMBER of all patron who don't have an advisor */
+CREATE TABLE TEMP0 AS
+SELECT LNUMBER AS LNUMBER
+FROM PATRON
+MINUS
+SELECT PATRON
+FROM ADVISES;
+
+/* Count the number of books borrowed for each LNUMBER */
+CREATE TABLE TEMP1 AS
+SELECT DISTINCT LNUMBER AS LNUMBER, COUNT(LNUMBER) AS NUM_OF_BOOKS
+FROM BORROWS
+GROUP BY LNUMBER;
+
+/* LNUMBER of all patron who don't have an advisor and who borrowed at least 2 books. */
+CREATE TABLE TEMP2 AS
+SELECT TEMP0.LNUMBER AS LNUMBER
+FROM TEMP0, TEMP1
+WHERE TEMP0.LNUMBER = TEMP1.LNUMBER AND TEMP1.NUM_OF_BOOKS > 1;
+
+CREATE TABLE ANSWER01 AS
+SELECT DISTINCT NAME AS PERSON_NAME
+FROM PERSON, TEMP2
+WHERE PERSON.LNUMBER = TEMP2.LNUMBER
+ORDER BY PERSON_NAME ASC;
+
+
+
+/* 2. Produce table Answer02 (Author_Name) which contains all the authors who satisfy the */
+/*    following condition. The author's books were published by at least all the publishers who */
+/*    published at least one book by Jane Austen; but do not include Jane Austen in your answer. */
+
+/* Publishers which published at least one book by Jane Austen */
+CREATE TABLE TEMP3 AS
+SELECT DISTINCT BOOK.PUBNAME AS PUBNAME
+FROM BOOK, AUTHOR
+WHERE BOOK.ISBN = AUTHOR.ISBN AND AUTHOR.AUTHOR = 'Jane Austen';
+
+/* ISBN and Publisher of every book published by any publishers of TEMP3 */
+CREATE TABLE TEMP4 AS
+SELECT BOOK.ISBN AS ISBN, BOOK.PUBNAME AS PUBNAME
+FROM BOOK, TEMP3
+WHERE BOOK.PUBNAME = TEMP3.PUBNAME;
+
+/* Authors of books published by any publishers of TEMP3, except Jane Austen */
+CREATE TABLE TEMP5 AS
+SELECT DISTINCT AUTHOR.AUTHOR AS AUTHOR, TEMP4.PUBNAME AS PUBNAME
+FROM AUTHOR, TEMP4
+WHERE AUTHOR.ISBN = TEMP4.ISBN AND AUTHOR != 'Jane Austen';
+
+/* Count the number of times each author occurs in TEMP5 */
+CREATE TABLE TEMP6 AS
+SELECT AUTHOR AS AUTHOR, COUNT(AUTHOR) AS NUM_AUTHOR
+FROM TEMP5
+GROUP BY AUTHOR;
+
+/* Count the number of publishers in TEMP3 */
+CREATE TABLE TEMP7 AS
+SELECT COUNT(*) AS NUM_PUBS FROM TEMP3;
+
+CREATE TABLE ANSWER02 AS
+SELECT DISTINCT TEMP6.AUTHOR AS AUTHOR_NAME
+FROM TEMP6, TEMP7
+WHERE TEMP6.NUM_AUTHOR = TEMP7.NUM_PUBS
+ORDER BY TEMP6.AUTHOR ASC;
+
+
+/* 3. Produce table Answer03 (Author_Name, Book_ISBN) which contains the books all of whose */
+/*    copies are currently borrowed and the authors of those books. */
+
+/* Count the number of copies for each ISBN */
+CREATE TABLE TEMP8 AS
+SELECT ISBN AS ISBN, COUNT(ISBN) AS NUM_OF_COPIES
+FROM COPY
+GROUP BY ISBN;
+
+/* Count the number of copies borrowed for each ISBN */
+CREATE TABLE TEMP9 AS
+SELECT ISBN AS ISBN, COUNT(ISBN) AS NUM_OF_BORROWED
+FROM BORROWS
+GROUP BY ISBN;
+
+/* All ISBN of books that all their copies have been borrowed */
+CREATE TABLE TEMP10 AS
+SELECT TEMP8.ISBN AS ISBN
+FROM TEMP8, TEMP9
+WHERE TEMP8.ISBN = TEMP9.ISBN AND TEMP8.NUM_OF_COPIES = TEMP9.NUM_OF_BORROWED;
+
+CREATE TABLE ANSWER03 AS
+SELECT DISTINCT AUTHOR AS AUTHOR_NAME, TEMP10.ISBN AS BOOK_ISBN
+FROM AUTHOR, TEMP10
+WHERE AUTHOR.ISBN = TEMP10.ISBN
+ORDER BY AUTHOR_NAME ASC;
+
+
+/* 4. Produce table Answer04 (Person_Name, Book_ISBN, Author) which contains all the persons, */
+/*    the books they have borrowed which were published by the Broadway Books before the year */
+/*    2006, and the authors of those books. */
+
+/* Books published by the Broadway Books before the year 2006 */
+CREATE TABLE TEMP11 AS
+SELECT ISBN AS ISBN
+FROM BOOK
+WHERE PUBNAME = 'Broadway Books' AND YEAR < 2006;
+
+/* LNUMBER of borrowers and ISBN of books of TEMP11 */
+CREATE TABLE TEMP12 AS
+SELECT BORROWS.LNUMBER AS LNUMBER, BORROWS.ISBN AS ISBN
+FROM BORROWS, TEMP11
+WHERE BORROWS.ISBN = TEMP11.ISBN;
+
+CREATE TABLE ANSWER04 AS
+SELECT DISTINCT PERSON.NAME AS PERSON_NAME, TEMP12.ISBN AS BOOK_ISBN, AUTHOR.AUTHOR AS AUTHOR
+FROM PERSON, TEMP12, AUTHOR
+WHERE PERSON.LNUMBER = TEMP12.LNUMBER AND AUTHOR.ISBN = TEMP12.ISBN
+ORDER BY PERSON_NAME ASC;
+\end{minted}
+
+\end{document}

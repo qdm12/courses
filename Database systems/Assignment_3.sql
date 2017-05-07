@@ -5,8 +5,6 @@ DROP TABLE ANSWER04;
 DROP TABLE ANSWER05;
 DROP TABLE ANSWER06;
 DROP TABLE ANSWER07;
-
-
 DROP TABLE TEMP0;
 DROP TABLE TEMP1;
 DROP TABLE TEMP2;
@@ -28,7 +26,6 @@ DROP TABLE TEMP17;
 DROP TABLE TEMP18;
 DROP TABLE TEMP19;
 DROP TABLE TEMP20;
-
 DROP TABLE ADVISES;
 DROP TABLE BORROWS;
 DROP TABLE LIBRARIAN;
@@ -40,13 +37,11 @@ DROP TABLE BOOK;
 DROP TABLE CITY;
 DROP TABLE PUBLISHER;
 
-
 CREATE TABLE PERSON(
 	LNUMBER CHAR(30) PRIMARY KEY,
 	NAME CHAR(30) NOT NULL,
 	EMAIL CHAR(30)
 );
-
 CREATE TABLE LIBRARIAN(
 	LNUMBER CHAR(30) PRIMARY KEY,
 	SALARY CHAR(30),
@@ -54,14 +49,12 @@ CREATE TABLE LIBRARIAN(
 	SUPERVISOR CHAR(30),
 	FOREIGN KEY(LNUMBER) REFERENCES PERSON(LNUMBER) ON DELETE CASCADE 
 );
-
 CREATE TABLE PATRON(
 	LNUMBER CHAR(30) PRIMARY KEY,
 	TYPE CHAR(30) NOT NULL,
 	VALUE CHAR(30) NOT NULL,
 	FOREIGN KEY(LNUMBER) REFERENCES PERSON(LNUMBER) ON DELETE CASCADE	
 );
-
 CREATE TABLE ADVISES(
 	LIBRARIAN CHAR(30),
 	PATRON CHAR(30),
@@ -70,19 +63,15 @@ CREATE TABLE ADVISES(
 	FOREIGN KEY(LIBRARIAN) REFERENCES LIBRARIAN(LNUMBER) ON DELETE CASCADE,
 	FOREIGN KEY(PATRON) REFERENCES PATRON(LNUMBER) ON DELETE CASCADE
 );
-
-
 CREATE TABLE CITY(
 	NAME CHAR(30),
 	STATE CHAR(30),
 	PRIMARY KEY(STATE, NAME)
 );
-
 CREATE TABLE PUBLISHER(
 	NAME CHAR(30) PRIMARY KEY,
 	EDITOR CHAR(30)
 );
-
 CREATE TABLE BOOK(
 	ISBN CHAR(30),
 	NAME CHAR(30) NOT NULL,
@@ -94,14 +83,12 @@ CREATE TABLE BOOK(
 	FOREIGN KEY(STATE, NAME) REFERENCES CITY(STATE, NAME) ON DELETE CASCADE,
 	FOREIGN KEY(PUBNAME) REFERENCES PUBLISHER(NAME) ON DELETE CASCADE
 );
-
 CREATE TABLE COPY(
 	COPYNUMBER CHAR(30),
 	ISBN CHAR(30),
 	PRIMARY KEY(COPYNUMBER, ISBN),
 	FOREIGN KEY(ISBN) REFERENCES BOOK(ISBN) ON DELETE CASCADE
 );
-
 CREATE TABLE BORROWS(
 	LNUMBER CHAR(30),
 	COPYNUMBER CHAR(30),
@@ -111,14 +98,12 @@ CREATE TABLE BORROWS(
 	FOREIGN KEY(LNUMBER) REFERENCES PATRON(LNUMBER) ON DELETE CASCADE,
 	FOREIGN KEY(COPYNUMBER, ISBN) REFERENCES COPY(COPYNUMBER, ISBN) ON DELETE CASCADE
 );
-
 CREATE TABLE AUTHOR(
 	AUTHOR CHAR(30),
 	ISBN CHAR(30),
 	PRIMARY KEY(AUTHOR, ISBN),
 	FOREIGN KEY(ISBN) REFERENCES BOOK(ISBN) ON DELETE CASCADE
 );
-
 
 INSERT INTO PERSON VALUES('101', 'Abigail Black', 'ablack@abc.com');
 INSERT INTO PERSON VALUES('102', 'Diane Fisher', null);
@@ -138,7 +123,6 @@ INSERT INTO PERSON VALUES('115', 'Jake Underwood', 'junderwood@abc.com');
 INSERT INTO PERSON VALUES('116', 'Virgini Wright', 'vwright@abc.com');
 INSERT INTO PERSON VALUES('117', 'Joseph Young', 'jyoung@abc.com');
 INSERT INTO PERSON VALUES('118', 'Dorothy Miller', 'dmiller@abc.com');
-
 INSERT INTO LIBRARIAN VALUES('101', '2000', '063224862', '105');
 INSERT INTO LIBRARIAN VALUES('102', null, '612317668', null);
 INSERT INTO LIBRARIAN VALUES('105', '1000', '319174164', null);
@@ -148,7 +132,6 @@ INSERT INTO LIBRARIAN VALUES('113', null, '407204157', null);
 INSERT INTO LIBRARIAN VALUES('114', null, '888570720', '106');
 INSERT INTO LIBRARIAN VALUES('115', '1000', '789570268', '101');
 INSERT INTO LIBRARIAN VALUES('118', null, '597392662', null);
-
 INSERT INTO PATRON VALUES('102', 'Passport', '7830');
 INSERT INTO PATRON VALUES('103', 'Passport', '5923');
 INSERT INTO PATRON VALUES('107', 'Driver License', '3210');
@@ -161,7 +144,6 @@ INSERT INTO PATRON VALUES('116', 'Passport', '3809');
 INSERT INTO PATRON VALUES('117', 'Driver License', '0484');
 INSERT INTO PATRON VALUES('112', 'Passport', '5570');
 INSERT INTO PATRON VALUES('115', 'Passport', '2395');
-
 INSERT INTO ADVISES VALUES('105','102', TO_DATE('1/1/2017','MM/DD/YYYY'));
 INSERT INTO ADVISES VALUES('115','112', TO_DATE('2/10/2017','MM/DD/YYYY'));
 INSERT INTO ADVISES VALUES('113','109', TO_DATE('12/1/2016','MM/DD/YYYY'));
@@ -171,7 +153,6 @@ INSERT INTO ADVISES VALUES('105','109', TO_DATE('12/1/2016','MM/DD/YYYY'));
 INSERT INTO ADVISES VALUES('109','115', TO_DATE('1/1/2016','MM/DD/YYYY'));
 INSERT INTO ADVISES VALUES('114','112', TO_DATE('2/1/2017','MM/DD/YYYY'));
 INSERT INTO ADVISES VALUES('101','112', TO_DATE('2/5/2017','MM/DD/YYYY'));
-
 INSERT INTO CITY VALUES('New York City', 'New York');
 INSERT INTO CITY VALUES('Anchorage', 'Alaska');
 INSERT INTO CITY VALUES('Phoenix', 'Arizona');
@@ -185,7 +166,6 @@ INSERT INTO CITY VALUES('Charlotte', 'North Carolina');
 INSERT INTO CITY VALUES('Houston', 'Texas');
 INSERT INTO CITY VALUES('Nevada', 'Las Vegas');
 INSERT INTO CITY VALUES('Newark', 'New Jersey');
-
 INSERT INTO PUBLISHER VALUES('Algonquin Press', 'Kathy Pories');
 INSERT INTO PUBLISHER VALUES('FaithWords', 'Anne Goldsmith');
 INSERT INTO PUBLISHER VALUES('Genesis Press', 'Niani Colom');
@@ -198,7 +178,6 @@ INSERT INTO PUBLISHER VALUES('AMinotaur', 'Kelley Ragland');
 INSERT INTO PUBLISHER VALUES('William Morrow', 'Henry Ferris');
 INSERT INTO PUBLISHER VALUES('Black Pearl Books', 'Crystal Parker');
 INSERT INTO PUBLISHER VALUES('Biblion Publishing', 'Celeste Dickson');
-
 INSERT INTO BOOK VALUES('1001', 'Nevada', 'Las Vegas', 'Hyperion', 'Hamlet', '2002');
 INSERT INTO BOOK VALUES('1002', 'Phoenix', 'Arizona', 'Broadway Books', 'Macbeth', '1999');
 INSERT INTO BOOK VALUES('1003', 'Columbia', 'South Carolina', 'William Morrow', 'Dracula', '1990');
@@ -219,7 +198,6 @@ INSERT INTO BOOK VALUES('1017', 'Anchorage', 'Alaska', 'Biblion Publishing', 'Ma
 INSERT INTO BOOK VALUES('1018', 'Houston', 'Texas', 'Biblion Publishing', 'The Shining', '2004');
 INSERT INTO BOOK VALUES('1019', 'Newark', 'New Jersey', 'AMinotaur', 'It', '2005');
 INSERT INTO BOOK VALUES('1020', 'Anchorage', 'Alaska', 'Hyperion', 'The Snakes Pass', '2004');
-
 INSERT INTO AUTHOR VALUES('William Shakespeare','1001');
 INSERT INTO AUTHOR VALUES('William Shakespeare','1002');
 INSERT INTO AUTHOR VALUES('Bram Stoker','1003');
@@ -243,7 +221,6 @@ INSERT INTO AUTHOR VALUES('Fred Potter','1008');
 INSERT INTO AUTHOR VALUES('Fred Potter','1005');
 INSERT INTO AUTHOR VALUES('Stephen King','1019');
 INSERT INTO AUTHOR VALUES('Bram Stoker','1020');
-
 INSERT INTO COPY VALUES('1','1001');
 INSERT INTO COPY VALUES('2','1001');
 INSERT INTO COPY VALUES('3','1001');
@@ -281,7 +258,6 @@ INSERT INTO COPY VALUES('2','1016');
 INSERT INTO COPY VALUES('1','1018');
 INSERT INTO COPY VALUES('1','1019');
 INSERT INTO COPY VALUES('2','1019');
-
 INSERT INTO BORROWS VALUES('103', '1', '1003', TO_DATE('1/13/2017','MM/DD/YYYY'));
 INSERT INTO BORROWS VALUES('112', '1', '1014', TO_DATE('1/10/2017','MM/DD/YYYY'));
 INSERT INTO BORROWS VALUES('111', '2', '1001', TO_DATE('3/1/2017','MM/DD/YYYY'));
@@ -309,21 +285,24 @@ INSERT INTO BORROWS VALUES('103', '1', '1018', TO_DATE('4/5/2017','MM/DD/YYYY'))
 INSERT INTO BORROWS VALUES('111', '1', '1019', TO_DATE('4/1/2017','MM/DD/YYYY'));
 INSERT INTO BORROWS VALUES('107', '1', '1016', TO_DATE('4/5/2017','MM/DD/YYYY'));
 
-/* 1.Produce table Answer01 (Person_Lnumber, Person_Name) which contains all the persons who are both librarian and patron.*/
+/* 1. Produce table Answer01 (Person_Lnumber, Person_Name) which contains all the persons */
+/*    who are both librarian and patron. */
 CREATE TABLE ANSWER01 AS
     SELECT DISTINCT p.LNUMBER AS PERSON_LNUMBER, p.NAME AS PERSON_NAME
     FROM PERSON p, LIBRARIAN l, PATRON q
     WHERE p.LNUMBER = l.LNUMBER and l.LNUMBER = q.LNUMBER
     ORDER BY p.LNUMBER ASC;
 
-/* 2. Produce table Answer02 (Person_Name) which contains all the persons who don’t have a supervisor.*/
+/* 2. Produce table Answer02 (Person_Name) which contains all the persons who don’t */
+/*    have a supervisor. */
 CREATE TABLE ANSWER02 AS
     SELECT DISTINCT p.NAME AS PERSON_NAME
     FROM PERSON p, LIBRARIAN l
     WHERE p.LNUMBER = l.LNUMBER AND l.SUPERVISOR IS NULL
     ORDER BY p.NAME ASC;
 
-/* 3. Produce table Answer03 (Person_Name) which contains all the persons (librarians + patrons) who haven’t borrowed any books.*/
+/* 3. Produce table Answer03 (Person_Name) which contains all the persons (librarians + patrons) */
+/*    who haven’t borrowed any books. */
 CREATE TABLE ANSWER03 AS
     SELECT DISTINCT p.NAME AS PERSON_NAME
     FROM PERSON p
@@ -334,7 +313,8 @@ CREATE TABLE ANSWER03 AS
     )
     ORDER BY p.NAME ASC;
 
-/* 4. Produce table Answer04 (Person_Lnumber, Num_of_Books) counts the total number of books a person has borrowed.*/
+/* 4. Produce table Answer04 (Person_Lnumber, Num_of_Books) counts the total number of books */
+/*    a person has borrowed. */
 CREATE TABLE ANSWER04 AS 
     SELECT DISTINCT LNUMBER AS PERSON_LNUMBER, COUNT(LNUMBER) AS NUM_OF_BOOKS
     FROM BORROWS
@@ -342,30 +322,32 @@ CREATE TABLE ANSWER04 AS
     ORDER BY LNUMBER ASC;
     
 
-/* 5.Produce table Answer05 (Publisher_Name, Author_Name) which contains all the Publishers and the authors of the books that they have published.*/
+/* 5. Produce table Answer05 (Publisher_Name, Author_Name) which contains all the Publishers */
+/*    and the authors of the books that they have published. */
 CREATE TABLE ANSWER05 AS
     SELECT DISTINCT b.PUBNAME AS PUBLISHER_NAME, a.AUTHOR AS AUTHOR_NAME
     FROM BOOK b, AUTHOR a
     WHERE b.ISBN = a.ISBN
     ORDER BY b.PUBNAME ASC;
 
-/* 6.Assume that in Copy, the maximum Number of an ISBN represents the total number of physical copies stored for the book
-     corresponding to that ISBN. Produce table Answer06 (Book ISBN, Num of Copies) which contains the total number of copies
-     stored for each book.*/
+/* 6. Assume that in Copy, the maximum Number of an ISBN represents the total number of physical */
+/*   copies stored for the book corresponding to that ISBN. Produce table Answer06 */
+/*   (Book ISBN, Num of Copies) which contains the total number of copies stored for each book.*/
 CREATE TABLE ANSWER06 AS
     SELECT DISTINCT ISBN AS BOOK_ISBN, COUNT(ISBN) AS NUM_OF_COPIES
     FROM COPY
     GROUP BY ISBN
     ORDER BY ISBN ASC;
 
-/* 7. Produce table Answer07 (Person Lnumber) who used Passport to borrow more at least 3 books from the library. */
+/* 7. Produce table Answer07 (Person Lnumber) who used Passport to borrow more at */
+/*    least 3 books from the library. */
 CREATE TABLE ANSWER07 AS
     SELECT DISTINCT p.LNUMBER AS PERSON_LNUMBER
     FROM PATRON p, ANSWER04 a4
     WHERE p.TYPE = 'Passport' and a4.PERSON_LNUMBER = p.LNUMBER and a4.NUM_OF_BOOKS > 2
     ORDER BY p.LNUMBER ASC;
 
-spool N12148622_Homework03Spool.txt;
+spool Homework03Spool.txt;
 
 SELECT * FROM ANSWER01;
 SELECT * FROM ANSWER02;
@@ -376,14 +358,3 @@ SELECT * FROM ANSWER06;
 SELECT * FROM ANSWER07;
 
 spool off;
-
-
-
-
-
-
-
-
-
-
-

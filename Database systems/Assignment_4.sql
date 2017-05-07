@@ -1,11 +1,7 @@
-/* Student Name: Quentin McGaw */
-/* N number: N12148622 */
-
 DROP TABLE ANSWER01;
 DROP TABLE ANSWER02;
 DROP TABLE ANSWER03;
 DROP TABLE ANSWER04;
-
 DROP TABLE TEMP0;
 DROP TABLE TEMP1;
 DROP TABLE TEMP2;
@@ -27,7 +23,6 @@ DROP TABLE TEMP17;
 DROP TABLE TEMP18;
 DROP TABLE TEMP19;
 DROP TABLE TEMP20;
-
 DROP TABLE ADVISES;
 DROP TABLE BORROWS;
 DROP TABLE LIBRARIAN;
@@ -39,13 +34,11 @@ DROP TABLE BOOK;
 DROP TABLE CITY;
 DROP TABLE PUBLISHER;
 
-
 CREATE TABLE PERSON(
 	LNUMBER CHAR(30) PRIMARY KEY,
 	NAME CHAR(30) NOT NULL,
 	EMAIL CHAR(30)
 );
-
 CREATE TABLE LIBRARIAN(
 	LNUMBER CHAR(30) PRIMARY KEY,
 	SALARY CHAR(30),
@@ -53,14 +46,12 @@ CREATE TABLE LIBRARIAN(
 	SUPERVISOR CHAR(30),
 	FOREIGN KEY(LNUMBER) REFERENCES PERSON(LNUMBER) ON DELETE CASCADE
 );
-
 CREATE TABLE PATRON(
 	LNUMBER CHAR(30) PRIMARY KEY,
 	TYPE CHAR(30) NOT NULL,
 	VALUE CHAR(30) NOT NULL,
 	FOREIGN KEY(LNUMBER) REFERENCES PERSON(LNUMBER) ON DELETE CASCADE
 );
-
 CREATE TABLE ADVISES(
 	LIBRARIAN CHAR(30),
 	PATRON CHAR(30),
@@ -69,19 +60,15 @@ CREATE TABLE ADVISES(
 	FOREIGN KEY(LIBRARIAN) REFERENCES LIBRARIAN(LNUMBER) ON DELETE CASCADE,
 	FOREIGN KEY(PATRON) REFERENCES PATRON(LNUMBER) ON DELETE CASCADE
 );
-
-
 CREATE TABLE CITY(
 	NAME CHAR(30),
 	STATE CHAR(30),
 	PRIMARY KEY(STATE, NAME)
 );
-
 CREATE TABLE PUBLISHER(
 	NAME CHAR(30) PRIMARY KEY,
 	EDITOR CHAR(30)
 );
-
 CREATE TABLE BOOK(
 	ISBN CHAR(30),
 	NAME CHAR(30) NOT NULL,
@@ -93,14 +80,12 @@ CREATE TABLE BOOK(
 	FOREIGN KEY(STATE, NAME) REFERENCES CITY(STATE, NAME) ON DELETE CASCADE,
 	FOREIGN KEY(PUBNAME) REFERENCES PUBLISHER(NAME) ON DELETE CASCADE
 );
-
 CREATE TABLE COPY(
 	COPYNUMBER CHAR(30),
 	ISBN CHAR(30),
 	PRIMARY KEY(COPYNUMBER, ISBN),
 	FOREIGN KEY(ISBN) REFERENCES BOOK(ISBN) ON DELETE CASCADE
 );
-
 CREATE TABLE BORROWS(
 	LNUMBER CHAR(30),
 	COPYNUMBER CHAR(30),
@@ -110,14 +95,12 @@ CREATE TABLE BORROWS(
 	FOREIGN KEY(LNUMBER) REFERENCES PATRON(LNUMBER) ON DELETE CASCADE,
 	FOREIGN KEY(COPYNUMBER, ISBN) REFERENCES COPY(COPYNUMBER, ISBN) ON DELETE CASCADE
 );
-
 CREATE TABLE AUTHOR(
 	AUTHOR CHAR(30),
 	ISBN CHAR(30),
 	PRIMARY KEY(AUTHOR, ISBN),
 	FOREIGN KEY(ISBN) REFERENCES BOOK(ISBN) ON DELETE CASCADE
 );
-
 
 INSERT INTO PERSON VALUES('101', 'Abigail Black', 'ablack@abc.com');
 INSERT INTO PERSON VALUES('102', 'Diane Fisher', null);
@@ -137,7 +120,6 @@ INSERT INTO PERSON VALUES('115', 'Jake Underwood', 'junderwood@abc.com');
 INSERT INTO PERSON VALUES('116', 'Virgini Wright', 'vwright@abc.com');
 INSERT INTO PERSON VALUES('117', 'Joseph Young', 'jyoung@abc.com');
 INSERT INTO PERSON VALUES('118', 'Dorothy Miller', 'dmiller@abc.com');
-
 
 INSERT INTO LIBRARIAN VALUES('101', '2000', '063224862', '105');
 INSERT INTO LIBRARIAN VALUES('102', null, '612317668', null);
@@ -309,11 +291,10 @@ INSERT INTO BORROWS VALUES('103', '1', '1018', TO_DATE('4/5/2017','MM/DD/YYYY'))
 INSERT INTO BORROWS VALUES('111', '1', '1019', TO_DATE('4/1/2017','MM/DD/YYYY'));
 INSERT INTO BORROWS VALUES('107', '1', '1016', TO_DATE('4/5/2017','MM/DD/YYYY'));
 
-/*********************************
- INSERT YOUR SOLUTIONS OF PART 03
-*********************************/
-
-/* 1. Produce table Answer01 (Person_Name) which contains all the patrons who don't have an advisor and who have borrowed at least 2 books. (While your query specifically assumes 2 books, write in a sufficiently general way that it would work for 20 books by simply replacing "2" by "20", but do not write this second query.)*/
+/* 1. Produce table Answer01 (Person_Name) which contains all the patrons who don't have an */
+/*    advisor and who have borrowed at least 2 books. (While your query specifically assumes */
+/*    2 books, write in a sufficiently general way that it would work for 20 books by simply */
+/*    replacing "2" by "20", but do not write this second query.) */
 
 /* LNUMBER of all patron who don't have an advisor */
 CREATE TABLE TEMP0 AS
@@ -343,7 +324,9 @@ ORDER BY PERSON_NAME ASC;
 
 
 
-/* 2. Produce table Answer02 (Author_Name) which contains all the authors who satisfy the following condition.  The author's books were published by at least all the publishers who published at least one book by Jane Austen; however, do not include Jane Austen in your answer.*/
+/* 2. Produce table Answer02 (Author_Name) which contains all the authors who satisfy the following */
+/*    condition. The author's books were published by at least all the publishers who published at */
+/*    least one book by Jane Austen; however, do not include Jane Austen in your answer. */
 
 /* Publishers which published at least one book by Jane Austen */
 CREATE TABLE TEMP3 AS
@@ -377,10 +360,11 @@ CREATE TABLE ANSWER02 AS
 SELECT DISTINCT TEMP6.AUTHOR AS AUTHOR_NAME
 FROM TEMP6, TEMP7
 WHERE TEMP6.NUM_AUTHOR = TEMP7.NUM_PUBS
-ORDER BY TEMP6.AUTHOR;
+ORDER BY TEMP6.AUTHOR ASC;
 
 
-/* 3. Produce table Answer03 (Author_Name, Book_ISBN) which contains the books all of whose copies are currently borrowed and the authors of those books.*/
+/* 3. Produce table Answer03 (Author_Name, Book_ISBN) which contains the books all of whose copies */
+/*    are currently borrowed and the authors of those books. */
 
 /* Count the number of copies for each ISBN */
 CREATE TABLE TEMP8 AS
@@ -407,7 +391,9 @@ WHERE AUTHOR.ISBN = TEMP10.ISBN
 ORDER BY AUTHOR_NAME ASC;
 
 
-/* 4. Produce table Answer04 (Person_Name, Book_ISBN, Author) which contains all the persons, the books they have borrowed which were published by the Broadway Books before the year 2006, and the authors of those books.*/
+/* 4. Produce table Answer04 (Person_Name, Book_ISBN, Author) which contains all the persons, the */
+/*    books they have borrowed which were published by the Broadway Books before the year 2006, */
+/*    and the authors of those books. */
 
 /* Books published by the Broadway Books before the year 2006 */
 CREATE TABLE TEMP11 AS
@@ -427,7 +413,7 @@ FROM PERSON, TEMP12, AUTHOR
 WHERE PERSON.LNUMBER = TEMP12.LNUMBER AND AUTHOR.ISBN = TEMP12.ISBN
 ORDER BY PERSON_NAME ASC;
 
-spool N12148622_Homework04Spool.txt;
+spool Homework04Spool.txt;
 
 SELECT * FROM ANSWER01;
 SELECT * FROM ANSWER02;
