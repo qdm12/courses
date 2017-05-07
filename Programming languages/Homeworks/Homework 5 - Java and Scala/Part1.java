@@ -1,0 +1,135 @@
+import java.util.*;
+
+/* 1. Define a generic interface Addable<>, parameterized by a type T. The Addable<> interface should only
+require a method plus, which takes as a parameter an object of type T and returns an object of type T. */
+interface Addable<T> {
+    public T plus(T o);
+}
+
+/* 2. Define a generic class MyList<> that derives from the built­in ArrayList<> class and implements both the
+Comparable<> and Addable<> interfaces, such that two objects of type MyList<T>, for a suitable type T, can
+be compared using the compareTo method and can be added using the plus method (see above).
+Furthermore, the definition of MyList<> must require that its type parameter T itself must implement the
+Comparable<> and Addable<> interfaces, so that two T objects can be compared and added.
+
+Within MyList<>, the comparison method, compareTo(), required by the Comparable interface, should take
+another MyList<> object (for the same type parameter T) and perform a comparison based on the sum
+(using the plus method of the Addable<> interface) of the elements in the two MyList<> objects. That is, a
+MyList<T> object L1 is less than an MyList<T> object L2, for the same T, if the sum of the elements in L1 is
+less than the sum of the elements of L2. Alternatively, L1 is equal to L2 if the sums of the elements of the two
+lists are equal. Otherwise L1 is greater than L2.
+
+The plus operation for MyList should implement concatentation. That is, the result of L1.plus(L2) returns a
+new MyList containing the elements of L1 followed by the elements of L2. Neither L1 nor L2 should be modified.
+
+The constructor for MyList<T> should be of the form MyList(T z) { ... } where z represents the "zero" 
+(additive identity) value of type T. This is the value that should be used as the sum of the list of elements 
+in a MyList<T> (such as for comparison purposes) when the list is empty.
+
+You may want to override the toString() method, if you don't like the way your MyList objects print out.
+*/
+class MyList<T extends Addable<T> & Comparable<T>> extends ArrayList<T> implements Comparable<MyList<T>>, Addable<MyList<T>> {
+	T Z;		
+	public int compareTo(MyList<T> L2) {
+		T sum2 = Z;
+		for (T e : L2){
+			sum2 = sum2.plus(e);
+		}
+		T sum1 = Z;
+		for (T e : this){
+			sum1 = sum1.plus(e);
+		}
+		return sum1.compareTo(sum2);
+	}
+	public MyList<T> plus(MyList<T> L2) {
+		MyList<T> newlist = new MyList<T>(Z);
+		newlist.addAll(this);
+		newlist.addAll(L2);			
+		return newlist;
+	}
+	MyList(T z){
+		Z = z;
+	}
+	public String toString() {
+        String s = "";
+		for (T e : this){
+            s += " "+e.toString()+" ";
+		}
+		return "[" + s + "]";  
+	}
+}
+
+/* 3. Define a class A that can be used to instantiate MyList<A>, which also means that two A's must be able to be
+compared to each other and added together. You can define A any way you like, the only requirements are:
+- A includes a constructor, A(Integer x) {...}.
+- when comparing two A objects, the result of the comparison should be based on comparing the x values
+  that the two objects were initially constructed with. That is, given
+  A a1 = new A(6);
+  A a2 = new A(7);
+  the result of a1.compareTo(a2) should return ­1, indicating that a1 is less than a2. Furthermore, the result
+  of a1.plus(a2) should be a new A object whose constructor is passed 13 (i.e. 6+7).
+  
+  You'll also want to override the toString() method, so A objects print nicely.
+*/
+class A implements Comparable<A>, Addable<A>{
+	Integer X;
+	A(Integer x){
+		X = x;}
+	public int compareTo(A o){
+		if (this.X < o.X){
+			return -1;
+		}else if(this.X > o.X){
+			return 1;
+		}else{
+			return 0;
+		}
+	}
+	public A plus(A o){
+		return new A(this.X + o.X);
+	}
+	public String toString() { 
+		return "A<" + X + ">";  
+	}
+}
+
+/* 4. Define a class B that derives from class A. Other than overriding the toString() method and providing a
+constructor that takes an integer, you don't need to add anything to class B if you don't want to. */
+class B extends A{
+	B(Integer x){
+		super(x);
+	}
+	public String toString() { 
+		return "B<" + this.X + ">";  
+	}
+}
+
+/* 5. In a separate class named Part1, define the static main() method. In that same class, define a polymorphic
+static method, insertIntoMyList(), which takes two parameters, z and L, where L can be any MyList<>
+that z can be inserted into. The method insertIntoMyList() should insert z onto the end of L. Note that if z
+is a T object, for some type T, it is not the case that L must be a MyList<T>. */
+public class Part1 {
+	public static void main(String[] args){
+		test();
+	}
+	static <T> void insertIntoMyList(T z, MyList<? super T> L){
+		L.add(z);
+	}
+    public static void test() {
+		MyList<A> m1 = new MyList<A>(new A(0));
+		MyList<A> m2 = new MyList<A>(new A(0));
+		for(Integer i = 1; i <= 5; i++) {
+		    insertIntoMyList(new A(i),m1);
+		    insertIntoMyList(new B(i),m2);
+		}
+	
+		insertIntoMyList(new A(6),m2);
+		System.out.println("m1 = " + m1);
+		System.out.println("m2 = " + m2);
+		int result = m1.compareTo(m2);
+		String s = (result < 0) ? "less than" : (result == 0) ? "equal to" : "grreater than";
+		System.out.println("m1 is " + s + " m2");
+		System.out.println("m1 + m2 = " + m1.plus(m2));
+    }
+}
+
+/* 6. Finally, in class Part1, put the following method definition (test function) */
