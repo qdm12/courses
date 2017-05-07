@@ -1,3 +1,19 @@
+\documentclass[10pt]{article}
+\pagestyle{empty}
+\usepackage{minted}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{0pt}
+\cfoot[R]{\thepage~of~\pageref{LastPage}}
+\addtolength{\oddsidemargin}{-.875in}
+\addtolength{\evensidemargin}{-.875in}
+\addtolength{\textwidth}{1.75in}
+\addtolength{\topmargin}{-.875in}
+\addtolength{\textheight}{1.75in}
+
+\begin{document}
+\begin{minted}[fontsize=\normalsize]{scheme}
 ; Part 1
 ;;; Base Case: L contains one element, return the first element of L, (car L).
 ;;; Assumption: find-min works on (cdr L), returning the smallest element of (cdr L).
@@ -114,3 +130,6 @@
         (cond ((> a n) '())
               (else (cons (lambda (x) (+ x a)) (gen-fn-list-helper (+ 1 a) n)))))
     (gen-fn-list-helper 1 n))
+\end{minted}
+
+\end{document}
