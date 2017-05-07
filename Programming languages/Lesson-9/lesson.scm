@@ -1,0 +1,220 @@
+;;; BASIC TYPES
+> 12 ; Numbers (integers and floating point)
+> 13.456 
+> 'hello ; Symbol. The only characteristic of a symbol is its name
+hello
+"hello world" ; Strings
+;;; Primary AGGREGATE TYPE is the list (not homogeneous !)
+> '(34 45.6 tom sally "hello")
+(34 45.6 tom sally "hello")
+
+'(one (2 3 (4 five 6) 7) eight) ; nested lists
+
+;;; EXPRESSIONS: atomic expressions and combinations
+; Atomic expressions (not composed of any other expressions)
+    ; numeric literals, symbol literals, boolean literals (#t #f), 
+    ; the empty list: (), variable names
+; Combinations: all start and end with parentheses (...)
+
+;;; VARIABLE DEFINITION
+(define x 6)
+> 'hello ; Interpreter treats hello as a symbol, not a variable
+hello
+> hello ; error as there is no variable hello
+> '(define y 7) ; Interpreter creates a list of symbols and a number.
+(define y 7)
+> y ; Error undefined
+> (define y 7) ; Defines y
+
+;;; ARITHMETIC expressions always use the prefix notation.
+(+ x y) ; gives 13
+
+;;; FUNCTION DEFINITION (define (<name> <param1> <param2> ...) <body>)
+(define (f z y) (+ z (* 2 y)))
+;;; FUNCTION CALL (<name> <arg1> <arg2> ...)
+(f 3 (+ x 5)) ; gives 25
+
+;;; CONDITIONALS: if and cond
+(if (= x y) 'yes (* x y)) ; gives 42
+(cond ((= x y) 'first)
+      ((< x y) 'second) ; gives second
+      ((> x y) 'third)
+      (else 'fourth))
+
+;;; TOWERS OF HANOI
+(define (hanoi N from to temp)
+  (cond ((= N 1) (display "Move disk from ") (display from)
+                 (display " to ") (display to) (newline))
+        (else (hanoi (- N 1) from temp to)
+              (display "Move disk from ") (display from)
+              (display " to ") (display to) (newline)
+              (hanoi (- N 1) temp to from))))
+> (hanoi 1 'a 'b 'c)
+Move disk from a to b
+> (hanoi 4 'a 'b 'c)
+Move disk from a to c
+Move disk from a to b
+Move disk from c to b
+Move disk from a to c
+Move disk from b to a
+Move disk from b to c
+Move disk from a to c
+Move disk from a to b
+Move disk from c to b
+Move disk from c to a
+Move disk from b to a
+Move disk from c to b
+Move disk from a to c
+Move disk from a to b
+Move disk from c to b
+
+;;; LISTS
+'(1 2 3 4) ; gives (1 2 3 4)
+'(1 (+ 2 3) (* x y)) ; QUOTE -> No evaluation, gives (1 (+ 2 3) (* x y))
+(list 1 (+ 2 3) (* x y)) ; list -> evaluation, gives (1 5 42)
+(cons 1 '(2 3 4 5)) ; gives (1 2 3 4 5)
+(define myList '(2 3 4 5))
+(cons 1 myList) ; gives (1 2 3 4 5)
+myList ; gives (2 3 4 5) because CONS is purely FUNCTIONAL !
+(append '(1 2 3 4) '(5 6 7 8)) ; gives (1 2 3 4 5 6 7 8)
+(cons '(1 2 3 4) '(5 6 7 8)) ; gives ((1 2 3 4) 5 6 7 8)
+(car '(2 4 6 8)) ; gives 2 (does not modify the list)
+(cdr '(2 4 6 8)) ; gives (4 6 8)
+(car (cdr (cdr '(1 2 3 4))))  ; gives 3 (third element)
+'() ; the empty list, gives ()
+(cdr '(1)) ; gives ()
+(null? myList) ; gives #t is the list is empty, otherwise #f (gives #f)
+
+;;; SHORTCUTS FOR ACCESSING LISTS
+(car (cdr '(1 2 3 4))) ; gives 2
+(cadr '(1 2 3 4))  ; gives 2
+(car (cdr (cdr '(1 2 3 4)))) ; gives 3
+(caddr '(1 2 3 4 5)) ; gives 3
+(cadar '((1 2 3 4) (5 6 7) (8 9 10)))  ; gives 2
+
+;;; RETURN Nth ELEMENT OF L
+(define (nth n L)
+    (cond ((= n 1) (car L)) ; base case is n = 1, return the first element
+          (else (nth (- n 1) (cdr L))))) 
+          ; assumption is that nth will work for n-1, construct the result for n. 
+          ; The nth element of L is the (n-1)th element of (cdr L).
+(nth 5 '(2 4 6 8 10 12)) ; gives 10
+
+;;; MYAPPEND
+  ; Define (myappend L1 L2) where L1 and L2 are lists.
+  ; Base case:  If L1 is empty, then the result is just L2.
+  ; Assumption:  If L1 has N elements, assume myappend works when it's first
+  ;              argument has N-1 elements.  Note that (cdr L1) has N-1 elements.
+  ; Step:  Since (myappend (cdr L1) L2) is assumed to work, it returns a list of
+  ;        all the desired elements, except the first element of L1. So, we
+  ;        CONS the first element of L1, (car L1), onto the list returned by
+  ;        (myappend (cdr L1) L2)
+(define (myappend L1 L2)  
+  (cond ((null? L1) L2)  ;;; base case:  L1 is empty, so the result is just L2
+        (else (cons (car L1) (myappend (cdr L1) L2)))))   
+
+;;; ADD AN ELEMENT AT THE END OF A LIST
+  ; Base Case:  L is the empty list, so just return the list containing x, i.e. (list x)
+  ; Assumption: Assume (atEnd x (cdr L)) works.
+  ; Step: Since (atEnd x (cdr L)) is missing the first element of L, CONS the (car L)
+  ;       onto the result of (atEnd x (cdr L))
+(define (atEnd x L) 
+  (cond ((null? L) (list x))  
+        (else (cons (car L) (atEnd x (cdr L))))))
+
+;;; REVERSE
+(reverse '(1 2 3 4 5)) ; gives (5 4 3 2 1)
+(reverse '(1 2 (3 4) 5)) ; gives (5 (3 4) 2 1)
+(define (myReverse L)
+  (cond ((null? L) '())
+        (else (append (myReverse (cdr L)) (list (car L))))))
+(define (myReverse2 from to) ; Linear time !
+  (cond ((null? from) to)
+        (else (myReverse2 (cdr from) (cons (car from) to)))))
+(myReverse2 '(1 2 3 4 5) '()) ; gives (5 4 3 2 1)
+(define (myReverse L)
+  (myReverse2 L '()))
+
+;;; LET allows the definition of variables with a nested scope.
+  ; (let ((<var1> <exp1>) (<var2> <exp2>) ... (<varN> <expN>)) <body>)
+  ; evaluates <body> in an environment in which var1 has the value of exp2,
+  ; var2 has the value of exp2, etc.
+(let ((x 12) (y 3)) (+ x y)) ; gives 15
+; The scope of the variables introduced by a LET is only within the body 
+; of the LET.
+(define (f x)
+  (let ((y (+ x 1)) (z (* x 2)))
+    (+ y z)))
+(f 4) ; gives 5 + 8 = 13
+; a variable definition in a let can refer to outer variables
+(define x_global 100)
+(let ((x_global 10) (y (* x_global 2))) ; gives 210 but don't change x_global
+    (+ x_global y))
+(let ((x 3) (y (+ x 1))) ; can't use x in the definition of y !
+  (+ x y))
+; We can use nested LET's to use new variables to define new variables
+(let ((x 3))
+  (let ((y (+ x 1)))
+    (+ x y))) ; gives 7
+; Or use LET* which does the same as nested LET's
+(let* ((x 3) (y (+ x 1)) (z (* y 2)))
+  (+ x y z)) ; gives 15
+
+;;; FUNCTIONS are "first class" objects (can be treated as values)
+;;; They can be passed as parameters, returned as the results of function calls, 
+;;; placed into lists, etc.
+
+;;; HIGHER ORDER function (function operating over functions)
+(define (foo f x)
+  (f (* x 2)))
+(define (g y) (+ y 15))
+(foo g 10) ; gives 35
+
+;;; BUILT-IN FUNCTIONS
+(map g '(20 30 40 50)) ; gives (35 45 55 65)             
+(map car '((1 2 3) (a b c) ("hello" "goodbye"))) ; gives (1 a "hello")
+
+;;; MYMAP
+  ; Recursive thinking for (map f L)
+  ; Base Case:  L is empty, return '()
+  ; Assumption: (map f (cdr L)) returns a list of the results of
+  ;             applying f to every element of (cdr L).
+  ; Step:  Put the result of (f (car L)) on the front of the
+  ;        result of (map f (cdr L))
+(define (myMap f L)
+  (cond ((null? L) '())
+        (else (cons (f (car L)) (myMap f (cdr L))))))
+
+(define (increment x) (+ x 1))
+(map increment '(1 2 3 4)) ; gives (2 3 4 5)
+
+;;; LAMBDAS
+  ; (lambda (arg1 ... argN) body) evaluates to a function that takes 
+  ; arg1 ... argN as parameters and executes body. That function has no name.
+(lambda (x y) (+ x y))  ; gives #<procedure>
+(map (lambda (x) (* x 2)) '(1 2 3 4 5))  ; gives (2 4 6 8 10)
+;; Note "(define (f x y) (+ x y))" <-> (define f (lambda (x y) (+ x y)))
+
+(define (f x)
+  (lambda (y) (+ x y)))
+(f 3) ; gives #<procedure>
+(define g (f 3)) ; setting g to the result of calling (f 3), so g is a function.
+(g 5) ; gives 8
+
+;;; FUNCTIONS in LIST
+(list (lambda (x) (+ x 1)) (lambda (x) (+ x 2)) (lambda (x) (+ x 3)))
+; gives (#<procedure> #<procedure> #<procedure>)
+(define L (list (lambda (x) (+ x 1)) (lambda (x) (+ x 2)) (lambda (x) (+ x 3))))
+((car L) 3) ; gives 4
+((caddr L) 3) ; gives 6
+
+
+;;; Recursive functions within an inner scope (LET wont work)
+(letrec ((f (lambda (x) (if (= x 0) 1 (* x (f (- x 1)))))))
+  (f 5)) ; gives 120
+; LETREC can be used to define mutually recursive functions
+(letrec ((f (lambda (x) (if (= x 0) 1 (* x (g (- x 1))))))
+         (g (lambda (x) (if (= x 0) 1 (* x (f (- x 1)))))))
+  (g 6)) ; gives 720
+
+; Final note: Scheme is not purely functional and can use set! for example.

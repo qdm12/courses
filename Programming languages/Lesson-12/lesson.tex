@@ -1,0 +1,337 @@
+\documentclass[10pt]{article}
+\pagestyle{empty}
+\usepackage{minted}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{listings}
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{0pt}
+\cfoot[R]{\thepage~of~\pageref{LastPage}}
+\addtolength{\oddsidemargin}{-.875in}
+\addtolength{\evensidemargin}{-.875in}
+\addtolength{\textwidth}{1.75in}
+\addtolength{\topmargin}{-.875in}
+\addtolength{\textheight}{1.75in}
+
+\begin{document}
+
+\begin{minted}[fontsize=\normalsize]{scala}
+/* Anonymous functions (Lambda): ((parameters) => body) */
+object lambdaExample{
+  def higher(f: (Int) => Int) = f(f(3))  
+  def main(args: Array[String]) = println(higher((x) => x+1)) // 5
+}
+// ----------------------------------------------------------------------------
+/* Singleton class
+   They are instantiated by a single object rather than by static members as in Java.
+   They are declared using the "object" keyword. */
+
+object Counter{
+    var count = 0
+    def increment{count = count + 1}
+    def get() = count
+    def useCount(f: (Int) => Unit) = f(count)
+}
+
+class F{
+    val x = 12
+    var y: Int = 20
+    def f(z:Int):Int = x+y+z
+    // Example of a method whose name is a symbol (no special syntax for that)
+    def +(other:F):Int = y + other.y
+    def set(w:Int){
+        Counter.increment
+        y = w
+    }
+}
+
+object Bar{
+    def printArg(x:Int){println("Got the value " + x)}
+    def main(args: Array[String]){
+        val f1 = new F()
+        val f2 = new F()
+        f1 set 17;  // same as f1.set(17)        
+        f2.set(25)
+        println(f1 + f2)  //same as f1.+(f2), prints 42
+        println("Counter is now " + Counter.get()) // 2
+        Counter.useCount(printArg) // Got the value 2
+        Counter.useCount((x:Int) => println(x*1000)) // 2000
+    }
+}
+// ----------------------------------------------------------------------------
+/* Inheritance 
+   All class inherit from Object */
+
+class A(x:Int, y:String){ //parameters are used as for a constructor.
+    val value = x
+    val name = y
+    override def toString():String = value + name
+}
+class B(a:Int, b:String, c:Int) extends A(a,b){
+    val age = c
+    override def toString() = age + (value + name + name)
+}
+
+object Test{
+    def f(a:A){println(a)}
+    def main(args:Array[String]){
+        val a = new A(1, "One")
+        val b = new B(2, "Two", 36)
+        println(a)       
+        f(b); //Subtyping: pass a B to a method that expects an A
+    }
+}
+// ----------------------------------------------------------------------------
+class A
+class B extends A
+
+object Test{
+    def fB(f:B=>String){
+        val b:B = new B
+        f(b)
+    }
+    def fA(f:A=>String){
+        val a:A = new A
+        f(a)
+    }
+    def gA(x:A) = x.toString()
+    def gB(y:B) = y.toString()
+    def main(args: Array[String]){
+        fA(gA)
+        /* fA(gB) */ /* Passing a function of type B->string to a function 
+                        expecting an A->string gives a type error */
+        fB(gA) /* Passing a function of type A->String to a function 
+                  expecting a B->String works thanks to contravariance */
+        fB(gB)        
+    }
+}
+// ----------------------------------------------------------------------------
+/* Contravariance */
+class A(x:Integer){
+    override def toString() = "A<"+x+">"
+}
+class B(x:Integer, y:Integer) extends A(x){
+    override def toString() = "B<"+x+","+y+">"
+}
+class Contra[-T](){
+    var v:List[Any] = List()
+    def insert(x:T){v = x::v}
+    override def toString() = {
+        def elementsToString(l:List[Any]):String = l match {
+            case List() => ""
+            case (x::xs) => x.toString() + " " + elementsToString(xs)
+        }
+        "Contra[ " + elementsToString(v) + "]"
+    }
+}
+
+object Test{
+    def test(c:Contra[B], z:B){
+        c.insert(z)
+    }
+    def main(args: Array[String]){
+        val cA = new Contra[A]()
+        val cB = new Contra[B]()
+        
+        test(cB, new B(3,4))
+        println(cB)
+
+        cA.insert(new A(5))
+        test(cA, new B(3,4)) //uses contravariant subtyping in first argument
+        println(cA)
+    }
+}
+// ----------------------------------------------------------------------------
+/* COVARIANT TYPE PARAMETERS for generic classes */
+class A{
+    val x = 26
+    override def toString() = "A: "+x
+}
+class B extends A{
+    val y = 99
+    override def toString() = "B: "+x+", "+y
+}
+class MyList[+T](lis:List[T]){
+    val l: List[T] = lis
+    def get = l
+    def cons[SUPERT >: T](x:SUPERT): MyList[SUPERT] = new MyList[SUPERT](x::lis)
+    /* Since cons can't have a T in contravariant position, it introduces 
+       SUPERT that ranges over the supertypes of T. 
+       The resulting list is a MyList[SUPERT] because a SUPERT is inserted. */
+    // def cons(x:T):MyList[T] = new MyList[T](x::lis)
+    // Fails because it contains a T in contravariant position
+    def hd = l match {
+        case (x::xs) => x
+        case List() => throw new Exception()
+    }
+    def tl = l match {
+        case (x::xs) => xs
+        case List() => throw new Exception()
+    }
+    override def toString() = l + ""
+}
+
+object variant{  
+    def foo(l:MyList[A]){
+        println(l)
+    }
+    def main(args: Array[String]) {
+        val lA = new MyList(List(new A()))
+        val lB = new MyList(List(new B()))
+        val hdA:A = lA.hd
+        val hdB:A = lB.hd // expects A but receives B
+        foo(lA) // expects MyList[A], prints List(A: 26)
+        foo(lB) // expects MyList[A] and receives MyList[B], prints List(B: 26, 99)
+        println(hdA) // A: 26
+        println(hdB) // B: 26, 99
+    }
+}
+// ----------------------------------------------------------------------------
+/* Case classes and match clauses for pattern matching.
+   An object of a case class can be created without the "new" keyword. */
+abstract class Tree
+case class Node(v:Int, l:Tree, r:Tree) extends Tree
+case class Leaf(v:Int) extends Tree
+case class Empty() extends Tree
+object CaseClassTest{
+    val myTree = Node(3,Leaf(4),Node(5,Leaf(6),Empty())) // no new !
+    def printTree(t:Tree){
+        t match {
+            case Node(v,l,r) => print("(") 
+                                printTree(l) 
+                                print(v)
+                                printTree(r)
+                                print(")")
+            case Leaf(v) => print(v)
+            case Empty() => ()
+        }
+    }
+    def main(args:Array[String]){printTree(myTree)} // (43(65))
+}
+// ----------------------------------------------------------------------------
+/* TYPE CONSTRAINTS on type variables in generics */
+
+trait CanBeCompared[T]{
+    def <(other:T): Boolean
+    def <=(other:T) = <(other) || ==(other)
+    def >(other:T) = !(<(other)) && !=(other)
+    def >=(other: T) = !(<(other))
+}
+
+/* TREE generic class where:
+   - The type T of the label associated with the node implements 
+     the CanBeCompared[T] trait, so that two labels of type T can
+     be compared to each other
+   - The tree class itself implements CanBeCompared[Tree[T]], so that
+     two trees of type Tree[T] can be compared. */
+abstract class Tree[T <: CanBeCompared[T]] extends CanBeCompared[Tree[T]]
+case class Node[T <: CanBeCompared[T]](v:T, l:Tree[T], r:Tree[T]) extends Tree[T]{
+    def <(other: Tree[T]) = other match{
+        case Node(ov,ol,or) => (v < ov) && (l < ol) && (r < or)
+        case _ => false
+    }
+    override def toString() = "("+l+")"+ v+"("+r+")"
+}
+case class Leaf[T <: CanBeCompared[T]](v:T) extends Tree[T]{
+    def <(other:Tree[T]) = other match{
+        case Leaf(ov) => v < ov
+        case _ => false
+    }
+    override def toString() = v + ""
+}
+case class Empty[T <: CanBeCompared[T]]() extends Tree[T]{
+    def <(other:Tree[T]) = other match{
+        case Empty() => true
+        case _ => false
+    }
+    override def toString() = ""
+}
+class MyInt(x:Int) extends CanBeCompared[MyInt]{
+    val value = x
+    def get = x
+    def ==(other:MyInt) = x == other.get
+    def <(other:MyInt) = x < other.get
+    override def toString(): String = x + ""
+}
+
+object Test{
+    def compare[T <: CanBeCompared[T]](a:T, b:T){
+        if (a < b){
+            println("a < b")
+        }else{
+            println("a > b")
+        }
+    }
+    def main(args:Array[String]){
+        val a = new MyInt(16)
+        val b = new MyInt(7)
+        compare(a,b) // Print a > b
+        val x:Tree[MyInt] = Node(new MyInt(6), 
+                                 Node(new MyInt(4),Leaf(new MyInt(3)),Leaf(new MyInt(5))), 
+                                 Node(new MyInt(8),Leaf(new MyInt(7)),Empty()))
+        val y:Tree[MyInt] = Node(new MyInt(16),
+                                 Node(new MyInt(14),Leaf(new MyInt(13)),Leaf(new MyInt(15))),
+                                 Node(new MyInt(18),Leaf(new MyInt(17)),Empty()))
+        compare(x,y) // Prints a < b so x < y
+    }
+}
+// ----------------------------------------------------------------------------
+/* Code typed in class */
+(x:Int) => x + 1 //Lambda
+((x:Int, y:Int) => x + y)(3,4) // gives 7
+
+class A
+class B extends A  // B is a subclass of A
+def fa(g:A=>Int) = g(new A())
+def fb(g:B=>Int) = g(new B())
+def p(x:A) = 6 //p is of type A->Int
+def q(x:B) = 6   // q is of type B->Int
+fa(p) // passing an A->Int to a function expecting an A->Int
+fa(q) // passing a B->Int to a function expecting an A->Int, ERROR !
+fb(q) // passing a B->Int to a function expecting an B->Int
+fb(p) // passing an A->Int to a function expecting a B->Int, works fine (contravariant subtyping)
+def f(g:Int=>A) = g(5) // f expects a parameter of type Int->A
+f((x:Int) => new B()) // passing an Int->B to a function expecting an Int->A, works fine (covariance)
+def fac(x:Int): Int = x match { // Factorial
+     | case 0 => 1
+     | case n => n * fac(n-1)
+     | }
+
+class C[T]
+new C[Int]
+// By default, there is no subtyping among instances of a generic.
+def f(x:C[A]) = 3
+f(new C[B]) // passing a C[B] to a function expecting a C[A], ERROR !
+
+class C[+T] // Covariantly subtyped generic class
+val c: C[A] = new C[B]() // using a C[B] object where a C[A] is expected (covariance)
+val d: C[B] = new C[A]() // trying to use a C[A] object where a C[B] is expected (contravariance)
+/* The + seriously limits the types of methods you can write.  Essentially, in a
+   covariantly subtyped generic, the type parameter can only appear as the return
+   type to a method (not the input type). */
+
+class D[+T] {       
+     |   def f(x:T) = 0  // ERROR ! since f takes a T as an input
+     | }
+// error: covariant type T occurs in contravariant position in type T of value x
+
+class D[+T](x:T){
+     |   def f(y:Int):T = x  // this will work, since T is the return type.
+     | }
+
+class E[-T]   // E[] is contravariantly subtyped
+val c: E[A] = new E[B]() // Using an E[B] where an E[A] is expected. ERROR ! (covariance).
+val c: E[B] = new E[A]()  // Using an E[A] where an E[B] is expected. Works fine (contravariance)
+/* The - is also seriously limiting. In a contravariantly subtyped generic 
+   class, a method can have the type parameter as the input type, but not 
+   as the return type. */
+class E[-T](x:T){ // contravariantly subtyped generic class
+     |   def f(y:Int):T = x // ERROR ! can't have the type parameter T as a return type
+     | }
+class E[-T] {  
+     |   def f(x:T): Int = 3  // this method works, can have type parameter T as the input type.
+     | }
+// ----------------------------------------------------------------------------
+\end{minted}
+
+\end{document}

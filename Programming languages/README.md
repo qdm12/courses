@@ -8,3 +8,8 @@
 6. Lesson 6: Scheme
 7. Lesson 7: More scheme
 8. Lesson 8: Lambda calculus
+9. Lesson 9: Scheme
+10. Lesson 10: ML
+11. Lesson 11: Java
+12. Lesson 12: Scala
+13. Lesson 13: Dynamic Storage
