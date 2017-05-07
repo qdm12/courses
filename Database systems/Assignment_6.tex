@@ -1,5 +1,5 @@
-\documentclass[11pt]{article}
 \pagestyle{empty}
+\documentclass[9pt]{article}
 \usepackage{color}
 \usepackage{fancyhdr}
 \usepackage{lastpage}
@@ -13,7 +13,7 @@
 \addtolength{\textheight}{1.75in}
 
 \begin{document}
-\begin{center} {\Large\bf Database Systems Homework} \\ Quentin McGaw (qm301) \\ Due 2017-04-24
+\begin{center} {\Large\bf Database Systems Homework 6} \\ Quentin McGaw (qm301) \\ Due 2017-04-24
 \end{center}
 
 \begin{enumerate}
@@ -36,6 +36,8 @@
     \\\\ Let's start with $AG^+ = AGB$ so we are missing C, D, E, F but we can only add D, E or F.
     Possible keys are thus $AGD$ and $AGEF$ because $AGD^+ = AGBDECF = ABCDEFG$ and $AGEF^+ = AGBEFDC = ABCDEFG$.
     \\\\ There is a non-trivial FD, A $\rightarrow$ B, and A does not contain a key of R because $A^+ = AB \neq ABCDEFG$. Therefore R is not in BCNF.
+
+
 \item \textbf{\textcolor{blue}{Given a relation schema ABCDEFGH, show that the given functional dependencies is a minimal cover.
 \begin{itemize}
   \item A $\rightarrow$ B
@@ -43,14 +45,54 @@
   \item E $\rightarrow$ BG
   \item F $\rightarrow$ H
 \end{itemize}}}
-    Let $F_m$ be the set of FDs given.
+    Let $F_m$ be the set of FDs given. We need to proof that:
     \begin{itemize}
         \item There is no trivial FDs in $F_m$.
         \item No two FDs in $F_m$ can be combined using the union rule.
         \item No attribute can be removed from a RHS of any FD in $F_m$ without changing the power of $F_m$.
         \item No attribute can be removed from a LHS of any FD in $F_m$ without changing the power of $F_m$.
     \end{itemize}
-    $F_m$ is thus a minimal cover.
+    \begin{enumerate}
+        \item 
+        \begin{itemize}
+          \item A $\rightarrow$ B
+          \item AC $\rightarrow$ E (we try LHS simplification and remove D)
+          \item E $\rightarrow$ BG
+          \item F $\rightarrow$ H
+        \end{itemize}
+        (a) could only be \textbf{stronger} so we compute $AC^+$ = ACB using the original FDs. As E is not included, we proved non-equivalence. We can't replace the original FDs with this set.
+        \begin{itemize}
+          \item A $\rightarrow$ B
+          \item AD $\rightarrow$ E (we try LHS simplification and remove C)
+          \item E $\rightarrow$ BG
+          \item F $\rightarrow$ H
+        \end{itemize}
+        (b) could only be \textbf{stronger} so we compute $AD^+$ = ADB using the original FDs. As E is not included, we proved non-equivalence. We can't replace the original FDs with this set.
+        \begin{itemize}
+          \item A $\rightarrow$ B
+          \item CD $\rightarrow$ E (we try LHS simplification and remove A)
+          \item E $\rightarrow$ BG
+          \item F $\rightarrow$ H
+        \end{itemize}
+        (c) could only be \textbf{stronger} so we compute $CD^+$ = CD using the original FDs. As E is not included, we proved non-equivalence. We can't replace the original FDs with this set.
+        \begin{itemize}
+          \item A $\rightarrow$ B
+          \item ACD $\rightarrow$ E
+          \item E $\rightarrow$ B (we try RHS simplification and remove G)
+          \item F $\rightarrow$ H
+        \end{itemize}
+        (d) could only be \textbf{weaker} so we compute the closure $E^+$ = EB using the original FDs. As G is not included, we proved non-equivalence. We can't replace the original FDs with this set.
+        \begin{itemize}
+          \item A $\rightarrow$ B
+          \item ACD $\rightarrow$ E
+          \item E $\rightarrow$ G (we try RHS simplification and remove B)
+          \item F $\rightarrow$ H
+        \end{itemize}
+        (e) could only be \textbf{weaker} so we compute the closure $E^+$ = EB using the original FDs. As B is not included, we proved non-equivalence. We can't replace the original FDs with this set.    
+    \end{enumerate}
+    Therefore, there is no simplification possible and the given set $F_m$ is thus a minimal cover.
+    
+    
 \item \textbf{\textcolor{blue}{Given a relation schema ABCD satisfying the following functional dependencies, and following exactly the procedure we covered in class find a minimal cover. Generally, you also need to show that the set is indeed a minimal cover. But as this was covered in item 2 above, you do not need to do it here.
 \begin{itemize}
   \item A $\rightarrow$ BC
@@ -105,6 +147,7 @@
         \item BG $\rightarrow$ F
     \end{itemize}\textbf{}
     
+    
 \item \textbf{\textcolor{blue}{Given a relation schema ABCDEFG and the following minimal cover, create a lossless-join, dependencies-preserving 3NF decomposition.
 \begin{itemize}
   \item AD $\rightarrow$ B
@@ -137,6 +180,7 @@
         \end{itemize}
         So ADB contains a key, hence this is the final decomposition which is lossless-join and dependencies-preserving 3NF.
     \end{enumerate}
+
 
 \item \textbf{\textcolor{blue}{Given a relation schema ABCDEFGH and the following minimal cover, create a lossless-join, dependencies-preserving 3NF decomposition.
 \begin{itemize}
@@ -212,6 +256,7 @@
             \item BCG with primary key BCG
         \end{itemize}
     \end{enumerate}
+   
    
 \item \textbf{\textcolor{blue}{A customer gave your colleague an ER diagram that had only one relation schema R = EGS, which satisfies the following functional dependencies
 \begin{itemize}
