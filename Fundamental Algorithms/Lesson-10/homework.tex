@@ -26,41 +26,41 @@ The world is teeming; anything can happen
     \item \textbf{Kruskal's algorithm:}
     \begin{enumerate}
         \item Sort all the edges in increasing order of their weight in the array $A$
-        \item Pick the smallest edge from $A$. If it forms a cycle with the spanning tree formed $S$ so far, discard it. Otherwise include it in $S$.
+        \item Pick the smallest edge from $A$. If it does not form a cycle with the spanning tree formed $S$ so far, include it in $S$. Then remove it from $A$.
         \item Repeat step 2 until there are $V-1$ edges in $S$, where $V$ is the number of vertices in the graph.
     \end{enumerate}
     \item \textbf{Kruskal's algorithm pseudo-code:}
     \begin{enumerate}
         \item We sort the edges $e_1, ..., e_E$ by weight
         \item $x_i$ and $y_i$ are the vertices of $e_i$.
-        \item For any vertex $x$, initially all $\pi[x] \leftarrow x$ and all $SIZE(x) \leftarrow 1$.
-        \item 
-        \begin{algorithm}[H]
-            $S = \{\}$ \\
-            \For{i from 1 to E}{
-                \While{$\pi[x_i] \neq x_i$}{
-                    $x_i \leftarrow \pi[x_i]$ (finds its parent)
-                }
-                \While{$\pi[y_i] \neq y_i$}{
-                    $y_i \leftarrow \pi[y_i]$ (finds its parent)
-                }
-                \If{$x_i \neq y_i$}{
-                    \If{$SIZE(x_i) \leq SIZE(y_i)$}{
-                        $\pi[x_i] \leftarrow y_i$ \\
-                        $SIZE(y_i) \leftarrow SIZE(y_i) + SIZE(x_i)$
-                    }
-                    \Else{
-                        $\pi[y_i] \leftarrow x_i$ \\
-                        $SIZE(x_i) \leftarrow SIZE(x_i) + SIZE(y_i)$
-                    }
-                    Add $e_i$ to $S$.
-                }
-            }
-            \Return{$S$}
-        \end{algorithm}
-        
     \end{enumerate}
-    
+    \begin{algorithm}[H]
+        \For{each vertex $x$}{
+            $\pi[x] = x$ \\
+            $SIZE(x) = 1$ \\
+        }
+        $S = \{\}$ \\
+        \For{i from 1 to E}{
+            \While{$\pi[x_i] \neq x_i$}{
+                $x_i = \pi[x_i]$ (finds its highest parent)
+            }
+            \While{$\pi[y_i] \neq y_i$}{
+                $y_i = \pi[y_i]$ (finds its highest parent)
+            }
+            \If{$x_i \neq y_i$}{
+                \If{$SIZE(x_i) \leq SIZE(y_i)$}{
+                    $\pi[x_i] = y_i$ \\
+                    $SIZE(y_i) = SIZE(y_i) + SIZE(x_i)$
+                }
+                \Else{
+                    $\pi[y_i] = x_i$ \\
+                    $SIZE(x_i) = SIZE(x_i) + SIZE(y_i)$
+                }
+                $S$.add($e_i$)
+            }
+        }
+        \Return{$S$}
+    \end{algorithm}
 \end{itemize}
 
 \begin{enumerate}
@@ -127,6 +127,20 @@ In particular, set $\pi[2]=1$, not the other way around.)}}
         \\ At each iteration, the WHILE loop is not applied for 1 and applied one time for $i$ so it takes constant time. This program has to run for $n - 1$ edges so it takes $\Theta(n)$ time.
     \end{enumerate}
 
+
+\item \textbf{\textcolor{blue}{Suppose that during Kruskal's Algorithm (for MST) at some point we have $SIZE[v]=37$.}}
+\begin{enumerate}
+    \item \textbf{\textcolor{blue}{What is the interpretation of that in the case when $\pi[v]=v$?}}
+        \\ SIZE[v] = 37 means that the vertex $v$ is in a component of size 37.
+        \\ $\pi[v]$ = v means that it is the highest parent of this component so v is the root of the associated tree. 
+    \item \textbf{\textcolor{blue}{What is the interpretation of that in the case when $\pi[v]=u\neq v$?}}
+        \\ v had a size of 37 when $\pi[v]$ was changed. The component with v was joined to the larger component with another vertex u.
+    \item \textbf{\textcolor{blue}{Let $w$ be a vertex. How many different values can $\pi[w]$ have during the course of Kruskal's algorithm?}}
+        \\ For a vertex w, $\pi[w]$ can have \textbf{two} values: w (at start) or v (only once).
+        \\ Note that a vertex never changes but becomes the root of the final rooted tree.
+    \item \textbf{\textcolor{blue}{How many different values (as a function of $V$, the number of vertices) can $SIZE[w]$ have during the course of Kruskal's algorithm? (That is, the maximal number possible.)}}
+        \\ If w is joined to isolated vertices $V-1$ times, SIZE[w] goes from 1 to V by ones. Therefore $SIZE[w]$ can have at most $V$ different values.
+\end{enumerate}
 \end{enumerate}
 
 \begin{quote}

@@ -1,0 +1,144 @@
+\documentclass[11pt]{article}
+\pagestyle{empty}
+\usepackage{color}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{0pt}
+\cfoot[R]{\thepage~of~\pageref{LastPage}}
+\addtolength{\oddsidemargin}{-.875in}
+\addtolength{\evensidemargin}{-.875in}
+\addtolength{\textwidth}{1.75in}
+\addtolength{\topmargin}{-.875in}
+\addtolength{\textheight}{1.75in}
+
+\begin{document}
+\begin{center} {\Large\bf FA, Homework 12} \\ Quentin McGaw (qm301) \\ 05/04/17
+\end{center}
+
+\begin{quote}
+To me, it does not seem unlikely that on some shelf of the uni-
+verse there lies a total book. I pray the unknown gods that some
+man - even if only one man, and though it have been thousands
+of years ago! - may have examined and read it. If honor and wis-
+dom and happiness are not for me, let them be for others. May
+heaven exist, though my place be in hell. Let me be outraged
+and annihilated, but may Thy enormous Library be justified, for
+one instant, in one being.
+\\ from The Library of Babel by Jorge Luis Borges
+\end{quote}
+
+\begin{center}
+    \begin{tabular}{|c | c | c |} 
+    \hline
+    Problem Type & Verifiable in P time & Solvable in P time \\
+    \hline
+    P & YES & YES \\
+    \hline
+    NP & YES & YES OR NO \\
+    \hline
+    NP-complete & YES & UNKNOWN \\
+    \hline
+    NP-hard & YES OR NO & UNKNOWN \\
+    \hline
+    \end{tabular}
+\end{center}
+
+
+\begin{enumerate}
+\item \textbf{\textcolor{blue}{Which of the following problem classes are in $P$ and which are probably not in $P$.  (By probably not we mean that we do not as of today know that it is in $P$ but of course tomorrow somebody might come up with a clever algorithm.))}}
+\begin{enumerate}
+    \item \textbf{\textcolor{blue}{{\tt PRIME}. The input here would be the integer $n$ and Yes would be returned iff $n$ is prime.}}
+        \\ With the AKS algorithm (Agarwal, Kayal, Sexana), PRIME can be found in polynomial time (today in $O((\log(n))^6)$ time) and is therefore in P.
+    \item \textbf{\textcolor{blue}{I gave the above problem twenty years ago.  What was the answer then?}}
+        \\ The AKS algorithm was found in 2002 and before that PRIME could not be found in polynomial time so it was not in P.
+    \item \textbf{\textcolor{blue}{{\tt CONNECTED-GRAPH}.  The input here would be a graph $G$ and Yes would be returned iff the graph was connected.}}
+        \\ We can use BFS for this problem which takes O(|V| + |E|) (polynomial time) so CONNECTED-GRAPH is in P.
+    \item \textbf{\textcolor{blue}{{\tt TRAVELING-SALESMAN}. The input here would be a graph $G$ together with a positive integer weight $w(e)$ for each edge $e$ and an integer $B$.  Yes would be returned iff there was a Hamiltonian Cycle which had total weight at most $B$.}}
+        \\ \textbf{TSP: } "Given a list of cities and the distances between each pair of cities, what is the shortest possible route that visits each city exactly once and returns to the origin city?"
+        \\ \textbf{Hamiltonian cycle: } Path in a graph that visits each vertex exactly once.
+        \\ This is a problem class in NP-hard and probably not in P.
+    \item \textbf{\textcolor{blue}{{\tt SPANNING-TREE}. The input here would be a graph $G$ together with a positive integer weight $w(e)$ for each edge $e$ and an integer $B$.  Yes would be returned iff there was a spanning tree which had total weight at most $B$.}}
+        \\ Kruskal's algorithm (requires $O(E\log(V))$ time) or Prim's algorithm (requires $O(E\log(V))$ time with adjacency lists) can be used to solve this problem. Therefore this problem class is in P.
+    \item \textbf{\textcolor{blue}{{\tt ALMOSTDAG}. The input here would be a directed graph $G$. Yes would be returned iff there was a set of at most $10$ edges of $G$ that could be removed from $G$ so that the remaining graph is a {\tt DAG}. (Your argument should work with $10$ replaced by any {\em constant} value.)}}
+        \begin{itemize}
+            \item For a \textbf{directed graph} with n vertices, there at most $n(n-1)$ edges.
+            \item To test if a graph is a DAG, we can use TOP-SORT which requires $O(|V|+|E|) = O(n^2)$ \textcolor{red}{time}.
+            \item There are a \textcolor{red}{total of} $(n^2)^{10} = n^{20}$ sets of 10 edges, which is also the number of graphs to test.
+            \item So we need $O(n^{22})$ time overall, which is still polynomial
+        \end{itemize}
+\end{enumerate}
+    
+\item \textbf{\textcolor{blue}{Show that the following problem classes are in $NP$. (That is, describe the certificate that the Oracle gives and describe the procedure that Verifier will take. Warning: Do not trust Oracle! For example, if Oracle gives you $n$ distinct vertices you have to verify that they are indeed distinct!)}}
+\begin{enumerate}
+    \item \textbf{\textcolor{blue}{{\tt PRIME-INTERVAL} The input here would be integers $n,a,b$. Yes would be returned iff there was a prime $p$ which divided $n$ and for which $a\leq p\leq b$.}}
+        \\ Oracle gives a prime $p$. The verifier checks that:
+        \begin{itemize}
+            \item $a \leq p \leq b$
+            \item $p | n$
+            \item p is prime, using the AKS algorithm
+        \end{itemize}
+    \item \textbf{\textcolor{blue}{{\tt TRAVELING-SALESMAN} As described above.}}
+        \\ Oracle gives the ordering $x_1, ..., x_n$ of vertices. The verifier checks that:
+        \begin{itemize}
+            \item The vertices are distinct
+            \item The vertices are all the vertices
+            \item The sum of the weights of the edges $\{x_i, x_{i+1}\}$ (including $\{x_n, x_1\}$) is at most B.
+        \end{itemize}
+    \item \textbf{\textcolor{blue}{{\tt COMPOSITE} The input here would be an integer $n$. Yes would be returned if $n$ was composite.}}
+    \begin{enumerate}
+        \item \textbf{\textcolor{blue}{Give a solution that uses the Agarwal, Kayal, Saxena algorithm.}}
+            \\ No need for the oracle, the verifier can directly use AKS and then flip the YES/NO answer.
+            \\ This is because any $L$ which is in $P$ is in $NP$ since the oracle is not used.
+        \item \textbf{\textcolor{blue}{Give a solution not using the AKS algorithm.}}
+            \\ The oracle gives $a$, $b$ with $n = ab$. The verifier checks the multiplication.
+        \end{enumerate}
+    \item \textbf{\textcolor{blue}{{\tt 3-COLOR}. The input here would be a graph $G$. Yes would be returned if there was a three coloring of the vertices such that no two adjacent vertices $v,w$ had the same color.}}
+        \\ Oracle gives Yes and the 3 coloring. The verifier checks that for every vertex v and w $\in$ Adj[v], v and w do not have the same color.
+    \item \textbf{\textcolor{blue}{{\tt NEAR-DAG}. The input here would be a directed graph $G$ and an integer $B$. Yes would be returned if there was a set of at most $B$ edges that could be removed from $G$ so that the remaining graph was acyclic. (This is like {\tt ALMOST-DAG} with the critical distinction that $B$ is not restricted to $10$, or any constant value. Rather, $B$ can depend on the number of vertices of $G$.)}}
+        \\ Oracle gives the B edges to be removed. The verifier checks that:
+        \begin{itemize}
+            \item The B edges are in the graph
+            \item Produce G' by removing the B edges from G, and applies TOP-SORT to it to check if it is a DAG.
+        \end{itemize}
+\end{enumerate}
+    
+\item \textbf{\textcolor{blue}{For the following pairs $L_1,L_2$ of problem classes show that $L_1\leq_P L_2$.  That is, given a ``black box" that will solve any instance of $L_2$ in unit time, create a polynomial time algorithm that will solve any instance of $L_1$ in polynomial time.}}
+\begin{enumerate}
+    \item \textbf{\textcolor{blue}{Let $L_2$ be {\tt TRAVELLING-SALESMAN DESIGNATED PATH}. The input here would be a graph $G$, two designated vertices, a source $v_1$ and a sink $v_n$, together with a positive integer weight $w(e)$ for each edge $e$ and an integer $B$.  Yes would be returned iff there was a Hamiltonian Path (i.e., one goes through all the vertices $v_1,\ldots,v_n$ in some order (starting and ending at the designated vertices) but does {\em not} return from $v_n$ back to $v_1$) which had total weight at most $B$. $L_1$ is {\tt TRAVELLING-SALESMAN} as described above.}}
+        \\ For each edge $e = \{x, y\}$, ask $L_2$ if there is a Hamiltonian path from x to y whose length is at most $B - w(e)$.
+        \begin{itemize}
+            \item The answer is \textbf{YES}: $L_1$ is YES, as you add the edge $e$ to the Hamiltonian path.
+            \item The answer is always \textbf{NO}: $L_1$ is NO, as a Hamiltonian cycle of length $\leq$ B would have to use some $e = \{x,y\}$, and removing it would give a path of length $< B - w(e)$ with that source and sink.
+        \end{itemize}
+        
+    \item \textbf{\textcolor{blue}{Let $L_2$ be {\tt CLIQUE}. The input here would be a graph $G$ together with a positive integer $B$. Yes would be returned iff there was a clique with at least $B$ vertices. (A set of vertices in a graph $G$ is a clique if {\em every} pair of them are adjacent.) Let $L_1$ be {\tt INDEPENDENT-SET}. The input here would be a graph $G$ together with a positive integer $B$. Yes would be returned iff there was a independent set with at least $B$ vertices. (A set of vertices in a graph $G$ is an independent set if {\em no} pair of them are adjacent.)}}
+        \\ G has an independent set, with size $\geq B \Leftrightarrow G^c$ has a clique of size $\geq B$ ($G^c$ is the complement of $G$).
+        \\ Pairs of vertices are adjacent in $G^c \Leftrightarrow$ they are not adjacent in $G$.
+        \\ To create $G^c$ from $G$, we need $O(n^2)$.
+        \\ The algorithm for $L_1$ would be to create $G^c$ and then apply $L_2$ to it.
+\end{enumerate}
+
+\item \textbf{\textcolor{blue}{Assume {\tt PRIME-INTERVAL} (defined above) is in $P$. Using it as a black box give a polynomial time algorithm with input integer $n\geq 2$ that returns some prime factor $p$.  (Caution: This means polynomial in the number of digits in $n$, or what is sometimes called polylog $n$, meaning $O(\lg^cn)$ for some constant $c$.)}}
+    \begin{itemize}
+        \item PRIME-INTERVAL(n,2,n) is TRUE
+        \item We check PRIME-INTERVAL(n,2,$\frac{n}{2}$)
+        \begin{itemize}
+            \item TRUE: there is a prime in $[2, \frac{n}{2}]$.
+            \item FALSE: there is a prime in $(\frac{n}{2}, n]$.
+        \end{itemize}
+        \item We keep on splitting the interval until we have an interval of length 1 where there is a prime.
+    \end{itemize}
+    This takes $\log(n)$ calls
+\\ \textbf{\textcolor{blue}{(*) Further, give a polynomial time algorithm with input integer $n\geq 2$ that returns the entire prime factorization of $n$.}}
+    \begin{itemize}
+        \item Apply this algorithm to get the first prime factor $p$. 
+        \item Iterate the procedure on $\frac{n}{p}$.
+        \item This is done at most $\log(n)$ times because each time, the new value of $n$ is at most the halved value.
+        \item Because each procedure requires $\log(n)$ time, we need $O(\log^2(n))$ time overall.
+    \end{itemize}
+
+\end{enumerate}
+
+
+\end{document}
