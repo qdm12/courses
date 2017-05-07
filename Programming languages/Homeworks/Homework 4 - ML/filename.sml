@@ -1,9 +1,6 @@
 Control.Print.printDepth := 100;
 Control.Print.printLength := 100;
 
-(* Author: Quentin McGaw, netID: qm301 *)
-
-
 (* 1. Define a polymorphic linear-time procedure, reverse L, where L is of type ’a list, that
 returns a list containing the same elements as L, but in reverse order. You can use the same
 algorithm as shown in the Scheme lecture. You can also define your own helper function if
@@ -56,7 +53,7 @@ infix --;
 fun [] -- S2 = []
   | S1 -- [] = S1
   | S1 -- S2 = if hd(S1) elt S2 then (tl(S1) -- S2) else hd(S1) :: (tl(S1) -- S2);
-  
+
 (* 5. Define a tree datatype, tree, where a leaf has an integer label and an interior node has an
 integer label and two child trees. *)
 datatype tree = leaf of int | node of int * tree * tree;

@@ -1,3 +1,21 @@
+\documentclass[10pt]{article}
+\pagestyle{empty}
+\usepackage{minted}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{listings}
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{0pt}
+\cfoot[R]{\thepage~of~\pageref{LastPage}}
+\addtolength{\oddsidemargin}{-.875in}
+\addtolength{\evensidemargin}{-.875in}
+\addtolength{\textwidth}{1.75in}
+\addtolength{\topmargin}{-.875in}
+\addtolength{\textheight}{1.75in}
+
+\begin{document}
+
+\begin{minted}[fontsize=\normalsize]{java}
 import java.util.*;
 
 /* 1. Define a generic interface Addable<>, parameterized by a type T. The Addable<> 
@@ -7,7 +25,7 @@ interface Addable<T> {
     public T plus(T o);
 }
 
-/* 2. Define a generic class MyList<> that derives from the builtÂ­in ArrayList<> class 
+/* 2. Define a generic class MyList<> that derives from the built­in ArrayList<> class 
 and implements both the Comparable<> and Addable<> interfaces, such that two objects of 
 type MyList<T>, for a suitable type T, can be compared using the compareTo method and 
 can be added using the plus method (see above). Furthermore, the definition of MyList<> 
@@ -72,7 +90,7 @@ you like, the only requirements are:
   the x values that the two objects were initially constructed with. That is, given
   A a1 = new A(6);
   A a2 = new A(7);
-  the result of a1.compareTo(a2) should return Â­1, indicating that a1 is less than a2. 
+  the result of a1.compareTo(a2) should return ­1, indicating that a1 is less than a2. 
   Furthermore, the result of a1.plus(a2) should be a new A object whose constructor is passed 
   13 (i.e. 6+7). You'll also want to override the toString() method, so A objects print nicely.
 */
@@ -139,3 +157,6 @@ public class Part1 {
 }
 
 /* 6. Finally, in class Part1, put the following method definition (test function) */
+\end{minted}
+
+\end{document}

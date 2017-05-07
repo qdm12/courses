@@ -1,4 +1,4 @@
-# Programming language course, Spring 2017
+# Programming languages, Spring 2017
 
 ## Ada programming assignment
 

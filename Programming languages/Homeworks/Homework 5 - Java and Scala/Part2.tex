@@ -1,9 +1,27 @@
+\documentclass[10pt]{article}
+\pagestyle{empty}
+\usepackage{minted}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{listings}
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{0pt}
+\cfoot[R]{\thepage~of~\pageref{LastPage}}
+\addtolength{\oddsidemargin}{-.875in}
+\addtolength{\evensidemargin}{-.875in}
+\addtolength{\textwidth}{1.75in}
+\addtolength{\topmargin}{-.875in}
+\addtolength{\textheight}{1.75in}
+
+\begin{document}
+
+\begin{minted}[fontsize=\normalsize]{scala}
 /* 1. Define a class A that implements the Ordered trait. A should define the compare method 
 required by Ordered and should override the toString method so that it prints something 
 sensible (identifying the object as a A object). Each object of the A class should be 
 instantiated with an integer parameter, e.g. by saying new A(6). The result of comparing 
 two A's should be based on the values of the integers they were created with. For example, the 
-expression (new A(5)).compare(new A(6)) should return Â­1, because 5 is less than 6 (you can 
+expression (new A(5)).compare(new A(6)) should return ­1, because 5 is less than 6 (you can 
 simply subtract the integer values that the objects were created with). This will allow two 
 A objects to be compared using the usual < and > operators. (Note: Due to limitations of the 
 type system, == will not be redefined to automatically work correctly. Use (x.compare(y) == 0) 
@@ -69,7 +87,7 @@ abstract class Tree[T <: Ordered[T]]{ // extends Ordered[Tree[T]]
     val MyTree = Node(new A(3), Leaf(new A(2)), Node(new A(5),Leaf(new A(4)),Empty()))
   - Each of the the above case classes should override the toString() method to have a 
     sensible printout. For Empty[T], toString() can simply return the empty string. toString() 
-    for a Node[T] should be defined so that a tree is printed out in inÂ­order fashion, which 
+    for a Node[T] should be defined so that a tree is printed out in in­order fashion, which 
     means for an interior node, the left subtree should be printed, followed by the label at 
     the node, followed by the right subtree.
   - Each of the case classes should define an insert() method, 
@@ -202,3 +220,6 @@ object Part2{
     test()
   }
 }
+\end{minted}
+
+\end{document}

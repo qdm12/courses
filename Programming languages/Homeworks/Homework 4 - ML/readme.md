@@ -1,4 +1,4 @@
-# Programming language course, Spring 2017
+# Programming languages, Spring 2017
 
 ## ML programming assignment
 

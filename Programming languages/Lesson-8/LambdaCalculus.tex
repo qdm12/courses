@@ -1,0 +1,124 @@
+\documentclass[11pt]{article}
+\pagestyle{empty}
+\usepackage{color}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{enumitem}
+\usepackage[options]{algorithm2e}
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{0pt}
+\cfoot[R]{\thepage~of~\pageref{LastPage}}
+\addtolength{\oddsidemargin}{-.875in}
+\addtolength{\evensidemargin}{-.875in}
+\addtolength{\textwidth}{1.75in}
+\addtolength{\topmargin}{-.875in}
+\addtolength{\textheight}{1.75in}
+
+\begin{document}
+\begin{center}
+\textbf{Lambda calculus}
+\end{center}
+\\ $(\lambda \textcolor{red}{x}\ .\ \textcolor{red}{x}\ \textcolor{blue}{y})$ has \textcolor{red}{x bound} and \textcolor{blue}{y free}
+\begin{itemize}
+    \item x is \textcolor{blue}{FREE} in:
+    \begin{itemize}
+        \item $x$ if it is not bound in any other variable or constant
+        \item $(E,F) \Leftrightarrow (x$ \textcolor{blue}{free} in E$)$ OR $(x$ \textcolor{blue}{free} in F$)$
+        \item $(\lambda y\ .\ E) \Leftrightarrow 
+            \left\{
+                \begin{array}{ll}
+                    x \mbox{ \textcolor{blue}{free} in E} \\
+                    x \mbox{ and } y \mbox{ are different variables}
+                \end{array}
+            \right.$
+    \end{itemize}
+    \item x is \textcolor{red}{BOUND} in:
+    \begin{itemize}
+        \item $(E,F) \Leftrightarrow (x$ \textcolor{red}{bound} in E$)$ OR $(x$ \textcolor{red}{bound} in F$)$
+        \item $(\lambda y\ .\ E) \Leftrightarrow (x$ \textcolor{red}{bound} in E$)$ \textbf{OR} 
+            $\left\{
+                \begin{array}{ll}
+                    x \mbox{ \textcolor{blue}{free} in E} \\
+                    x \mbox{ and } y \mbox{ are the same variable}
+                \end{array}
+            \right.$
+    \end{itemize}
+\end{itemize}
+\\ \textbf{Substitutions:}
+\begin{itemize}
+    \item $x[M/x] = M$
+    \item $y[M/x] = y$, where $y$ is a constant or variable other than $x$.
+    \item $(E\ F)[M/x] = (E[M/x])(F[M/x])$
+    \item $(\lambda x\ .\ E)[M/x] = \lambda x\ .\ E$
+    \item $(\lambda y\ .\ E)[M/x] = 
+            \left\{
+                \begin{array}{ll}
+                    \lambda y\ .\ (E[M/x]) if 
+                                            \left\{
+                                                \begin{array}{ll}
+                                                    x \mbox{ not \textcolor{blue}{free} in E} \\
+                                                    \ \ \ \ \ \ \mbox{OR} \\
+                                                    y \mbox{ not \textcolor{blue}{free} in M}
+                                                \end{array}
+                                            \right. \\
+                    \ \ \ \ \ \ \mbox{OR} \\
+                    \lambda z\ .\ (E[z/y])[M/x] \mbox{ otherwise, where z is new and not \textcolor{blue}{free} in E or M}
+                \end{array}
+            \right.$
+\end{itemize}
+\\ \textbf{Conversions:}
+\begin{itemize}
+    \item \textbf{$\alpha$-conversion:} If $y$ not \textcolor{blue}{free} in E, $(\lambda x\ .\ E) \Leftrightarrow (\lambda y\ .\ E[y/x])$
+    \item \textbf{$\beta$-conversion:} $(\lambda x\ .\ E)M \Leftrightarrow E[M/x])$
+    \item \textbf{$\eta$-conversion:} If 
+                                        $\left\{
+                                            \begin{array}{ll}
+                                                x \mbox{ not \textcolor{blue}{free} in E} \\
+                                                E \mbox{ denotes a function}
+                                            \end{array}
+                                        \right.$, then $(\lambda x\ .\ Ex) \Leftrightarrow E$
+\end{itemize}
+\\ \textbf{Reductions:}
+$\beta$-conversion and $\eta$-conversion are called \textbf{reductions} when used in normal order.
+\\ In example, $(\lambda x\ .\ E)M$ can be $\beta$-reduced and is therefore called a reducible expression, or \textbf{redex}.
+\\ When an expression is no longer a redex, it is in its \textbf{normal form}.
+\\ Example of an expression which reduces to normal form under normal-order evaluation, but not under applicative-order evaluation:
+\\ The expression $(\lambda x.y)((\lambda z.z)(\lambda z.z))$.
+\begin{itemize}
+    \item Using \textbf{normal-order evaluation}:
+    \\ $(\lambda x.y)((\lambda z.z)(\lambda z.z))$
+    $\rightarrow y$
+    \item Using \textbf{applicative-order evaluation}:
+    \\ $(\lambda x.y)((\lambda z.z)(\lambda z.z))
+    \rightarrow (\lambda x.y)((\lambda z.z)(\lambda z.z)) \rightarrow ... $ (infinite) 
+\end{itemize}
+\\ \textbf{Y-combinator:}
+\\ The Y combinator is represented by 
+$Y = (\lambda h.(\lambda x . h(x\ x))(\lambda x.h(x\ x)))$
+\\ Now we have $Y f = (\lambda h.(\lambda x . h(x\ x))(\lambda x.h(x\ x))) f$
+\\ $ = ((\lambda x . f(x\ x))(\lambda x.f(x\ x)))$
+\\ $ = ((\lambda y . f(y\ y))(\lambda x.f(x\ x)))$ (here we replace x by y for a better understanding)
+\\ $ = f ((\lambda x . f(x\ x))(\lambda x.f(x\ x)))$
+\\ $ = f (Y\ f)$.
+\\ Example of the definition of a recursive function using the Y-combinator and show how it is recursive with reductions.
+\\ Let f = $\lambda$f.$\lambda$n.if($<$ n 3) 1 (+ (f (- n 1) (f (- n 2))
+\\ Then FIBONACCI = Y f = f (Y f)
+\\ For example, FIBONACCI 4 = (Y f) 4
+\\ = f (Y f) 4
+\\ = if($<$ 4 3) 1 (+ (Y f (- 4 1)) (Y f (- 4 2)))
+\\ = (+ (Y f 3) (Y f 2)) (used a $\beta$-reduction)
+\\ = (+ (if($<$ 3 3) 1 (+ (Y f (- 3 1)) (Y f (- 3 2)))) (if($<$ 2 3) 1 (+ (Y f (- 2 1)) (Y f (- 2 2)))))
+\\ = (+ (+ (Y f 2) (Y f 1)) 1) (used a $\beta$-reduction)
+\\ = (+ (+ (if($<$ 2 3) 1 (+ (Y f (- 2 1)) (Y f (- 2 2)))) (if($<$ 1 3) 1 (+ (Y f (- 1 1)) (Y f (- 1 2))))) 1)
+\\ = (+ (+ 1 1) 1) (used a $\beta$-reduction)
+\\ = (+ 2 1)
+\\ = 3
+\\ \textbf{Church-Rosser theorems:}
+\\ The theorem states that $(E_1 \Leftrightarrow E_2) \Rightarrow \exists E\ |\ (E_1 \Rightarrow E)$ and $(E_2 \Rightarrow E)$.
+\\ In other words, if there are two sequences of reductions that can be applied to the same term, then there exists a term that is reachable from both results by applying sequences of additional reductions.
+
+
+
+\end{document}
