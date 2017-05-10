@@ -68,16 +68,16 @@
     - Available space is maintained in a **contiguous block** of bytes
     - The heap pointer points to the *next available byte*
       ```
-      _____________________
-     |        Free         |
-     |        Space        |
-     |_____________________| <- Heap pointer
-     |=====================|
-     |======= Used ========|
-     |======= Space =======|
-     |=====================|
-     |=====================|
-     |_____________________|
+       _____________________
+      |        Free         |
+      |        Space        |
+      |_____________________| <- Heap pointer
+      |=====================|
+      |======= Used ========|
+      |======= Space =======|
+      |=====================|
+      |=====================|
+      |_____________________|
       ```
     - Advantages and disadvantages
         - **Cheap allocation**

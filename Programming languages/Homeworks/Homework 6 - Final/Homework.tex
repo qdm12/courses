@@ -1,0 +1,302 @@
+\documentclass[10pt]{article}
+\pagestyle{empty}
+\usepackage{color}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{minted}
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{0pt}
+\cfoot[R]{\thepage~of~\pageref{LastPage}}
+\addtolength{\oddsidemargin}{-.875in}
+\addtolength{\evensidemargin}{-.875in}
+\addtolength{\textwidth}{1.75in}
+\addtolength{\topmargin}{-.875in}
+\addtolength{\textheight}{1.75in}
+
+\title{Programming Languages \\ CSCI-GA.2110.001 Spring 2017 \\\\ Homework 2 \\ Due Monday, May 8}
+\author{Quentin McGaw (qm301)}
+\date{May 8, 2017}
+
+\begin{document}
+\maketitle
+\begin{enumerate}
+    \item 
+    \begin{enumerate}
+        \item \textbf{\textcolor{blue}{In the $\lambda$-calculus, give an example of an expression which would reduce to normal form under normal-order evaluation, but not under applicative-order evaluation.}}
+            \\ The expression $(\lambda y\ .\ 1)((\lambda x\ .(x\ x))(\lambda x\ .(x\ x)))$.
+            \begin{itemize}
+                \item Using \textbf{normal-order evaluation}:
+                \\ $(\lambda y\ .\ 1)((\lambda x\ .(x\ x))(\lambda x\ .(x\ x))) \rightarrow 1$
+                \item Using \textbf{applicative-order evaluation}:
+                \\ $(\lambda y\ .\ 1)((\lambda x\ .(x\ x))(\lambda x\ .(x\ x))) \rightarrow (\lambda y\ .\ 1)((\lambda x\ .(x\ x))(\lambda x\ .(x\ x))) \rightarrow$ ... (infinite loop) 
+            \end{itemize}
+        \item \textbf{\textcolor{blue}{Write the definition of a recursive function (other than factorial) using the Y combinator. Show a series of reductions of an expression involving that function which illustrates how it is, in fact, recursive (as I did in class for factorial).}}
+            \\ Let f = ($\lambda$f\ .\ $\lambda$x\ .\ if ($=$ x 0) 0 (if ($=$ x 1) 1 (+ (f (- x 1)) (f (- x 2)))))
+            \\ The Fibonacci function is then FIB = Y f = f (Y f) = f FIB (for all f)
+            \\ For example, FIB 3 = f (Y f) 3
+            \\ $\rightarrow$ f FIB 3
+            \\ $\rightarrow$ ($\lambda$x\ .\ if ($=$ x 0) 0 (if ($=$ x 1) 1 (+ (FIB (- x 1)) (FIB (- x 2))))) 3
+            \\ $\rightarrow$ (if ($=$ 3 0) 0 (if ($=$ 3 1) 1 (+ (FIB (- 3 1)) (FIB (- 3 2)))))
+            \\ $\rightarrow$ (if false 0 (if ($=$ 3 1) 1 (+ (FIB (- 3 1)) (FIB (- 3 2)))))
+            \\ $\rightarrow$ (if false 0 (if false 1 (+ (FIB (- 3 1)) (FIB (- 3 2)))))
+            \\ $\rightarrow$ (+ (FIB (- 3 1)) (FIB (- 3 2)))
+            \\ $\rightarrow$ (+ (FIB 2) (FIB (- 3 2)))
+            \\ $\rightarrow$ (+ (FIB 2) (FIB 1))
+            \\ $\rightarrow$ (+ (($\lambda$x\ .\ if ($=$ x 0) 0 (if ($=$ x 1) 1 (+ (FIB (- x 1)) (FIB (- x 2))))) 2) (($\lambda$x\ .\ if ($=$ x 0) 0 (if ($=$ x 1) 1 (+ (FIB (- x 1)) (FIB (- x 2))))) 1))
+            \\ $\rightarrow$ ...
+            \\ $\rightarrow$ (+ (+ (FIB 1) (FIB 0)) 1)
+            \\ $\rightarrow$ ...
+            \\ $\rightarrow$ 2
+        \item \textbf{\textcolor{blue}{Write the actual expression in the $\lambda$-calculus representing the Y combinator, and show that it satisfies the property Y(f) = f(Y(f)).}}
+            \\ The Y combinator is represented by 
+            $Y = (\lambda h\ .\ (\lambda x\ .\ h(x\ x))(\lambda x\ .\ h(x\ x)))$ in the lambda calculus.
+            \\ $Y f = (\lambda h\ .\ (\lambda x\ .\ h(x\ x))(\lambda x\ .\ h(x\ x)))\ \textbf{f}$
+            \\ $ \Leftrightarrow_\beta (\lambda x\ .\ \textbf{f}(x\ x))(\lambda x\ .\ \textbf{f}(x\ x)))$
+            \\ $ \Leftrightarrow_\beta \textbf{f}\ (\lambda x\ .\ f(x\ x))(\lambda x\ .\ f(x\ x)))$
+            \\ Since $\Leftrightarrow_\beta$ is symmetric:
+            \\ $ \Leftrightarrow_\beta f\ (\textbf{Y f})$
+            \\ Therefore, $Y\ f \Leftrightarrow_\beta f\ (Y\ f)$
+        \item \textbf{\textcolor{blue}{Summarize, in your own words, what the two Church-Rosser theorems state.}}
+            \begin{itemize}
+                \item [Theorem 1] An expression cannot be reduced to two distinct normal forms.
+                \item [Theorem 2] If there exists a reduction sequence from an expression to a normal form, then the normal order reduction will also reduce it to normal form. (normal order reduction is most likely to \textbf{terminate}).
+            \end{itemize}
+    \end{enumerate}
+    
+    
+    \item
+    \begin{enumerate}
+        \item \textbf{\textcolor{blue}{In ML, why do all lists have to be homogeneous (i.e. all elements of a list must be of the same type)?}}
+            \\ Because ML uses \textbf{static type checking}, the compiler must be able to infer the type of each value at compile time. 
+            \\ If lists were heterogeneous, the compiler could not infer the type of an element selected from a list.
+        \item \textbf{\textcolor{blue}{Write a function in ML whose type is ('a $->$ 'b list) $->$ ('b $->$ 'c list) $->$ 'a $->$ 'c.}}
+            \begin{minted}{sml}
+fun custom f g h x = 
+    let val (y::ys) = g x
+        val (z::zs) = h y
+    in z
+    end;
+            \end{minted}
+        \item \textbf{\textcolor{blue}{What is the type of the following function (try to answer without running the ML
+        system)?}}
+        \begin{minted}{sml}
+fun foo (op >) x (y,z) =
+    let fun bar a = if x > y then z else a
+    in bar [1,2,3]
+    end
+        \end{minted}
+            \\ See the next question for explanations
+            \\ The type of foo is : fn : ('a * 'b $->$ bool) $->$ 'a $->$ 'b * int list $->$ int list
+        \item \textbf{\textcolor{blue}{Provide an intuitive explanation of how the ML type inferencer would infer the type that you gave as the answer to the previous question.}}
+            \begin{itemize}
+                \item The function bar defined in foo compares x and y with the infix $>$. No further constraint on x or y are given so the inferencer assigns them the types 'a and 'b respectively. The output of this infix is used as a boolean and is therefore assigned the type bool. The type of the infix is hence ('a * b' $->$ bool).
+                \item The function bar defined in foo takes the argument a and returns z or a. In foo, it only gets the argument [1,2,3] which is an int list. Therefore bar must return an int list so z is of type int list.
+                \item Finally, because foo returns what bar returns, it returns a type int list.
+                \item This gives foo's type: fn : ('a * 'b $->$ bool) $->$ 'a $->$ 'b * int list $->$ int list
+            \end{itemize}      
+    \end{enumerate}
+    
+    
+    \item
+    \begin{enumerate}
+        \item \textbf{\textcolor{blue}{As discussed in class, what are the three features that a language must have in order to be considered object oriented?}}
+            \begin{itemize}
+                \item \textbf{Encapsulation of data and code (methods):} Creation of self-contained modules binding processing functions to the data (classes, object). It keeps routines separate and less prone to conflict with each other.
+                \item \textbf{Inheritance:} Allows to re-use the structure, attributes and methods of an existing class into another class down the hierarchy (child).
+                \item \textbf{Subtyping with dynamic dispatch} (select which implementation of a polymorphic method should be called at run time) 
+            \end{itemize}
+        \item \textbf{\textcolor{blue}{What is the "subset interpretation of subtyping"?}}
+            \\ The set of values defined by a subtype of a parent type is a subset of the set of values defined by the parent type. 
+            \\ In other words if B is a subtype of A, then any value in the set of values defined by type B is also in the set of values defined by type A.
+            \\ In a shorter way, $B <: A \Rightarrow S_B \subset S_A$
+        \item \textbf{\textcolor{blue}{Explain why function subtyping must be contravariant in the parameter type and co-variant in the result type. If necessary, provide examples to illuminate your explanation.}}
+            \begin{itemize}
+                \item \textbf{Co-variant} preserves the A is a subtype of B hierarchy for the type of the results parameter.
+                \item \textbf{Contravariant} reverses the type hierarchy for the arguments parameter.
+            \end{itemize}
+            \begin{itemize}
+                \item Scala example to show covariant subtyping on the input would lead to an error.
+                \begin{minted}{scala}
+class A { val x = 2 }
+class B extends A { val y = 3 }
+var f: A=>Int
+def g(b:B):Int = b.y; // type B=>Int
+                \end{minted}
+                If B$=>$Int is a subtype of A$=>$Int, we can do
+                \begin{minted}{scala}
+f = g
+f(new A())
+                \end{minted}
+                because f is of type A$=>$Int but g would fail to access the field y of the A object.
+                \item Scala example to show contravariant subtyping on the input type of a function is safe.
+                \begin{minted}{scala}
+class A { val x = 2 }
+class B extends A { val y = 3 }
+var f: B=>Int
+def g(a:A):Int = a.y; // type B=>Int
+                \end{minted}
+                If A$=>$Int is a subtype of B=>Int, we can do
+                \begin{minted}{scala}
+f = g
+f(new B())
+                \end{minted}
+                because f is of type B$=>$Int and g would work (B object is an A object)
+                \item Scala example to show covariant on the output type of a function is safe, while contravariant isn't.
+                \begin{minted}{scala}
+class A { val x = 2 }
+class B extends A { val y = 3 }
+var fA: Int=>A
+var fB: Int=>B
+def gA(x:Int) = new A()
+def gB(x:Int) = new B()
+
+fA = gB // Covariance: Int=>B written to Int=>A
+val a:A = fA(1); // returns B (from gB) which works as we can write a B object to an A variable
+
+fB = gA // Contravariance: Int=>A written to Int=>B
+val b:B = fB(1); // returns A (from gA) but can't write an A object to a B variable
+def g(b:B):Int = b.y; // type B=>Int
+                \end{minted}
+            \end{itemize}
+            
+            
+        \item \textbf{\textcolor{blue}{Provide an intuitive answer showing why function subtyping satisfies the subset interpretation of subtyping. Be sure to consider both the contravariant and covariant aspects of function subtyping.}}
+            \begin{itemize}
+                \item \textbf{Contravariance on parameter type}: 
+                \\ If $B$ is a subtype of $A$, the type $A \rightarrow T$ denotes the set of all functions that can be applied to an A object and return a T. The type $B \rightarrow T$ denotes the set of all functions that can be applied to a B object and returns an int. Any function that can be applied to an A object is in the set denoted by $A \rightarrow T$ and can be applied to a B object and is also in $B \rightarrow T$ as a consequence. Since every element of $A \rightarrow T$ is also in $B \rightarrow T$, $A \rightarrow T \subset B \rightarrow T$.
+                \item \textbf{Covariance on result type}: 
+                \\ If $B$ is a subtype of $A$, any function in $T \rightarrow B$ returns a B object. Since a B object is an A object, it also returns an A object. Since every element of $T \rightarrow B$ is also in $T \rightarrow A$, $T \rightarrow B \subset T \rightarrow A$.
+            \end{itemize}
+        \item \textbf{\textcolor{blue}{Give an example in Scala that demonstrates subtyping of functions, utilizing both the contravariance on the parameter type and covariance on the result type.}}
+        \\ The following Scala code has a first part showing the contravariance on the parameter type, and a second part demonstrating the covariance on the result type. \\
+            \begin{minted}{scala}
+class A
+class B extends A
+object Answer{
+    def fAB(a:A):B = new B()
+    def fBA(b:B):A = new A()
+    var ba:B=>A = fAB // works, A->B subtype of B->A
+    var ab:A=>B = fba // error, B->A not a subtype of A->B
+}
+            \end{minted}        
+    \end{enumerate}
+    
+    
+    \item \textbf{\textcolor{blue}{In Java generics, subtyping on instances of generic classes is invariant. That is, two different instances $C<A>$ and $C<B>$ of a generic class C have no subtyping relationship, regardless of a
+    subtyping relationship between A and B (unless, of course, A and B are the same class).}}
+    \begin{enumerate}
+        \item \textbf{\textcolor{blue}{Write a function (method) in Java that illustrates why, even if B is a subtype of A, $C<B>$ should not be a subtype of $C<A>$. That is, write some Java code that, if the compiler allowed such covariant subtyping among instances of a generic class, would result in a run-time type error.}}
+            \begin{minted}{java}
+class A{};
+class B extends A{};
+
+void f(ArrayList<A> L){
+    A a = new A;
+    L.add(a); // if L is an ArrayList<B>, this would create an error later when A is thought as B.
+}
+            \end{minted}
+        \item \textbf{\textcolor{blue}{Modify the code you wrote for the above question that illustrates how Java allows a form of polymorphism among instances of generic classes, without allowing subtyping. That is, make the function you wrote above be able to be called with many different instances of a generic class.}}
+            \begin{minted}{java}
+class A{};
+class B extends A{};
+
+void f(ArrayList<? super B> L){
+    B b = new B;
+    L.add(b); // if L is an ArrayList<A> for example, this would work.
+}
+            \end{minted}
+    \end{enumerate}
+    
+    
+    \item
+    \begin{enumerate}
+        \item \textbf{\textcolor{blue}{In Scala, write a generic class definition that supports covariant subtyping among instances of the class. For example, define a generic class C[E] such that if class B is a subtype of class A, then C[B] is a subtype of C[A].}}
+            \begin{minted}{scala}
+class C[+E]
+            \end{minted}
+            (Be \textbf{careful}, E should only be used to output of methods (covariant), not to inputs or assignments of \textbf{methods only}).
+        \item \textbf{\textcolor{blue}{Give an example of the use of your generic class.}}
+            \begin{minted}{scala}
+// To test it:
+class A
+class B extends A
+val c: C[A] = new C[B]() // This works
+val c: C[B] = new C[A]() // This gives a type error
+            \end{minted}
+        \item \textbf{\textcolor{blue}{In Scala, write a generic class definition that supports contravariant subtyping among instances of the class. For example, define a generic class C[E] such that if class B is a subtype of class A, then C[A] is a subtype of C[B].}}
+            \begin{minted}{scala}
+class C[-E]
+            \end{minted}
+            (Be \textbf{careful}, E should only be used at input types of methods (contravariant))
+        \item \textbf{\textcolor{blue}{Give an example of the use of your generic class.}}
+            \begin{minted}{scala}
+// To test it:
+class A
+class B extends A
+val c: C[A] = new C[B]() // This gives a type error
+val c: C[B] = new C[A]() // This works
+            \end{minted}
+        \item \textbf{\textcolor{blue}{Consider the following Scala definition of a tree type, where each node contains a value.}}
+        \begin{minted}{scala}
+abstract class Tree[T <: Ordered[T]]
+case class Node[T <: Ordered[T]](v:T, l:Tree[T], r:Tree[T]) extends Tree[T]
+case class Leaf[T <: Ordered[T]](v:T) extends Tree[T]
+        \end{minted}
+        \textbf{\textcolor{blue}{Ordered is a built-in trait in Scala (see \\ http://www.scala-lang.org/api/current/scala/math/Ordered.html). Write a Scala function that takes a Tree[T], for any ordered T, and returns the smallest (minimum) value in the tree. Be sure to use good Scala programming style.}}
+        \begin{minted}{scala}
+def minimum[T <: Ordered[T]](tr:Tree[T]):T = {
+  tr match {
+    case Leaf(v) => v
+    case Node(v, l, r) => {
+      var min_left = minimum(l)
+      var min_right = minimum(r)
+      if(min_left < min_right){
+        return min_left
+      }else{
+        return min_right
+      }
+    }
+  }
+}
+        \end{minted}
+    \end{enumerate}
+    
+    
+    \item
+    \begin{enumerate}
+        \item \textbf{\textcolor{blue}{What is the advantage of a reference counting collector over a mark and sweep collector?}}
+            \begin{itemize}
+                \item \textbf{Reference counting collector: } Determine during execution when a particular object has become dead. At that point, the storage for that object is reclaimed.
+                \item \textbf{Mark and sweep collector: } When the heap is full, it traverses memory to determine the set of all live objects. The complement of this set can be reclaimed (dead objects).
+            \end{itemize}
+            For a reference counting collector:
+            \begin{itemize}
+                \item Its cost is O($\#$ pointers created) + O($\#$ pointers destroyed) which is spread over the whole execution which might be lower than the cost of the mark and sweep collector.
+                \item Storage reclamation is incremental, and not just when the heap is full as for the mark and sweep collector.
+                \item There is no long program suspension (happens a little bit at a time), whereas the mark and sweep collector "stop-and-collect" (not suitable for real-time applications).
+            \end{itemize}
+        \item \textbf{\textcolor{blue}{What is the advantage of a copying garbage collector over a mark and sweep garbage collector?}}
+            \\ \textbf{Copying garbage collector: } There are 2 heaps named FROM and TO, only one used at a time. When the FROM space is full, the garbage collection begins through the graph and each live object is copied to the TO space (using compaction with a heap pointer to allocate the heap). FROM and TO are then flipped around and program execution resumes.
+            For a copying garbage collector:
+            \begin{itemize}
+                \item The cost is O(L+M)=O(L), where L is the amount of live storage and M the size of the heap which is usually three times bigger than L. In contrast, the cost of the mark and sweep GC is O(L) + O(M) = O(M), which is proportional to the size of the heap M and worst.
+            \end{itemize}
+        \item \textbf{\textcolor{blue}{Write a brief description of generational copying garbage collection.}}
+            \\ \textbf{Generational copying garbage collection:} It uses a serie of heaps, called generations, where each generation contains objects of a similar "age" (time they lived so far). When a generation fills up, its live objects are copied to the next generation. This was designed to make profit of the discovery that  "young" objects tend to die in a short time while "old" objects tend to live longer. As a consequence, this type of GC runs mostly in the youngest generation and will rarely process the older generations, hence making it happen less frequently and more efficiently.
+        \item \textbf{\textcolor{blue}{Write, in the language of your choice, the procedure delete(x) in a reference counting GC system, where x is a pointer to a structure (e.g. object, struct, etc.) and delete(x) deletes the pointer x. Assume that there is a free list of available blocks and addToFreeList(x) puts the structure that x points to onto the free list.}}
+        \\ The following code is written in C++ :
+        \begin{minted}{c++}
+void delete(Object* x){
+    x->refcount = x->refcount - 1;
+    if (x->refcount == 0){
+        for(int i = 0; i < sizeof(x->pointers)/sizeof(x->pointers[0]); i++){
+            delete(x->pointers[i]);
+        }
+        addToFreeList(x);
+    }
+}
+        \end{minted}
+    \end{enumerate}
+\end{enumerate}
+
+\end{document}
