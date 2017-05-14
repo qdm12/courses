@@ -67,8 +67,7 @@
     \item
     \begin{enumerate}
         \item \textbf{\textcolor{blue}{In ML, why do all lists have to be homogeneous (i.e. all elements of a list must be of the same type)?}}
-            \\ Because ML uses \textbf{static type checking}, the compiler must be able to infer the type of each value at compile time. 
-            \\ If lists were heterogeneous, the compiler could not infer the type of an element selected from a list.
+            \\ Because ML uses \textbf{static type checking}, the compiler must be able to infer the type of each value at compile time. If lists were heterogeneous, the compiler could not infer the type of an element selected from a list.
         \item \textbf{\textcolor{blue}{Write a function in ML whose type is ('a $->$ 'b list) $->$ ('b $->$ 'c list) $->$ 'a $->$ 'c.}}
             \begin{minted}{sml}
 fun custom f g h x = 
@@ -106,12 +105,10 @@ fun foo (op >) x (y,z) =
                 \item \textbf{Subtyping with dynamic dispatch} (select which implementation of a polymorphic method should be called at run time) 
             \end{itemize}
         \item \textbf{\textcolor{blue}{What is the "subset interpretation of subtyping"?}}
-            \\ The set of values defined by a subtype of a parent type is a subset of the set of values defined by the parent type. 
-            \\ In other words if B is a subtype of A, then any value in the set of values defined by type B is also in the set of values defined by type A.
-            \\ In a shorter way, $B <: A \Rightarrow S_B \subset S_A$
+            \\ The set of values defined by a subtype of a parent type is a subset of the set of values defined by the parent type. In other words if B is a subtype of A, then any value in the set of values defined by type B is also in the set of values defined by type A. In a shorter way, $B <: A \Rightarrow S_B \subset S_A$
         \item \textbf{\textcolor{blue}{Explain why function subtyping must be contravariant in the parameter type and co-variant in the result type. If necessary, provide examples to illuminate your explanation.}}
             \begin{itemize}
-                \item \textbf{Co-variant} preserves the A is a subtype of B hierarchy for the type of the results parameter.
+                \item \textbf{Co-variant} preserves the A is a subtype of B hierarchy for the type of the result.
                 \item \textbf{Contravariant} reverses the type hierarchy for the arguments parameter.
             \end{itemize}
             \begin{itemize}
@@ -135,7 +132,7 @@ class B extends A { val y = 3 }
 var f: B=>Int
 def g(a:A):Int = a.y; // type B=>Int
                 \end{minted}
-                If A$=>$Int is a subtype of B=>Int, we can do
+                If A$=>$Int is a subtype of B$=>$Int, we can do
                 \begin{minted}{scala}
 f = g
 f(new B())
@@ -151,11 +148,10 @@ def gA(x:Int) = new A()
 def gB(x:Int) = new B()
 
 fA = gB // Covariance: Int=>B written to Int=>A
-val a:A = fA(1); // returns B (from gB) which works as we can write a B object to an A variable
-
+val a:A = fA(1); // returns B (from gB) which works as we can write 
+                 // a B object to an A variable
 fB = gA // Contravariance: Int=>A written to Int=>B
 val b:B = fB(1); // returns A (from gA) but can't write an A object to a B variable
-def g(b:B):Int = b.y; // type B=>Int
                 \end{minted}
             \end{itemize}
             
@@ -168,7 +164,6 @@ def g(b:B):Int = b.y; // type B=>Int
                 \\ If $B$ is a subtype of $A$, any function in $T \rightarrow B$ returns a B object. Since a B object is an A object, it also returns an A object. Since every element of $T \rightarrow B$ is also in $T \rightarrow A$, $T \rightarrow B \subset T \rightarrow A$.
             \end{itemize}
         \item \textbf{\textcolor{blue}{Give an example in Scala that demonstrates subtyping of functions, utilizing both the contravariance on the parameter type and covariance on the result type.}}
-        \\ The following Scala code has a first part showing the contravariance on the parameter type, and a second part demonstrating the covariance on the result type. \\
             \begin{minted}{scala}
 class A
 class B extends A
@@ -178,10 +173,9 @@ object Answer{
     var ba:B=>A = fAB // works, A->B subtype of B->A
     var ab:A=>B = fba // error, B->A not a subtype of A->B
 }
-            \end{minted}        
+            \end{minted}
     \end{enumerate}
-    
-    
+
     \item \textbf{\textcolor{blue}{In Java generics, subtyping on instances of generic classes is invariant. That is, two different instances $C<A>$ and $C<B>$ of a generic class C have no subtyping relationship, regardless of a
     subtyping relationship between A and B (unless, of course, A and B are the same class).}}
     \begin{enumerate}
@@ -192,7 +186,8 @@ class B extends A{};
 
 void f(ArrayList<A> L){
     A a = new A;
-    L.add(a); // if L is an ArrayList<B>, this would create an error later when A is thought as B.
+    L.add(a); // if L is an ArrayList<B>, this would create an error later 
+              // when A is thought as B.
 }
             \end{minted}
         \item \textbf{\textcolor{blue}{Modify the code you wrote for the above question that illustrates how Java allows a form of polymorphism among instances of generic classes, without allowing subtyping. That is, make the function you wrote above be able to be called with many different instances of a generic class.}}
@@ -279,7 +274,7 @@ def minimum[T <: Ordered[T]](tr:Tree[T]):T = {
             \\ \textbf{Copying garbage collector: } There are 2 heaps named FROM and TO, only one used at a time. When the FROM space is full, the garbage collection begins through the graph and each live object is copied to the TO space (using compaction with a heap pointer to allocate the heap). FROM and TO are then flipped around and program execution resumes.
             For a copying garbage collector:
             \begin{itemize}
-                \item The cost is O(L+M)=O(L), where L is the amount of live storage and M the size of the heap which is usually three times bigger than L. In contrast, the cost of the mark and sweep GC is O(L) + O(M) = O(M), which is proportional to the size of the heap M and worst.
+                \item The cost is O(min(L,M))=O(L), where L is the amount of live storage and M the size of the heap which is usually three times bigger than L. In contrast, the cost of the mark and sweep GC is O(L) + O(M) = O(M), which is proportional to the size of the heap M and worst.
             \end{itemize}
         \item \textbf{\textcolor{blue}{Write a brief description of generational copying garbage collection.}}
             \\ \textbf{Generational copying garbage collection:} It uses a serie of heaps, called generations, where each generation contains objects of a similar "age" (time they lived so far). When a generation fills up, its live objects are copied to the next generation. This was designed to make profit of the discovery that  "young" objects tend to die in a short time while "old" objects tend to live longer. As a consequence, this type of GC runs mostly in the youngest generation and will rarely process the older generations, hence making it happen less frequently and more efficiently.
