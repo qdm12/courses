@@ -17,36 +17,43 @@ class BinarySearch:
         print self.binarySearch(array, 13)
         
 class MergeSort(object):
-    def merge(self, L, R):
-        C = []
-        i, j = 0, 0
-        while i < len(L) and j < len(R):
-            if L[i] < R[j]:
-                C.append(L[i])
+    def merge(self, A, l, q, r):
+        n1 = q - l + 1
+        n2 = r - q
+        L = [A[l + i] for i in range(n1)]
+        R = [A[q + 1 + i] for i in range(n2)]
+        i = j = 0 # Initial index of first and second subarrays
+        k = l # Initial index of merged subarray
+        while i < n1 and j < n2:
+            if L[i] <= R[j]:
+                A[k] = L[i]
                 i += 1
             else:
-                C.append(R[j])
+                A[k] = R[j]
                 j += 1
-        while i < len(L):
-            C.append(L[i])
+            k += 1
+        # Copy the remaining elements of L[], if there are any
+        while i < n1:
+            A[k] = L[i]
             i += 1
-        while j < len(R):
-            C.append(R[j])
+            k += 1
+        # Copy the remaining elements of R[], if there are any
+        while j < n2:
+            A[k] = R[j]
             j += 1
-        return C
+            k += 1
 
-    def mergeSort(self, A):
-        if len(A) < 2:
-            return A
-        else:
-            middle = len(A) / 2
-            L = self.mergeSort(A[:middle])
-            R = self.mergeSort(A[middle:])
-            return self.merge(L, R)
+    def mergeSort(self, A, l, r):
+        if l < r:
+            q = (l+r)/2 # this does the floor
+            self.mergeSort(A, l, q)
+            self.mergeSort(A, q+1, r)
+            self.merge(A, l, q, r)
             
     def run(self):
         A = [54,26,93,17,77,31,44,55,20]
-        print self.mergeSort(A)
+        self.mergeSort(A, 0, len(A) - 1)
+        print A
         
 class BucketSort:
     def bucketSort_percent(self, A):
@@ -88,7 +95,8 @@ class BucketSort:
         
         
         
-        
+m = MergeSort()
+m.run()
         
         
         

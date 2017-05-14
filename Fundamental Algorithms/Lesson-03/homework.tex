@@ -2,6 +2,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage{minted}
 \usepackage{color}
+\usepackage[options]{algorithm2e}
 \usepackage{fancyhdr}
 \usepackage{lastpage}
 \pagestyle{fancy}
@@ -37,6 +38,62 @@ they call it.  I have to know, he said, his eyes burning with mystical fire
 and his small frog-like features taking on an astonishing radiance.
 \\ -- from A Suitable Boy by Vikran Seth
 \end{quote}
+
+\textbf{MERGESORT:} \\
+    \begin{algorithm}
+        \SetKwFunction{mergesort}{MERGE-SORT}
+        \Indm\mergesort{A, p, r} \\
+        \Indp
+            \If{p $<$ r}{
+                q = $\left \lfloor{\frac{p+r}{2}}\rfloor \right.$ \\
+                \mergesort{A, p, q} \\
+                \mergesort{A, q+1, r} \\
+                \merge{A, p, q, r}
+            }
+        \caption{MERGE-SORT, taking unsorted array A, and p $\leq$ r}
+    \end{algorithm}
+    \begin{minted}{python}
+class MergeSort(object):
+    def merge(self, A, l, q, r):
+        n1 = q - l + 1
+        n2 = r - q
+        L = [A[l + i] for i in range(n1)]
+        R = [A[q + 1 + i] for i in range(n2)]
+        i = j = 0 # Initial index of first and second subarrays
+        k = l # Initial index of merged subarray
+        while i < n1 and j < n2:
+            if L[i] <= R[j]:
+                A[k] = L[i]
+                i += 1
+            else:
+                A[k] = R[j]
+                j += 1
+            k += 1
+        # Copy the remaining elements of L[], if there are any
+        while i < n1:
+            A[k] = L[i]
+            i += 1
+            k += 1
+        # Copy the remaining elements of R[], if there are any
+        while j < n2:
+            A[k] = R[j]
+            j += 1
+            k += 1
+
+    def mergeSort(self, A, l, r):
+        if l < r:
+            q = (l+r)/2 # this does the floor
+            self.mergeSort(A, l, q)
+            self.mergeSort(A, q+1, r)
+            self.merge(A, l, q, r)
+            
+    def run(self):
+        A = [54,26,93,17,77,31,44,55,20]
+        self.mergeSort(A, 0, len(A) - 1)
+        print A
+    \end{minted}
+    
+    
 
 \begin{enumerate}
 \item \textbf{\textcolor{blue}{Write each of the following functions as $\Theta(g(n))$ where $g(n)$ is one of the standard forms:}}
@@ -116,6 +173,22 @@ def bucket_sort(A):
     
 bucket_sort([.79,.13,.16,.64,.39,.20,.89,.53,.71,.43])
     \end{minted}
+    \begin{algorithm}
+        \SetKwFunction{bucketsort}{BUCKET-SORT}
+        \Indm\bucketsort{A}\\
+        \Indp
+            n = A.length \\
+            B = [NIL] * n \\
+            \For{i from 1 to n}{
+                place = $\left \lfloor{A[i] \times n}\rfloor \right.$ \\
+                B[place] = A[i] \\
+            }
+            \For{i from 0 to n-1}{
+                sort(B[i]) \\
+            }
+            \Return{B}
+        \caption{BUCKET-SORT, where A is an array of n unsorted elements}
+    \end{algorithm}
 
 \item \textbf{\textcolor{blue}{Given $A[1\cdots N]$ with $0\leq A[I]<N^N$ for all $I$.}}
     \begin{enumerate}
