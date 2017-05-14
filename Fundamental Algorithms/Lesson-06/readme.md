@@ -1,6 +1,5 @@
 ### Lesson 6
 
-- Binary search trees: leftSuccessor, minValue, delete
+- BST
 - BST vs Heap
-- Hashing and duplicates
-
+- Hash tables and duplicates

@@ -1,6 +1,5 @@
 ### Lesson 4
 
-- Master Theorem (3 cases of overheads, recursion)
+- Master Theorem (see other latex document)
+- Lower and Upper bounds
 - Subtract two n-digit decimal numbers
-- Please refer to **lesson.tex** and homework.tex
-
