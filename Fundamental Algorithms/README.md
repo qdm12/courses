@@ -1,7 +1,7 @@
 # Fundamental algorithms
 
 1. Lesson 01: Heap (max-heap, min-heap)
-2. Lesson 02: Quick-sort, QA trees, Counting-sort, Radix-sort
+2. Lesson 02: Quick-sort, Decision trees, Counting-sort, Radix-sort
 3. Lesson 03: Thetaland, Radix-sort, Bucket-sort, Growth of functions, Merge-Sort
 4. Lesson 04: Master theorem, lower & upper bounds
 5. Lesson 05: Theteland, Hash tables, BST

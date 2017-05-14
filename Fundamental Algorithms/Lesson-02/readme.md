@@ -1,6 +1,6 @@
 # Lesson 2
 
 - Quick-sort
-- QA trees
+- Decision trees
 - Counting-sort
 - Radix-sort

@@ -82,7 +82,7 @@ class MergeSort(object):
 
     def mergeSort(self, A, l, r):
         if l < r:
-            q = (l+r)/2 # this does the floor
+            q = int(floor((l+r)/2))
             self.mergeSort(A, l, q)
             self.mergeSort(A, q+1, r)
             self.merge(A, l, q, r)

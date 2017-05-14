@@ -1,9 +1,10 @@
 \documentclass[11pt]{article}
 \pagestyle{empty}
 \usepackage{color}
-\usepackage{listings}
+\usepackage{minted}
 \usepackage{fancyhdr}
 \usepackage{lastpage}
+\usepackage[options]{algorithm2e}
 \pagestyle{fancy}
 \renewcommand{\headrulewidth}{0pt}
 \cfoot[R]{\thepage~of~\pageref{LastPage}}
@@ -16,125 +17,251 @@
 \begin{center} {\Large\bf FA, Homework 2}  \\ Quentin McGaw (qm301) \\ 02/09/17
 \end{center}
 
+\textbf{Quick-sort} \\\\
+\begin{tabular}{c|c|c}
+    Worst & Average & Best \\
+    \hline
+    $O(n^2)$ & $O(n\log(n))$ & $O(n\log(n))$
+\end{tabular}
+\\
+\begin{minted}{python}
+class QuickSort(object):
+    def sort(self, A):
+        self.quickSortHelper(A, 0, len(A)-1)
+
+    def quickSortHelper(self, A, p, r):
+        if p < r:
+            q = self.partition(A, p, r)
+            self.quickSortHelper(A, p, q-1)
+            self.quickSortHelper(A, q+1, r)
+
+    def partition(self, A, p, r):
+        pivot = A[r]
+        i = p - 1
+        for j in range(p, r+1):
+            if A[j] <= pivot:
+                i += 1
+                A[i], A[j] = A[j], A[i]
+        return i
+\end{minted}
+
+\textbf{Counting-sort} \\\\
+\begin{tabular}{c|c|c}
+    Worst & Average & Best \\
+    \hline
+    $O(n+k)$ & $O(n+k)$ & $O(n+k)$
+\end{tabular}
+\\
+\begin{minted}{python}
+class CountingSort(object):
+    def sort(self, A, B, k=None):
+        """
+            Args:
+                A (list): Unordered array
+                B (list): Output sorted array
+                k (int): Range of values = Number of buckets - 1
+        """
+        if k is None:
+            k = max(A)
+        n = len(A)
+        C = [0 for _ in range(k+1)] #counter, k is the range of values
+        for i in range(n):
+            C[A[i]] += 1
+        # C[i] contains the number of elements = i
+        for i in range(1, k+1):
+            C[i] += C[i-1] 
+        # C[i] contains the number of elements <= i
+        for i in range(n-1, -1, -1): #n to 0
+            place = C[A[i]]
+            B[place - 1] = A[i] # -1 for Python
+            C[A[i]] -= 1
+\end{minted}
+
+\textbf{Radix-sort} \\\\
+\begin{tabular}{c|c|c}
+    Worst & Average & Best \\
+    \hline
+    $O(nk)$ & $O(nk)$ & $O(nk)$
+\end{tabular}
+\begin{itemize}
+    \item $k$ is the base with $D$ digits ($0 \leq A[i] < k^D$)
+    \item input A[1..n] all$0 <= A[i] < k^D$ integers written in base K with D digits
+    \item for j=D to 1, apply sort to jth digit
+\end{itemize}
+\begin{minted}{python}
+class RadixSort(object):
+    def sort(self, A, RADIX=10):
+        placement = 1
+        tmp = A[0]
+        while tmp > 0:
+            buckets = [[] for _ in range(RADIX)]
+            for i in range(len(A)):
+                tmp = A[i] / placement
+                buckets[tmp % RADIX].append(A[i])
+            i = 0
+            for bucket in buckets:
+                for x in bucket:
+                    A[i] = x
+                    i += 1
+            placement *= RADIX # move to next digit
+\end{minted}
+
 
 \begin{enumerate}
 
 \item  \textbf{\textcolor{blue}{Illustrate the operation of PARTITION(A,1,12) on the array 
 \[ A=(13,19,9,5,12,8,7,4,11,2,6,10) \] 
 (You may use either the text's program or the version given in class, but please specify which you are using.)}}
-    \\ Using the class version we have $p=1,q=12$ and an auxilliary array $B$ of length $12$. 
-    We initialize $left=1$, $right=12$.  We first set $x=10$, the pivot element. 
-    Now for $j=1$ to $11$ we either put $A(j)$ as $B(left)$ and increment $left$ or as $B(right)$ and
-    decrement $right$, depending on whether $A(j)\leq x$ or not.
-    Here is what happens near the start:
-    \begin{center}
-    \begin{tabular}{rrrr} 
-    j & newB & left & right \\
-    1 & B[12]=13 & 1 & 11 \\
-    2 & B[11]=19 & 1 & 10  \\
-    3 & B[1]=9  & 2 & 10 
-    \end{tabular}
-    \end{center}
-    etc.,  
-    after $j=11$ we get
-    \[ B=(9,5,8,7,4,2,6,8,11,12,19,13) \] 
-    and now we have the left and right pointer with value $8$ so
-    we take our pivot value $10$ (note that we saved it so it wouldn't
-    be overwritten!) and make it $B[8]$, its correct position, giving
-    \[ B=(9,5,8,7,4,2,6,10,11,12,19,13) \] 
-    We then reset the $A$
-    vector to the $B$ vector and we return
-    the value $8$.  In {\tt QUICKSORT[1,12]} we would now recursively
-    {\tt QUICKSORT} the first seven positions and the final four positions.
+    \\ Note that PARTITION is used in QUICK-SORT (see \textbf{above} and \textbf{below})
+    \begin{algorithm}
+        \SetKwFunction{partition}{PARTITION}
+        \Indm\partition{A, p, r} \\
+        \Indp
+            pivot = A[r] \\
+            i = p - 1 \\
+            \For{j from p to r}{
+                \If{A[j] $\leq$ pivot}{
+                    i$++$ \\
+                    A[i], A[j] = A[j], A[i] \\
+                }
+            }
+            \Return{i}
+        \caption{PARTITION}
+    \end{algorithm}
+    \begin{algorithm}
+        \SetKwFunction{quicksort}{QUICK-SORT}
+        \Indm\quicksort{A, p, r} \\
+        \Indp
+            \If{p $<$ r}{
+                q = \partition{A, p, r} \\
+                \quicksort{A, p, q-1} \\
+                \quicksort{A, q+1, r} \\
+            }
+        \caption{QUICK-SORT}
+    \end{algorithm}
+    We start with A = (13, 19, 9, 5, 12, 8, 7, 4, 11, 2, 6, 10) and p = 0, r = 11.
+    \begin{itemize}
+        \item pivot = A[r] = 10 (last element)
+        \item i = p - 1 = -1
+        \item In the for loop, we start at j = p = 0 (up to r = 11).
+        \item j = 0: A[j] = 13 $>$ pivot
+        \item j = 1: A[j] = 19 $>$ pivot
+        \item j = 2: A[j] = 9 $\leq$ pivot, so i = 0; A[0] and A[2] exchanged and A = (9,19,13,5,12,8,7,4,11,2,6,10)
+        \item j = 3: A[j] = 5 $\leq$ pivot, so i = 1; A[1] and A[3] exchanged and A = (9,5,13,19,12,8,7,4,11,2,6,10)
+        \item j = 4: A[j] = 12 $>$ pivot
+        \item j = 5: A[j] = 8 $\leq$ pivot, so i = 2; A[2] and A[5] exchanged and A = (9,5,8,19,12,13,7,4,11,2,6,10)
+        \item j = 6: A[j] = 7 $\leq$ pivot, so i = 3; A[3] and A[6] exchanged and A = (9,5,8,7,12,13,19,4,11,2,6,10)
+        \item j = 7: A[j] = 4 $\leq$ pivot, so i = 4; A[4] and A[7] exchanged and A = (9,5,8,7,4,13,19,12,11,2,6,10)
+        \item j = 8: A[j] = 11 $>$ pivot
+        \item j = 9: A[j] = 2 $\leq$ pivot, so i = 5; A[5] and A[9] exchanged and A = (9,5,8,7,4,2,19,12,11,13,6,10)
+        \item j = 10: A[j] = 6 $\leq$ pivot, so i = 6; A[6] and A[10] exchanged and A = (9,5,8,7,4,2,6,12,11,13,19,10)
+        \item j = 11: A[j] = 10 $\leq$ pivot, so i = 7; A[7] and A[11] exchanged and A = (9,5,8,7,4,2,6,10,11,13,19,12)
+        \item i = 7 is then returned.
+    \end{itemize}
 
-\item \textbf{\textcolor{blue}{Let $L(n)$, (``L'' for lucky) denote the number of comparisons that
-quicksort does if each time it is applied the pivot lies in the precise center of the array. 
-For example, applying quicksort to an array of length $31$, say $A(1)\cdots A(31)$ objects, 
-there would be $30$ comparisons (between $A(31)$ and all the other $A(j)$) and then $A(31)$ 
-would end up in the $16^{th}$ place and there would be two recursive calls to quicksort on 
-arrays each of size $15$. Find the {\em precise} value of $L(1023)$. (Hint: thats one less than 1024!)}}
-    \\ Let $L(n) = p(n) + L(\ell) + L(r)$.
-    \\ $L(1) = 0$.
-    \\ If $n$ is odd, $\ell = \frac{n-1}{2} = r$, thus
-    \[ L(n) = p(n) + 2L(\frac{n-1}{2}).\]
-    \\ W.l.o.g. If $n$ is even, $\ell = \lceil \frac{n-1}{2}\rceil$ and $r = \lfloor \frac{n-1}{2} \rfloor$.
-    \[ p(n) = n-1 \]
-    \begin{center}
-    \begin{tabular}{rclcrclcrcl}
-    L(1023) &=& 1022 &+& 2L(511) &=&1022 &+& 2*3586 &=& 8194\\
-    L(511)  &=&  510 &+& 2L(255) &=& 510 &+& 2*1538 &=& 3586\\
-    L(255)  &=&  254 &+& 2L(127) &=& 254 &+& 2*642  &=& 1538\\
-    L(127)  &=&  126 &+& 2L(63)  &=& 126 &+& 2*258  &=& 642\\
-    L(63)   &=&   62 &+& 2L(31)  &=&  62 &+& 2*98   &=& 258\\
-    L(31)   &=&   30 &+& 2L(15)  &=&  30 &+& 2*34   &=& 98\\
-    L(15)   &=&   14 &+& 2L(7)   &=&  14 &+& 2*10   &=& 34\\
-    L(7)    &=&    6 &+& 2L(3)   &=&   6 &+& 2*2    &=& 10\\
-    L(3)    &=&    2 &+& 2L(1)   &=&   2 &+& 2*0    &=& 0\\
-    L(1)    &=&    0         
-    \end{tabular}
-    \end{center}
-    {\tt Note:} We have to work {\em backwards} to get $L(1023)$, doing $L(1),L(3),L(7)\cdots$ in that order.  
+\item \textbf{\textcolor{blue}{Let $L(n)$, (``L'' for lucky) denote the number of comparisons that quicksort does if each time it is applied the pivot lies in the precise center of the array. For example, applying quicksort to an array of length $31$, say $A(1)\cdots A(31)$ objects, there would be $30$ comparisons (between $A(31)$ and all the other $A(j)$) and then $A(31)$ would end up in the $16^{th}$ place and there would be two recursive calls to quicksort on arrays each of size $15$. Find the {\em precise} value of $L(1023)$. (Hint: thats one less than 1024!)}}
+    \\ Let the number of comparisons be $L(n) = p(n) + L(l) + L(r)$, where $p(n)$ is the comparisons in PARTITION.
+    \begin{itemize}
+        \item $p(n) = n - 1$ comparisons
+        \item $L(1) = p(1) = 0$
+        \item If $n$ is even, $\left\{\begin{array}{ll}
+                                l = \lceil \frac{n-1}{2} \rceil \\
+                                r = \lfloor \frac{n-1}{2} \rfloor
+                                \end{array}\right.$
+        \item If $n$ is odd, $l = r = \frac{n-1}{2}$
+        \item $n = 1023$ is odd so $l = r = \frac{n-1}{2}$
+        \item Write lines from $L(1023)$, $L(511)$, ... $L(1)$ and then \textbf{calculate} starting from $L(1)$
+            \\
+            \begin{tabular}{rclcrclcrcl}
+            \\ L(1023) &=& 1022 &+& 2L(511) &=&1022 &+& 2*3586 &=& 8194
+            \\ L(511)  &=&  510 &+& 2L(255) &=& 510 &+& 2*1538 &=& 3586
+            \\ L(255)  &=&  254 &+& 2L(127) &=& 254 &+& 2*642  &=& 1538
+            \\ L(127)  &=&  126 &+& 2L(63)  &=& 126 &+& 2*258  &=& 642
+            \\ L(63)   &=&   62 &+& 2L(31)  &=&  62 &+& 2*98   &=& 258
+            \\ L(31)   &=&   30 &+& 2L(15)  &=&  30 &+& 2*34   &=& 98
+            \\ L(15)   &=&   14 &+& 2L(7)   &=&  14 &+& 2*10   &=& 34
+            \\ L(7)    &=&    6 &+& 2L(3)   &=&   6 &+& 2*2    &=& 10
+            \\ L(3)    &=&    2 &+& 2L(1)   &=&   2 &+& 2*0    &=& 0
+            \\ L(1)    &=&    0  
+            \end{tabular}
+    \end{itemize}
 
-\item \textbf{\textcolor{blue}{You wish to sort five elements, denoted $a,b,c,d,e$. 
-{\em Assume} that you already know that $a<b$, $c<d$ and $a<c$. 
-Sort the elements with 4 further comparisons. (This actually gives a sorting of $a,b,c,d,e$ under no 
-assumptions with $7$ comparisons. For if you begin by comparing $a,b$ and then comparing $c,d$ and 
-then comparing the smaller of $a,b$ to the smaller of $c,d$ you will have something like $a<b$, $c<d$, $a<c$ 
-except maybe with the letter interchanged. So the $4$ more comparisons will suffice.}}
-    \\ We have $a<c<d$.  Ignoring $b$, we compare $e$
-    with $c$ and then with either $a$ or $d$ so that now $\{a,c,d,e\}$ are
-    ranked, though not necessarily in that order.  Now we insert $b$ into
-    the ranking of $c,d,e$, comparing it first to the middle and then to the
-    top or bottom.  Since we know $a<b$ this gives us the full ranking in
-    $4$ comparisons. (Remark: This isn't as {\em ad hoc} as it may seem.
-    After the given first three questions there are $15$ possible permutations
-    and $4$ remaining questions.  As $15\leq 2^4$ this is not ruled out.
-    But the next question must split the possibilities $8-7$.  Suppose,
-    for example, you make the next question ``Is $b<c$?" On the Yes
-    branch there are $5$ possibilities ($abcd$ with $e$ in any position)
-    but on the No branch there are $10$ possibilities (either $acbd$  
-    or $acdb$ with $e$ in any position) and there are only three
-    questions remaining so only $8$ branches so we would be dead.
-    Note here that for a decision tree to work it has to work with
-    all possible answers.)
+\item \textbf{\textcolor{blue}{You wish to sort five elements, denoted $a,b,c,d,e$. {\em Assume} that you already know that $a<b$, $c<d$ and $a<c$. Sort the elements with 4 further comparisons. (This actually gives a sorting of $a,b,c,d,e$ under no assumptions with $7$ comparisons. For if you begin by comparing $a,b$ and then comparing $c,d$ and then comparing the smaller of $a,b$ to the smaller of $c,d$ you will have something like $a<b$, $c<d$, $a<c$ except maybe with the letter interchanged. So the $4$ more comparisons will suffice.}}
+    \\ We know:
+    \begin{itemize}
+        \item $a < b$
+        \item $c < d$
+        \item $a < c$
+    \end{itemize}
+    From this, we have $a < c < d$.
+    \begin{itemize}
+        \item We compare $e$ with $c$
+        \item We then compare $e$ with either $a$ or $d$
+    \end{itemize}
+    $\{a, c, d, e\}$ are now ranked.
+    \begin{itemize}
+        \item We know $b > a$ so we only need to find its rank compare to $c$, $d$ and $e$.
+        \item We compare $b$ with the middle of $\{c,d,e\}$
+        \item We then compare $b$ with the lower value or higher value, depending on the previous.
+    \end{itemize}
+    $\{a, b, c, d, e\}$ are now ranked, and we used 4 comparisons overall.
 
 \item \textbf{\textcolor{blue}{Babu is trying to sort $a,b,c,d,e$ with seven comparisons.  First
 he asks ``Is $a  < b$" and the answer is yes.  Now he asks ``Is $a < c?$"
 Argue that (in worst-case) he will not succeed.}}
-    \\ Suppose (this being worst-case), he gets the answer Yes.  At this
-    stage of the original $120$ permutations there are $40$ left.  (One
-    way to see that is that $a$ is the smallest of $a,b,c$ and that happens
-    precisely one-third of the time.)  But $40 > 32 = 2^5$.  From the
-    Decision Tree Lower Bound he will need more than $5$ further questions.
-
+    \begin{itemize}
+        \item There are $5$ elements to be compared so $m = 5! = 120$ permutations initially.
+        \item If the answer is Yes (worst case), there are only $m = 40$ possible permutations.
+        \item We are left with $7 - 2 = 5$ comparisons
+        \item \textbf{Decision tree lower bound}: We don't have $40 \leq 2^5$ so we need 8 comparisons overall.
+    \end{itemize}
+    
 \item \textbf{\textcolor{blue}{Illustrate the operation of {\tt COUNTING-SORT} with $k=6$ on
 the array $A=(6,0,2,2,0,1,3,4,6,1,3)$.}}
-    \\ We start with $C[0\cdots 6]$ all zeroes.  We go through $A$,
-    incrementing $C[A[i]]$, at the end of which $C[j]$ gives the number
-    of $j$'s in $A$, so it is $2,2,2,2,1,0,2$.  Then from $j=1$ to $6$
-    we set $C[j]\leftarrow C[j]+C[j-1]$ and now $C$ has the cumulative
-    sums $2,4,6,8,9,9,11$.  Now we work our way down the array $A$:
-    \\ $A[11]=2$ and $C[2]=6$ so we set $B[6]=2$ and reset $C[2]=5$.
-    \\ $A[10]=3$ and $C[3]=8$ so we set $B[5]=8$ and reset $C[3]=7$.
-    \\ $A[9]=1$ and $C[1]=4$ so we set $B[4]=1$ and reset $C[1]=3$.
-    \\ $A[8]=6$ and $C[6]=11$ so we set $B[11]=6$ and reset $C[6]=10$.
-    \\ $A[7]=4$ and $C[4]=9$ so we set $B[9]=4$ and reset $C[4]=8$.
-    \\ $A[6]=3$ and $C[3]=7$ so we set $B[7]=3$ and reset $C[3]=2$.
-    \\ That last one was the clever one.  Because $C[3]$ had earlier
-    been decremented we are putting the second three into the appropriate
-    empty space.  
-    \\ $A[5]=1$ and $C[1]=3$ so we set $B[3]=1$ and reset $C[1]=2$.
-    \\ et cetera.  At the end $B$ is $0,0,1,1,2,2,3,3,4,6$, the sorted
-    output.
-\item \textbf{\textcolor{blue}{You are given a Max-Heap with $n$ entries. 
-Assume all entries are distinct.  Your goal is to find the {\em third largest} entry.
-One way would be to {\tt EXTRACT-MAX} twice and then {\tt MAXIMUM}.
-How long does this take?  Find a better (by which we always mean faster for $n$ large) way.}}
-    \\ As {\tt EXTRACT-MAX} takes $O(\lg n)$ and {\tt MAXIMUM}
-    takes $O(1)$ that method would take $2\cdot O(\lg n)+O(1)=O(\lg n)$
-    steps.  Better:  The third largest is (previous problems!) one of
-    $A[1]\cdots A[7]$.  Sort those seven in $O(1)$ time and take the third.
+    \begin{algorithm}
+        \SetKwFunction{countingsort}{COUNTING-SORT}
+        \Indm\countingsort{A, B, k} \\
+        \Indp
+            n = A.length \\
+            C = [0..n] \\
+            \For{i from 0 to n}{
+                C[i] = 0 \\
+            }
+            \For{i from 1 to n}{
+                C[A[i]]$++$ \\
+            }
+            \tcp{C[i] contains the number of elements = i} \\
+            \For{i from 1 to k}{
+                C[i] += C[i-1] \\
+            }
+            \tcp{C[i] contains the number of elements <= i} \\
+            \For{i from n to 1}{
+                place = C[A[i]] \\
+                B[place] = A[i] \\
+                C[A[i]]$--$ \\
+            }          
+        \caption{PARTITION, k should be max(A) and B is the output}
+    \end{algorithm}
+    \begin{itemize}
+        \item C = [0, 0, 0, 0, 0, 0, 0]
+        \item C = [2, 2, 2, 2, 1, 0, 2]
+        \item C = [2, 4, 6, 8, 9, 9, 11]
+        \item i = 11, place = C[3] = 8, so B[8] = 3 and C[3] = 7
+        \item i = 10, place = C[1] = 4, so B[4] = 1 and C[1] = 3
+        \item i = 9, place = C[6] = 11, so B[11] = 6 and C[6] = 10
+        \item i = 8, place = C[4] = 9, so B[9] = 4 and C[4] = 8
+        \item i = 7, place = C[3] = 7, so B[7] = 3 and C[3] = 6
+        \item i = 6, place = C[1] = 3, so B[3] = 1 and C[1] = 2
+        \item i = 5, place = C[0] = 2, so B[2] = 0 and C[0] = 1
+        \item i = 4, place = C[2] = 6, so B[6] = 2 and C[2] = 5
+        \item i = 3, place = C[2] = 5, so B[5] = 2 and C[2] = 4
+        \item i = 2, place = C[0] = 1, so B[1] = 0 and C[0] = 0
+        \item i = 1, place = C[6] = 10, so B[10] = 6 and C[6] = 9
+        \item Finally, B = [0, 0, 1, 1, 2, 2, 3, 3, 4, 6, 6]
+    \end{itemize}
+    
+\item \textbf{\textcolor{blue}{You are given a Max-Heap with $n$ entries. Assume all entries are distinct. Your goal is to find the {\em third largest} entry. One way would be to {\tt EXTRACT-MAX} twice and then {\tt MAXIMUM}. How long does this take? Find a better (by which we always mean faster for $n$ large) way.}}
+    \\ As {\tt EXTRACT-MAX} takes $O(\lg(n))$ and {\tt MAXIMUM} takes $O(1)$ that method would take $2O(\lg(n))+O(1) = O(\lg(n)) time$. Another method: the $3^{rd}$ largest is in the depth 1 or 2, so in the position from 1 to 7 in the array. Simply sort these 7 elements in $O(1)$ time and take the third one.
 
 \end{enumerate}
-
 \end{document}

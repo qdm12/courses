@@ -31,8 +31,49 @@ def bucket_sort(A):
         B_final += bucket
     print "Final output array B: "+str(B_final)
     return B_final
+    
+class MergeSort(object):
+    def merge(self, A, l, q, r):
+        n1 = q - l + 1
+        n2 = r - q
+        L = [A[l + i] for i in range(n1)]
+        R = [A[q + 1 + i] for i in range(n2)]
+        i = j = 0 # Initial index of first and second subarrays
+        k = l # Initial index of merged subarray
+        while i < n1 and j < n2:
+            if L[i] <= R[j]:
+                A[k] = L[i]
+                i += 1
+            else:
+                A[k] = R[j]
+                j += 1
+            k += 1
+        # Copy the remaining elements of L[], if there are any
+        while i < n1:
+            A[k] = L[i]
+            i += 1
+            k += 1
+        # Copy the remaining elements of R[], if there are any
+        while j < n2:
+            A[k] = R[j]
+            j += 1
+            k += 1
+
+    def mergeSort(self, A, l, r):
+        if l < r:
+            q = int(floor((l+r)/2))
+            self.mergeSort(A, l, q)
+            self.mergeSort(A, q+1, r)
+            self.merge(A, l, q, r)
+            
+    def run(self):
+        A = [54,26,93,17,77,31,44,55,20]
+        self.mergeSort(A, 0, len(A) - 1)
+        print A
 
         
 if __name__ == "__main__":
-    #radix_sort_alpha(["COW", "DOG", "SEA", "RUG", "ROW", "MOB", "BOX", "TAB", "BAR", "EAR", "TAR", "DIG", "BIG", "TEA", "NOW", "FOX"])
+    radix_sort_alpha(["COW", "DOG", "SEA", "RUG", "ROW", "MOB", "BOX", "TAB", "BAR", "EAR", "TAR", "DIG", "BIG", "TEA", "NOW", "FOX"])
     bucket_sort([.79,.13,.16,.64,.39,.20,.89,.53,.71,.43])
+    m = MergeSort()
+    m.run()
