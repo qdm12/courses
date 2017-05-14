@@ -25,14 +25,15 @@ What you need is that your brain is open.  -- Paul Erd\H{o}s
 
 \begin{enumerate}
 \item \textbf{\textcolor{blue}{Determine an LCS of $10010101$ and $010110110$ using the algorithm studied.}}
-    \begin{algorithm}
+    \\ 
+    \begin{algorithm}[H]
         \SetKwFunction{lcslength}{LCS-LENGTH}
-        \Indm\lcslength{x, y} \\
+        \Indm\lcslength{x, y}\\
         \Indp
             m = x.length \\
             n = y.length \\
             Let b[1..m, 1..n] and c[0..m, 0..n] be new matrices. \\
-            \tcc{We now set the first row and first column of c to 0.} \\
+            \tcc{We now set the first row and first column of c to 0.}
             \For{i = 1 to m}{
                 c[i, 0] = 0 \\
             }
@@ -59,7 +60,7 @@ What you need is that your brain is open.  -- Paul Erd\H{o}s
             \Return{c, b}
         \caption{LCS-LENGTH, where x and y are two sequences}
     \end{algorithm}
-    \\ Following this algorithm we have the following table initially:
+    Following this algorithm we have the following table initially:
     \\
     \begin{tabular}{ c | c c c c c c c c c c } 
         - & - & 0 & 1 & 0 & 1 & 1 & 0 & 1 & 1 & 0 \\
@@ -289,7 +290,7 @@ $20,30,4,50, 10$.  Now $INC[5]=2$ because of $4,10$ -- we do
             \item If there is no $x_j$ such that $0 < j < i$ and $x_j < x_i$, then INC[i] = 1
             \item Else, INC[i] = 1 + max(INC[j])
         \end{itemize}
-        \\ Each INC[i] takes $O(n)$ so the total time is $O(n^2)$. The algorithm has been implemented in Python:
+        Each INC[i] takes $O(n)$ so the total time is $O(n^2)$. The algorithm has been implemented in Python:
         \begin{minted}{python}
 def INC(A, i):
     """ Length of increasing subsequence in A ending at A[i] """
@@ -338,7 +339,7 @@ if __name__ == '__main__':
                     LIS \leq a \\
                     DIS \leq b
                 \end{array}
-            \right. \Rightarrow \exist \mbox{ only } ab \mbox{ possibilities for the pair }(INC[i], DEC[i])$
+            \right. \Rightarrow \exists \mbox{ only } ab \mbox{ possibilities for the pair }(INC[i], DEC[i])$
         \\ However, for the previous part, we obtained $ab + 1$ distinct pairs.
         
         
@@ -354,7 +355,8 @@ if __name__ == '__main__':
         \item m to record the parenthesization
     \end{itemize}
     The algorithm is as follows, where $p$ is an array containing the matrix dimensions such that $A_i$ has the dimensions $p_{i-1}, p_i$.
-    \begin{algorithm}
+    \\
+    \begin{algorithm}[H]
         \SetKwFunction{matrixchainorder}{MATRIX-CHAIN-ORDER}
         \Indm\matrixchainorder{p}\\
         \Indp
@@ -379,7 +381,7 @@ if __name__ == '__main__':
             }
             \Return{m and s}
     \end{algorithm}
-    \\ This algorithm was then implemented in Python (headaches for the 0-based index): \\
+    This algorithm was then implemented in Python (headaches for the 0-based index): \\
     \begin{minted}{python}
 # Matrix Ai has dimension p[i-1] x p[i] for i = 1..n
 def matrixchainorder(p):
@@ -408,7 +410,7 @@ if __name__ == '__main__':
     print_matrix(m)
     print_matrix(s)
     \end{minted}
-    \\\\ This program was hence printing m and s as follows:
+    This program was hence printing m and s as follows:
     \begin{itemize}
         \item The matrix m is printed as:
         \begin{tabular}{ c c c c c c }
@@ -438,7 +440,7 @@ if __name__ == '__main__':
         \item m[4,5] = $p_3 \times p_4 \times p_5 = 12 \times 5 \times 50 = 3000$
         \item m[5,6] = $p_4 \times p_5 \times p_6 = 5 \times 50 \times 6 = 1500$
     \end{itemize}
-    We now have 
+    We now have \\
     \begin{tabular}{ c c c c c c }
     0 & 150 & x & x & x & x \\
     0 & 0 & 360 & x & x & x \\
@@ -447,7 +449,7 @@ if __name__ == '__main__':
     0 & 0 & 0 & 0 & 0 & 1500 \\
     0 & 0 & 0 & 0 & 0 & 0 \\
     \end{tabular}
-    We then calculate using the recurrence relation $m[i,j] = min(m[i,k] + m[k+1, j] + p_{i-1}p_kp_j \mbox{ for } k \mbox{ from } i \mbox{ to } j)$ if $i < j$.
+    \\ We then calculate using the recurrence relation $m[i,j] = min(m[i,k] + m[k+1, j] + p_{i-1}p_kp_j \mbox{ for } k \mbox{ from } i \mbox{ to } j)$ if $i < j$.
     \begin{itemize}
         \item m[1,3]
         \begin{itemize}
@@ -484,7 +486,7 @@ if __name__ == '__main__':
     \item \textbf{\textcolor{blue}{Assume $i< n$.  How many times need $i$ be doubled before it reaches (or exceeds) $n$?}}
         \\ Let $x$ be the number of times we need to double i.
         \\ We need $i \times 2^x \geq n \Rightarrow x \geq \lg(\frac{n}{i})$ so we need x to be the \textbf{ceiling} of $\lg(\frac{n}{i})$.
-    \item \textbf{\textcolor{blue}{Write $\lg[n^ne^{-n}\sqrt{2\pi n}]$ precisely as a sum in simplest form.  What is it asymptotic to as $n\ra \infty$?  What is interesting about the bracketed expression?}}
+    \item \textbf{\textcolor{blue}{Write $\lg[n^ne^{-n}\sqrt{2\pi n}]$ precisely as a sum in simplest form.  What is it asymptotic to as $n \rightarrow \infty$?  What is interesting about the bracketed expression?}}
         \\ $\lg[n^ne^{-n}\sqrt{2\pi n}] = \lg(n^n) + \lg(e^{-n}) + \lg(\sqrt{2\pi n}) = n\lg(n) - n\lg(e) + 0.5\lg(2\pi n) = n\lg(n) - n\lg(e) + 0.5\lg(2\pi) + 0.5\lg(n)$. This is a \textbf{Stirling's formula} and is asymptotic to $n!$
     \end{enumerate}
 \end{enumerate}

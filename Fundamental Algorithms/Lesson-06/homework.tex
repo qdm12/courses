@@ -38,7 +38,7 @@ left & h & N & N & e & c & N & f & N \\
 right & d & N & g & N & b & N & N & N
 \end{tabular}
 \end{center}}}
-    \\ We have the following tree:
+    We have the following tree:
     \\
     \begin{center}
     \begin{forest}
@@ -355,33 +355,36 @@ bst.print_inOrder(root)
     \item The heap property can print out the keys of an $n$-node tree in sorted order in $O(n\ log\ n)$. This is due to the fact that this property will require us to swap and reheapify each time so it would require $log(n) + log(n-1) + log(n-2) + ... + 1$ which results in $O(n\ log\ n)$.    
     \end{itemize}    
     
-\item \textbf{\textcolor{blue}{You are given an array $A[1\cdots n]$, whose values come from a universe $\Omega$. (In application, the values would be the keys of records.) You want to test if there are any duplicates, if there are any $1\leq i < j \leq n$ such that $A[i]=A[j]$.  You are given a hash function $h:\Omega\ra \{1,\ldots,n\}$ and a table $T[1\cdots n]$ of linked lists, initially all empty. Using the hash function,  give an algorithm that returns {\tt BAD} if there is a duplicate and {\tt GOOD} if there is no duplicate. Discuss the time of the algorithm under the assumption that calculating the hash function takes unit time.}}
+\item \textbf{\textcolor{blue}{You are given an array $A[1\cdots n]$, whose values come from a universe $\Omega$. (In application, the values would be the keys of records.) You want to test if there are any duplicates, if there are any $1\leq i < j \leq n$ such that $A[i]=A[j]$.  You are given a hash function $h:\Omega \rightarrow \{1,\ldots,n\}$ and a table $T[1\cdots n]$ of linked lists, initially all empty. Using the hash function,  give an algorithm that returns {\tt BAD} if there is a duplicate and {\tt GOOD} if there is no duplicate. Discuss the time of the algorithm under the assumption that calculating the hash function takes unit time.}}
     \\ The following algorithm adds elements to the table and check for duplicates. If a duplicate is found, the element is not added.
     \\
     \begin{algorithm}[H]
+        \SetKwFunction{duplicatecheck}{DUPLICATE-CHECK}
+        \Indm\duplicatecheck{A}\\
+        \Indp
         \For{i from 1 to N}{
-            index \leftarrow h(A[i])\\
-            head \leftarrow T[index]\\
+            index = h(A[i]) \\
+            head = T[index] \\
             \If{head == NULL}{
-                head.value \leftarrow A[i]\\
-                head.next \leftarrow NULL\\
-                \Return "GOOD"\\
+                head.value = A[i] \\
+                head.next = NULL \\
+                \Return "GOOD" \\
             }
-            node \leftarrow head\\
-            \While{node != NULL}{
+            node = head \\
+            \While{node $\neq$ NULL}{
                 \If{node.value == A[i]}{
-                    \Return "BAD"\\
+                    \Return "BAD" \\
                 }
                 \If{node.next == NULL}{
-                    node.next \leftarrow Node(value=A[i], next=NULL)\\
-                    \Return "GOOD"\\
+                    node.next = Node(value=A[i], next=NULL) \\
+                    \Return "GOOD" \\
                 }
-                node \leftarrow node.next\
+                node = node.next \\
             }                
         }
         \caption{Duplicate check and hash table algorithm}
     \end{algorithm}
-    \\ The outer loop is executed $n$ times, and the inner loop is executed $m$ times where
+    The outer loop is executed $n$ times, and the inner loop is executed $m$ times where
     $m$ is the number of elements of $A$ hashing to the same index of the table $T$. In the worst case, if all the elements of $A$ hash to the same index in $T$, the time required is $(n-1)1 + n = 2n - 1$ which is $O(n)$.
 
 \item \textbf{\textcolor{blue}{What would the BST tree look like if you start with the root $a_1$ with $key[a_1]=1$ (and nothing else) and then you apply \[ INSERT[a_2],\ldots,INSERT[a_n] \] in that order where $key[a_i]=i$ for each $2\leq i\leq n$? Suppose the same assumptions of starting with $a_1$ and the key values but the INSERT commands were done in {\em reverse} order \[INSERT[a_n],\ldots,INSERT[a_2] \]}}
@@ -406,7 +409,7 @@ bst.print_inOrder(root)
     ]
     \end{forest}
     \end{center}
-    \\ In the second case, the root is 1 but we insert elements in the reverse order.
+    In the second case, the root is 1 but we insert elements in the reverse order.
     \\ The BST tree would simply look like the following:
     \\
     \begin{center}

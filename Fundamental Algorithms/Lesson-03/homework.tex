@@ -39,20 +39,19 @@ and his small frog-like features taking on an astonishing radiance.
 \\ -- from A Suitable Boy by Vikran Seth
 \end{quote}
 
-\textbf{MERGESORT:} \\
-    \begin{algorithm}
-        \SetKwFunction{mergesort}{MERGE-SORT}
-        \Indm\mergesort{A, p, r} \\
-        \Indp
-            \If{p $<$ r}{
-                q = $\left \lfloor{\frac{p+r}{2}}\rfloor \right.$ \\
-                \mergesort{A, p, q} \\
-                \mergesort{A, q+1, r} \\
-                \merge{A, p, q, r}
-            }
-        \caption{MERGE-SORT, taking unsorted array A, and p $\leq$ r}
-    \end{algorithm}
-    \begin{minted}{python}
+\begin{algorithm}[H]
+    \SetKwFunction{mergesort}{MERGE-SORT}
+    \Indm\mergesort{A, p, r} \\
+    \Indp
+        \If{p $<$ r}{
+            q = $\left \lfloor{\frac{p+r}{2}}\rfloor \right.$ \\
+            \mergesort{A, p, q} \\
+            \mergesort{A, q+1, r} \\
+            \merge{A, p, q, r}
+        }
+    \caption{MERGE-SORT, taking unsorted array A, and $p \leq r$}
+\end{algorithm}
+\begin{minted}{python}
 class MergeSort(object):
     def merge(self, A, l, q, r):
         n1 = q - l + 1
@@ -91,7 +90,7 @@ class MergeSort(object):
         A = [54,26,93,17,77,31,44,55,20]
         self.mergeSort(A, 0, len(A) - 1)
         print A
-    \end{minted}
+\end{minted}
     
     
 
@@ -173,7 +172,7 @@ def bucket_sort(A):
     
 bucket_sort([.79,.13,.16,.64,.39,.20,.89,.53,.71,.43])
     \end{minted}
-    \begin{algorithm}
+    \begin{algorithm}[H]
         \SetKwFunction{bucketsort}{BUCKET-SORT}
         \Indm\bucketsort{A}\\
         \Indp

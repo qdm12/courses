@@ -95,7 +95,8 @@ For every complex problem there is a simple solution.  And it's always wrong.
 \item \textbf{\textcolor{blue}{Consider the undirected graph with vertices $1,2,3,4,5$ and adjacency lists (arrows omitted) $1:25$, $2:1534$, $3:24$, $4:253$, $5:412$.  Show the $d$ and
 $\pi$ values that result from running BFS, using $3$ as a source.  Nice picture, please!}}
     \\ Breadth first search (BFS) starts at the root of a tree and explores the neighbor nodes first, before moving to the next level neighbors.
-    \begin{algorithm}
+    \\
+    \begin{algorithm}[H]
     \SetKwFunction{bfs}{BFS}
     \Indm\bfs{G, s}\\
     \Indp
@@ -493,7 +494,8 @@ $\pi$ values that result from running BFS, using $3$ as a source.  Nice picture,
 \\ {\tt Note:} The cognescenti will recognize that we are determining if a graph is bipartite!}}
     \\ We need to add a field to each node which we call \textbf{type}, which can either be GOOD or BAD.
     \\ The basic idea is that a node should have the opposite type of its adjacents nodes.
-    \begin{algorithm}
+    \\
+    \begin{algorithm}[H]
     \For{all v $\in$ L}{
         \If{color[v] == WHITE}{
             type[v] = GOOD \\
@@ -506,7 +508,7 @@ $\pi$ values that result from running BFS, using $3$ as a source.  Nice picture,
     
 \item \textbf{\textcolor{blue}{Show how DFS works on Figure B. All lists are alphabetical except we put R before Q so it is the first letter. Show the discovery and finishing time for each vertex.}}
     \\ DFS explores edges out of the most recently discovered vertex v that still has unexplored edges. Once all v's edges are explored, it backtracks to explore other edges leaving from the vertex v.
-    \begin{algorithm}
+    \begin{algorithm}[H]
     \SetKwFunction{dfs}{DFS}
     \Indm\dfs{G}\\
     \Indp
@@ -523,7 +525,7 @@ $\pi$ values that result from running BFS, using $3$ as a source.  Nice picture,
     \caption{DFS algorithm}
     \end{algorithm}
     
-    \begin{algorithm}
+    \begin{algorithm}[H]
     \SetKwFunction{dfsvisit}{DFS-VISIT}
     \Indm\dfsvisit{G, u}\\
     \Indp
@@ -961,8 +963,8 @@ when it is run on Figure C, with all lists alphabetical.}}
         \\ Uno makes the move. As the roles are reversed and Dos moves first, Uno wins so VALUE[z] = Uno.
         \\ Otherwise, a position w is reached with VALUE[w] = Uno (whatever Uno does). Dos, who is making the first move, wins so VALUE[z] = Dos.
     \item \textbf{\textcolor{blue}{Using the above idea modify {\tt DFS-VIST[v]} to find who wins the original game.  In your modified algorithm there will be an extra function {\tt VALUE[w]} which is originally set to {\tt NIL} for all vertices $w$, representing that the winner of the game starting at $w$ has not yet been determined. When the unmodified {\tt DFS-VISIT[w]} would be finished add a couple of lines of pseudocode to give {\tt VALUE[w]}. Give an upper bound on the time of your algorithm.}}
-        \\ Apply the following DFS-VISIT-CUSTOM[G, v]. This algorithm requires O(V+E), but could be smaller as the algorithm only reach a small of the graph.
-        \begin{algorithm}
+        \\ Apply the following DFS-VISIT-CUSTOM[G, v]. \\
+        \begin{algorithm}[H]
         \SetKwFunction{dfsc}{DFS-VISIT-CUSTOM}
         \Indm\dfsc{G, v}\\
         \Indp
@@ -984,6 +986,7 @@ when it is run on Figure C, with all lists alphabetical.}}
             f[u] = time \\
             \caption{DFS-VISIT-CUSTOM[G, v] algorithm}
         \end{algorithm}
+        This algorithm requires O(V+E), but could be smaller as the algorithm only reach a small of the graph.
     \end{enumerate}
 \end{enumerate}
 

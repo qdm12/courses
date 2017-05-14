@@ -161,7 +161,8 @@
 \item \textbf{\textcolor{blue}{The operation {\tt HEAP-DELETE(A,t)} deletes the item in node $t$
 from heap $A$.  Give an implementation of {\tt HEAP-DELETE} that runs in
 $O(\lg n)$ time for an $n$-element max-heap.}}
-    \begin{algorithm}
+    \\
+    \begin{algorithm}[H]
         \SetKwFunction{heapdel}{HEAP-DELETE}
         \Indm\heapdel{A, t}\\
         \Indp
@@ -181,7 +182,7 @@ $O(\lg n)$ time for an $n$-element max-heap.}}
             }
         \caption{HEAP-DELETE, where A is the heap and t is the node to be deleted}
     \end{algorithm}
-    \\ First a simple case: If $t$ is $A.heapsize$ then simply decrement
+    First a simple case: If $t$ is $A.heapsize$ then simply decrement
     $A.heapsize$.  ELSE first reset $A[t]\leftarrow A[A.heapsize]$ and
     decrement $A.heapsize$.  Now you have the right elements but $A[t]$
     may be in the wrong places.  First check if $A[t]> A[parent[t]]$
@@ -235,7 +236,7 @@ $O(\lg n)$ time for an $n$-element max-heap.}}
         \item For $2 \leq i \leq 3$, there are 5 exchanges
         \item For $i = 1$ (the root), it goes to the bottom so there are 6 exchanges
     \end{itemize}
-    \\ Total: $32 \times 1 + 16 \times 2 + 8 \times 3 + 4 \times 4 + 2 \times 5 + 1 \times 6 = 120$ exchanges
+    Total: $32 \times 1 + 16 \times 2 + 8 \times 3 + 4 \times 4 + 2 \times 5 + 1 \times 6 = 120$ exchanges
 
 \item \textbf{\textcolor{blue}{Now suppose the values are distinct and in decreasing order. Again, in the procedure {\tt BUILD-MAX-HEAP(A)} precisely how many times will two elements of the array be exchanged?}}
     \\ Never!  Each element will be placed originally in precisely its correct final spot.
