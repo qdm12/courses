@@ -31,7 +31,7 @@
         \For{all v $\in$ ADJ[s]}{
             d[v] = w[s,v] \tcp*{Takes time $O(ln(V))$ if changed to keep the MIN-HEAP structure} \\        
             $\pi[v]$ = s \\
-            Q.add(v) \tcp*{Takes time $O(ln(V))$ as the MIN-HEAP structure has to be kept} \\
+            Q.add(v) \tcp*{Takes time $O(ln(V))$ as the MIN-HEAP structure has to be kept}
         }
         \While{$Q \neq \emptyset$}{
             u = EXTRACT-MIN(Q) \\

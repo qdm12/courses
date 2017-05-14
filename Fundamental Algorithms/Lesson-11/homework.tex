@@ -153,7 +153,7 @@ when I had to choose one or the other I usually chose the beautiful.
 \item \textbf{\textcolor{blue}{Find $\frac{211}{507}$ in $Z_{1000}$.}}
     \begin{itemize}
         \item We want to find $x$ such that $507x = 1$ in $Z_{1000}$.
-            \\ We use the extended-euclid algorithm to find $x$ with EUCLID(1000,507).
+            \\ We use the extended-euclid algorithm to find $x$ with EUCLID(1000,507). \\
             \begin{algorithm}[H]
             \SetKwFunction{eeuclid}{EXTENDED-EUCLID}
             \Indm\eeuclid{a, b}\\
@@ -168,7 +168,7 @@ when I had to choose one or the other I usually chose the beautiful.
                 }
             \caption{EXTENDED-EUCLID algorithm}
             \end{algorithm}
-            \\ We start by filling the columns a, b and ${\lfloor}\frac{a}{b}{\rfloor}$ until b = 0.
+            We start by filling the columns a, b and ${\lfloor}\frac{a}{b}{\rfloor}$ until b = 0.
             \\ d is just the gcd so we can fill the columns with 1s once it is found. \\
             \begin{center}
             \begin{tabular}{| c | c | c | c | c | c |} 
@@ -278,7 +278,7 @@ when I had to choose one or the other I usually chose the beautiful.
             \item $1 \times 620 \bmod{1001} = 620$
             \item $620 \times 256 \bmod{1001} = 562$          
         \end{itemize}
-        \\ Therefore $2^{1000} \bmod{1001} = 562$.
+        Therefore $2^{1000} \bmod{1001} = 562$.
     \end{itemize}
 
 \end{enumerate}

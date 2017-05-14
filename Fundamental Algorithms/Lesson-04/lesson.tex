@@ -23,7 +23,7 @@ $\frac{n}{b}$ the size of each subproblem and $f(n)$ the cost of the work done o
 such as dividing the problem or merging the solutions of the subproblems.
 
 \begin{itemize}
-    \item [\textbf{Case 1}] Low overhead
+    \item Low overhead
     \begin{equation}
     \left\{
         \begin{array}{ll}
@@ -32,7 +32,7 @@ such as dividing the problem or merging the solutions of the subproblems.
         \end{array}
     \right. \Rightarrow T(n) = \Theta(n^{log_b\ a})
     \end{equation}
-    \item [\textbf{Case 2}] Perfect case
+    \item Perfect case
     \begin{equation}
     \left\{
         \begin{array}{ll}
@@ -41,7 +41,7 @@ such as dividing the problem or merging the solutions of the subproblems.
         \end{array}
     \right. \Rightarrow T(n) = \Theta(n^{c}log^{k+1}\ n)
     \end{equation}
-    \item [\textbf{Case 3}] High overhead
+    \item High overhead
     \begin{equation}
     \left\{
         \begin{array}{ll}
@@ -52,12 +52,10 @@ such as dividing the problem or merging the solutions of the subproblems.
     \right. \Rightarrow T(n) = \Theta(f(n))
     \end{equation}
 \end{itemize}
-\newline
-\\ Let $S(n) = \frac{T(n)}{n^{log_{b}a}}$
+Let $S(n) = \frac{T(n)}{n^{log_{b}a}}$
 \\ $\Rightarrow S(\frac{n}{b} = \frac{T(\frac{n}{b})}{\frac{n}{b}^{log_{b}a}}$
 \\ $\Rightarrow S(\frac{n}{b} = \frac{aT(\frac{n}{b})}{n^{log_{b}a}}$
 \\ so $S(n) = S(\frac{n}{b}) + \frac{f(n)}{n^{log_{b}a}}$
 \\ $\Rightarrow S(n) = S(\frac{n}{b}) + g(n)$
-
 
 \end{document}
