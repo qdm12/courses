@@ -1,51 +1,63 @@
-\documentclass{article}
-\usepackage{color}
+\documentclass[11pt]{article}
+\pagestyle{empty}
 \usepackage{fancyhdr}
 \usepackage{lastpage}
 \pagestyle{fancy}
 \renewcommand{\headrulewidth}{0pt}
 \cfoot[R]{\thepage~of~\pageref{LastPage}}
+\addtolength{\oddsidemargin}{-.875in}
+\addtolength{\evensidemargin}{-.875in}
+\addtolength{\textwidth}{1.75in}
+\addtolength{\topmargin}{-.875in}
+\addtolength{\textheight}{1.75in}
 
-\title{FA lesson 4}
+\title{FA Lesson 4}
 \begin{document}
-\maketitle
-
-\section{Master Theorem}
+\begin{center}
+\textbf{FA Lesson 4: Master theorem}
+\end{center}
 The master theorem \textbf{only} concerns recurrence relations of the form:
 \begin{equation}T(n)=aT(\frac{n}{b}) + f(n) \textnormal{ where } a \geq 1 \textnormal{ and } b > 1\end{equation}
 \newline $n$ is the size of the problem, $a$ the number of subproblems in recursion, 
 $\frac{n}{b}$ the size of each subproblem and $f(n)$ the cost of the work done outside the recursive calls
 such as dividing the problem or merging the solutions of the subproblems.
 
-\subsection{Case 1: Low overhead}
-\begin{equation}
-\left\{
-    \begin{array}{ll}
-        f(n)=O(n^c) \\
-        log_b\ a > c
-    \end{array}
-\right. \Rightarrow T(n) = \Theta(n^{log_b\ a})
-\end{equation}
- 
-\subsection{Case 2: Perfect case?}
-\begin{equation}
-\left\{
-    \begin{array}{ll}
-        f(n)=\Theta(n^{c}log^{k}n) \textnormal{ for some constant } k \geq 0 \\
-        log_b\ a = c
-    \end{array}
-\right. \Rightarrow T(n) = \Theta(n^{c}log^{k+1}\ n)
-\end{equation}
+\begin{itemize}
+    \item [\textbf{Case 1}] Low overhead
+    \begin{equation}
+    \left\{
+        \begin{array}{ll}
+            f(n)=O(n^c) \\
+            log_b\ a > c
+        \end{array}
+    \right. \Rightarrow T(n) = \Theta(n^{log_b\ a})
+    \end{equation}
+    \item [\textbf{Case 2}] Perfect case
+    \begin{equation}
+    \left\{
+        \begin{array}{ll}
+            f(n)=\Theta(n^{c}log^{k}n) \textnormal{ for some constant } k \geq 0 \\
+            log_b\ a = c
+        \end{array}
+    \right. \Rightarrow T(n) = \Theta(n^{c}log^{k+1}\ n)
+    \end{equation}
+    \item [\textbf{Case 3}] High overhead
+    \begin{equation}
+    \left\{
+        \begin{array}{ll}
+            f(n)=\Omega(n^c) \\
+            log_b\ a < c \\
+            af(\frac{n}{b}) \leq kf(n) \textnormal{ for } k < 1 \textnormal{ and sufficiently large n}
+        \end{array}
+    \right. \Rightarrow T(n) = \Theta(f(n))
+    \end{equation}
+\end{itemize}
+\newline
+\\ Let $S(n) = \frac{T(n)}{n^{log_{b}a}}$
+\\ $\Rightarrow S(\frac{n}{b} = \frac{T(\frac{n}{b})}{\frac{n}{b}^{log_{b}a}}$
+\\ $\Rightarrow S(\frac{n}{b} = \frac{aT(\frac{n}{b})}{n^{log_{b}a}}$
+\\ so $S(n) = S(\frac{n}{b}) + \frac{f(n)}{n^{log_{b}a}}$
+\\ $\Rightarrow S(n) = S(\frac{n}{b}) + g(n)$
 
-\subsection{Case 3: High overhead}
-\begin{equation}
-\left\{
-    \begin{array}{ll}
-        f(n)=\Omega(n^c) \\
-        log_b\ a < c \\
-        af(\frac{n}{b}) \leq kf(n) \textnormal{ for } k < 1 \textnormal{ and sufficiently large n}
-    \end{array}
-\right. \Rightarrow T(n) = \Theta(f(n))
-\end{equation}
 
 \end{document}
