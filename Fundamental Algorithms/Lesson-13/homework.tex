@@ -1,0 +1,83 @@
+\documentclass[11pt]{article}
+\pagestyle{empty}
+\usepackage{color}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage[options]{algorithm2e}
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{0pt}
+\cfoot[R]{\thepage~of~\pageref{LastPage}}
+\addtolength{\oddsidemargin}{-.875in}
+\addtolength{\evensidemargin}{-.875in}
+\addtolength{\textwidth}{1.75in}
+\addtolength{\topmargin}{-.875in}
+\addtolength{\textheight}{1.75in}
+
+\begin{document}
+\begin{center} {\Large\bf FA, Homework 13}  \\ Quentin McGaw (qm301) \\ 05/11/17
+\end{center}
+
+\begin{algorithm}
+    \SetKwFunction{dijkstra}{DIJKSTRA}
+    \Indm\dijkstra{G, w, s}\\
+    \Indp
+        d[s] = 0 \\
+        \For{all v $\neq$ s}{
+            d[v] = $\infty$ \\
+            $\pi[v]$ = NIL \\
+        }
+        $S = \{s\}$ \\
+        $Q = \emptyset$ \\
+        \For{all v $\in$ ADJ[s]}{
+            d[v] = w[s,v] \tcp*{Takes time $O(ln(V))$ if changed to keep the MIN-HEAP structure} \\        
+            $\pi[v]$ = s \\
+            Q.add(v) \tcp*{Takes time $O(ln(V))$ as the MIN-HEAP structure has to be kept} \\
+        }
+        \While{$Q \neq \emptyset$}{
+            u = EXTRACT-MIN(Q) \\
+            S.add(u) \\
+            \For{v $\in$ Adj[u] and v $\notin$ S}{
+                \tcp{RELAX(u, v)} \\
+                \uIf{$\pi[v]$ = NIL}{
+                    $\pi[v]$ = u \\
+                    d[v] = d[u] + w[u, v] \\
+                    Q.add(v) \\
+                }
+                \uElseIf{d[u] + w[u, v] $<$ d[v]}{
+                    $\pi[v]$ = u \\
+                    d[v] = d[u] + w[u, v] \\
+                    RESET Q \\
+                }
+            }
+        }
+\end{algorithm}
+
+
+\begin{enumerate}
+\item \textbf{\textcolor{blue}{Suppose that we are doing Dijkstra's Algorithm on vertex set $V=\{1,\ldots,500\}$ with source vertex $s=1$ and at some time we have $S=\{1,\ldots,100\}$.}}
+    \begin{enumerate}
+    \item \textbf{\textcolor{blue}{What is the interpretation of $\pi[v],d[v]$ for $v\in S$?}}
+        \begin{itemize}
+            \item d[v] is the \textbf{minimal cost} of a path s to v.
+            \item $\pi[v]$ is the \textbf{parent} of vertex v on this path.
+        \end{itemize} 
+    \item \textbf{\textcolor{blue}{What is the interpretation of $\pi[v],d[v]$ for $v\not\in S$?}}
+        \begin{itemize}
+            \item d[v] is the \textbf{minimal cost} of a path $s, v_1, ..., v_j, v$ where all these vertices $\in S$.
+            \item $\pi[v]$ is the \textbf{parent} of vertex v on this path and will thus be $v_j$.
+        \end{itemize}
+    \item \textbf{\textcolor{blue}{Which $v$ will have $\pi[v]=NIL$ at this time.}}
+        \\ Vertices not having a directed edge from any vertex in $S$.
+    \item \textbf{\textcolor{blue}{For those $v$ what will be $d[v]$?}}
+        \\ d[v] = $\infty$
+    \end{enumerate}
+    
+\item \textbf{\textcolor{blue}{Suppose, as with Dijkstra's Algorithm, the input is a directed graph, $G$, a source vertex $s$, and a weight function $w$.  But now further assume that the weight function only takes on the values one and two. Modify Dijkstra's algorithm -- replacing the {\tt MIN-HEAP} with a more suitable data structure, so that the total time is $O(E+V)$.}}
+    \\ For two vertices $u$ and $v$, if $w(u,v) = 2$ then replace the edge $(u,v)$ by $(u,z),(z,v)$ where $z$ is a new vertex. This makes a directed graph with all weights equal (to ONE) so we can use BFS (complexity $O(E + V)$) to give the shortest path, although you will have to remove the new vertices created from the final list.
+    
+\item \textbf{\textcolor{blue}{Let $G$ be a {\tt DAG} on vertices $1,\ldots,n$ and suppose we are {\em given} that the ordering $1\cdots n$ is
+a Topological Sort. Let {\tt COUNT[i,j]} denote the number of paths from $i$ to $j$.  Let $s$, a ``source vertex" be given. Give an efficient algorithm (appropriately modifying the methods of \S 24.1) to find {\tt COUNT[s,j]} for all $j$.}}
+    \\ Assume $s = 1$. Set $COUNT[1, 1] = 1$ and we have $COUNT[1, j] = \sum_{i=1}^{j-1} COUNT[1,i]$, where $(i,j)$ is a directed edge. This can be implemented by going through the adjacency lists, and when $j \in Adj[i]$, add $i$ to the reverse adjacency list $Adjrev[j]$. This requires $O(E)$ time.
+\end{enumerate}
+
+\end{document}

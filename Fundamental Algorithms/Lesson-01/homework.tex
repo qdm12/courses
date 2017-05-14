@@ -2,7 +2,8 @@
 \pagestyle{empty}
 \usepackage{color}
 \usepackage{forest}
-\usepackage{listings}
+\usepackage[options]{algorithm2e}
+\usepackage{minted}
 \usepackage{fancyhdr}
 \usepackage{lastpage}
 \pagestyle{fancy}
@@ -19,41 +20,27 @@
 \end{center}
 
 \begin{enumerate}
-\item \textbf{\textcolor{blue}{Let $A$ be a max-heap with heapsize fifty 
-million, being used as a priority queue.  Suppose 
-{\tt HEAP-INCREASE-KEY(A,300,key)} is called. What is the minimum & maximum number 
-of exchanges that can take place?}}
-    \\ The minimum number of exchanges is $0$ if the $key < A[300/2]$ (parent's key). 
-    \\ The maximum number of exchanges occurs when $key$ is the largest key in the heap. 
-    There would then be exchanges with $A[150]$, $A[75]$, $A[37]$, $A[18]$, $A[9]$, $A[4]$, $A[2]$ and $A[1]$.
-    This is a total of $8$ exchanges.
+\item \textbf{\textcolor{blue}{Let $A$ be a max-heap with heapsize fifty million, being used as a priority queue.  Suppose {\tt HEAP-INCREASE-KEY(A,300,key)} is called. What is the minimum and maximum number of exchanges that can take place?}}
+    \begin{itemize}
+        \item The minimum number of exchanges is $0$ if $key < A[300/2]$ (parent's key).
+        \item The maximum number of exchanges occurs when $key$ is the largest key in the heap. There would then be exchanges with $A[150]$, $A[75]$, $A[37]$, $A[18]$, $A[9]$, $A[4]$, $A[2]$ and $A[1]$. This is a total of $8$ exchanges. \textbf{Note} that this is $\left \lfloor{\log_2(300)}\right \rfloor = \left \lfloor{\lg(300)}\right \rfloor = 8$.
+    \end{itemize}
+    
+\item \textbf{\textcolor{blue}{When $A$ is an array with length fifty million and {\tt MAX-HEAPIFY(A,300)} is called. What is the minimum and maximum number of exchanges that can take place?}}
+    \begin{itemize}
+        \item The minimum number of exchanges is $0$ if the key at $300$ is bigger than the keys of both its children.
+        \item The maximum number of exchanges occurs when we have to work all the way down to the leaves. We would have to exchange (Worst case) with $A[600]$, $A[1200]$, $A[2400]$, $A[4800]$, $A[9600]$, $A[19200]$, $A[38400]$, $A[76800]$, $A[153600]$, $A[307200]$, $A[614400]$, $A[1228800]$, $A[2457600]$, $A[4915200]$, $A[9830400]$, $A[19660800]$ and $A[39321600]$, so a total of $17$ exchanges (We chose the left side as indexes are smaller than on the right side). \textbf{Note} that this is $\left \lfloor{\lg(\frac{n}{i})}\right \rfloor = \left \lfloor{\lg(\frac{50000000}{300})}\right \rfloor = 17$.
+    \end{itemize}
 
-\item \textbf{\textcolor{blue}{When $A$ is an array with length fifty 
-million and {\tt MAX-HEAPIFY(A,300)} is called. What is the minimum & maximum 
-number of exchanges that can take place?}}
-    \\ The minimum number of exchanges is $0$ if the key at $300$ is bigger than the keys of both its children.
-    \\ The maximum number of exchanges occurs when we have to work all the way down to the leaves.
-    \\ We would have to exchange (Worst case) with $A[600]$, $A[1200]$, $A[2400]$, $A[4800]$, $A[9600]$, $A[19200]$, $A[38400]$, $A[76800]$, $A[153600]$, $A[307200]$, $A[614400]$, $A[1228800]$, $A[2457600]$, $A[4915200]$, $A[9830400]$, $A[19660800]$ and $A[39321600]$, so a total of $17$ exchanges (We chose the left side as indexes are smaller than on the right side).
-
-\item \textbf{\textcolor{blue}{Consider a min-heap $H$ with length $1023$
-\footnote{Did you recognize $1023$ as a special number? It's one less 
-than $1024=2^{10}$. The binary tree with that many nodes just fills 
-out a row!}.
-Assume the elements of the array are distinct. Let $x$ be the third 
-smallest element in the array.}}
+\item \textbf{\textcolor{blue}{Consider a min-heap $H$ with length $1023$ \footnote{Did you recognize $1023$ as a special number? It's one less than $1024=2^{10}$. The binary tree with that many nodes just fills out a row!}. Assume the elements of the array are distinct. Let $x$ be the third smallest element in the array.}}
 \\ \textbf{\textcolor{blue}{What are the possible positions for $x$.}}
-    \\ It could be in any position in the first two rows, that is, from
-    two to seven.
+    \\ $x$ can be at depth 1 or 2, so from position 2 to position 7 in the array.
 \\ \textbf{\textcolor{blue}{Let $y=H[700]$. Can $y$ be the largest element in the array?}}
-    \\ Yes because any leaf could be the largest in a min-heap.
+    \\ As $y$ is at a position more than $\frac{1023}{2}$, it is therefore a leaf. In a min-heap, any leaf can be the largest element.
 \\ \textbf{\textcolor{blue}{Can $y$ be the smallest element in the array?}}
     \\ No because the smallest in a min-heap is the root.
 \\ \textbf{\textcolor{blue}{Give all $i$ for which it is possible that $y$ is the $i$-th smallest element of the array.}}
-    \\ Its ancestors ($350,175,87,43,21,10,5,2,1$) must be smaller
-       so it can be at best tenth smallest.  Its descendents must be
-       bigger but it doesn't have any descendents. These are the only
-       conditions and it could be the $i$-th smallest for any 
-       $10\leq i\leq 1023$.
+    \\ Its ancestors are ($350,175,87,43,21,10,5,2,1$) and are smaller than $y$ so $y$ can be at best $10^{th}$ smallest. At worst, it will be the largest element and thus the $1023^{th}$ smallest element. Therefore $10 \leq i \leq 1023$.
 
 \item \textbf{\textcolor{blue}{Using the figures in the text as a model, illustrate the operation of
 {\tt BUILD-MAX-HEAP} on the array $A=(5,3,17,10,84,19,6,22,9)$}}
@@ -174,6 +161,26 @@ smallest element in the array.}}
 \item \textbf{\textcolor{blue}{The operation {\tt HEAP-DELETE(A,t)} deletes the item in node $t$
 from heap $A$.  Give an implementation of {\tt HEAP-DELETE} that runs in
 $O(\lg n)$ time for an $n$-element max-heap.}}
+    \begin{algorithm}
+        \SetKwFunction{heapdel}{HEAP-DELETE}
+        \Indm\heapdel{A, t}\\
+        \Indp
+            \eIf{t = A.heapsize}{
+                A.heapsize$--$ \\            
+            }{
+                A[t] = A[A.heapsize] \\
+                A.heapsize$--$ \\
+            }
+            \eIf{A[t] $>$ A[$\pi[t]$]}{
+                \While{$\exist \pi[t]$}{ \tcp{While t is not the root}
+                    A[t], A[$\pi[t]$] = A[$\pi[t]$], A[t] \\
+                    t = $\pi[t]$
+                }
+            }{
+                MAX-HEAPIFY(A, t) \tcp{A[t] is too small !}
+            }
+        \caption{HEAP-DELETE, where A is the heap and t is the node to be deleted}
+    \end{algorithm}
     \\ First a simple case: If $t$ is $A.heapsize$ then simply decrement
     $A.heapsize$.  ELSE first reset $A[t]\leftarrow A[A.heapsize]$ and
     decrement $A.heapsize$.  Now you have the right elements but $A[t]$
@@ -184,24 +191,54 @@ $O(\lg n)$ time for an $n$-element max-heap.}}
     we did not have $A[t]> A[parent[t]]$, then the only (possible) problem
     is that $A[t]$ is too small.  So we apply $MAX-HEAPIFY[A,t]$.
 
-\item \textbf{\textcolor{blue}{Let $A$ be an array of length $127$ in which the values are
-distinct and in increasing order.  In the procedure 
-{\tt BUILD-MAX-HEAP(A)} precisely how many times will two elements
-of the array be exchanged?}}
-    \\ BUILD-MAX-HEAP(A) starts from I = LENGTH(A)/2 DOWN to 1, every I will 
-    do Max-Heapify. \\ For $32\leq I\leq 63$ ,there should be one exchange.
-    \\ For $16\leq I \leq 31$, there should be 2 exchanges. 
-    \\ For $8\leq  I \leq 17$, there should be 3 exchanges. 
-    \\ For $I=4,5,6,7$ , there should be 4 exchanges. 
-    \\ For $I = 2,3$ there should be 5 exchanges. 
-    \\ The root goes down to the bottom, 6 exchanges. 
-    \\ Total: $32\cdot 1+16\cdot 2+8\cdot 3+4\cdot 4+2\cdot 5+1\cdot 6 = 120$
-\item \textbf{\textcolor{blue}{Now suppose the values are distinct and in decreasing order. Again, in the procedure 
-{\tt BUILD-MAX-HEAP(A)} precisely how many times will two elements
-of the array be exchanged?}}
-    \\ Never!  Each element will be placed originally in precisely its
-    correct final spot.
+\item \textbf{\textcolor{blue}{Let $A$ be an array of length $127$ in which the values are distinct and in increasing order. In the procedure {\tt BUILD-MAX-HEAP(A)} precisely how many times will two elements of the array be exchanged?}}
+    \\ BUILD-MAX-HEAP(A) essentially works as in the following Python code:
+    \begin{minted}{python}
+    def max_heapify(self, A, i):
+        """ Outputs A modified so that i roots as heap
+            Running time O(log n) where n = len(A) - i
+            
+            Args:
+                A (list): Left and right children of i root heaps (but i may not)
+                i (int): Array index
+        """
+        left = 2*i + 1
+        right = 2*i + 2
+        largest = i
+        if left < len(A) and A[left] > A[largest]:
+            largest = left
+        if right < len(A) and A[right] > A[largest]:
+            largest = right
+        if largest != i:
+            A[i], A[largest] = A[largest], A[i]
+            self.max_heapify(A, largest)
+
+    def build_max_heap(self, A):
+        """ Outputs A modified to represent a heap
+            Running time O(n) where n = len(A)
+            
+            Args:
+                A (list): Unsorted array
+                i (int): Array index
+        """
+        for i in range(len(A)/2, -1, -1):
+            self.max_heapify(A, i)
+    
+    \end{minted}
+    \begin{itemize}
+        \item BUILD-MAX-HEAP(A) starts from i = LENGTH(A)/2 = 63 down to i = 1
+        \item At every step, MAX-HEAPIFY(A, i) is executed.
+        \item For $32 \leq i \leq 63$, there is 1 exchange
+        \item For $16 \leq i \leq 31$, there are 2 exchanges
+        \item For $8 \leq i \leq 15$, there are 3 exchanges
+        \item For $4 \leq i \leq 7$, there are 4 exchanges
+        \item For $2 \leq i \leq 3$, there are 5 exchanges
+        \item For $i = 1$ (the root), it goes to the bottom so there are 6 exchanges
+    \end{itemize}
+    \\ Total: $32 \times 1 + 16 \times 2 + 8 \times 3 + 4 \times 4 + 2 \times 5 + 1 \times 6 = 120$ exchanges
+
+\item \textbf{\textcolor{blue}{Now suppose the values are distinct and in decreasing order. Again, in the procedure {\tt BUILD-MAX-HEAP(A)} precisely how many times will two elements of the array be exchanged?}}
+    \\ Never!  Each element will be placed originally in precisely its correct final spot.
 \end{enumerate}
     
 \end{document}
-

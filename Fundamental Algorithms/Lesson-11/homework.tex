@@ -1,10 +1,10 @@
 \documentclass[11pt]{article}
 \pagestyle{empty}
 \usepackage{color}
-\usepackage{fancyhdr}
-\usepackage{lastpage}
 \usepackage{amsfonts}
 \usepackage{amsmath}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
 \usepackage{enumitem}
 \usepackage[options]{algorithm2e}
 \pagestyle{fancy}
@@ -27,25 +27,27 @@ when I had to choose one or the other I usually chose the beautiful.
 \end{quote}
 
 \begin{algorithm}
-MST-PRIM(G, w, r): \\
-\For{each u $\in$ G.V}{
-    key[u] = $\infty$ \\
-    $\pi$[u] = NIL \\
-}
-key[r] = 0 \\
-Q = G.V \\
-S = [] \\
-\While{Q $\neq \emptyset$}{
-    u = EXTRACT-MIN(Q) \\
-    \For{each v $\in$ G.Adj[u]}{
-        \If{v $\in$ Q and key[v] $>$ w(u,v)}{
-            $\pi$[v] = u \\
-            key[v] = w(u,v) \\
-        }
+\SetKwFunction{mstprim}{MST-PRIM}
+\Indm\mstprim{G, w, r} \\
+\Indp
+    \For{each u $\in$ G.V}{
+        key[u] = $\infty$ \\
+        $\pi$[u] = NIL \\
     }
-    S.append(u) \\
-}
-\caption{Prim's algorithm "MST-PRIM"}
+    key[r] = 0 \\
+    Q = G.V \\
+    S = [] \\
+    \While{Q $\neq \emptyset$}{
+        u = EXTRACT-MIN(Q) \\
+        \For{each v $\in$ G.Adj[u]}{
+            \If{v $\in$ Q and key[v] $>$ w(u,v)}{
+                $\pi$[v] = u \\
+                key[v] = w(u,v) \\
+            }
+        }
+        S.add(u) \\
+    }
+\caption{Prim's algorithm}
 \end{algorithm}
 
 \begin{enumerate}
@@ -76,7 +78,7 @@ S = [] \\
             \item $V = n$
             \item $E = \left(\begin{smallmatrix} n \\ 2 \end{smallmatrix}\right) \approx \frac{n^2}{2}$
         \end{itemize}
-        \\ Prim therefore requires $O(n^2\ln(n))$, whereas Dumb Prim requires $O(n^3)$.
+        Prim therefore requires $O(n^2\ln(n))$, whereas Dumb Prim requires $O(n^3)$.
 \end{enumerate}
 
 \item \textbf{\textcolor{blue}{Consider Prim's Algorithm for MST on the complete graph with vertex set $\{1,\ldots,n\}$.  Assume that edge $\{i,j\}$ has weight $(j-i)^2$.  Let the root vertex $r=1$.  Show the pattern as Prim's Algorithm is applied. In particular, Let $n=100$ and consider the situation when the tree created has $73$ elements and $\pi$ and $key$ have been updated.}}
@@ -87,8 +89,11 @@ S = [] \\
     \item \textbf{\textcolor{blue}{What are these $73$ elements.}}
         \\ 1, 2, 3 ... 73.
     \item \textbf{\textcolor{blue}{What are $\pi[84]$ and $key[84]$.}}
-        \textcolor{red}{xxx}
-    
+        \\ As we have 73 elements in our MST so far, then for the vertex 84:
+        \begin{itemize}
+            \item $\pi[84]$ = 73
+            \item key[84] = $(84 - 73)^2 = 121$
+        \end{itemize}
 \end{enumerate}
 
 \item \textbf{\textcolor{blue}{Find $d=\gcd(89,55)$ and $x,y$ with $89x+55y=1$. [Remark: This is part of a pattern with two consecutive numbers from the Fibonacci sequence $0,1,1,2,3,5,8,13,21,34,55,89,\ldots$]}}
@@ -140,7 +145,7 @@ S = [] \\
      The general solutions have the form:
      \\ $x = -21 + \frac{55r}{1} = -21 + 55r$
      \\ $y = 34 - \frac{89r}{1} = 34 - 89r$
-     \\ with $r\ \epsilon\ \mathbb{Z}$
+     \\ with $r \ \epsilon\ \mathbb{Z}$
      \\ \textbf{A faster way to find the GCD: } EUCLID(89,55) = EUCLID(55,89-55) = EUCLID(34,21) = EUCLID(21,13) = EUCLID(13,8) = EUCLID(8,5) = EUCLID(5,3) = EUCLID(3,2) = EUCLID(2,1) = EUCLID(\textcolor{green}{1},0) = 1
      
 
@@ -150,16 +155,18 @@ S = [] \\
         \item We want to find $x$ such that $507x = 1$ in $Z_{1000}$.
             \\ We use the extended-euclid algorithm to find $x$ with EUCLID(1000,507).
             \begin{algorithm}
-            EXTENDED-EUCLID(a, b): \\
-            \eIf{b == 0}{
-                \Return{(a, 1, 0)} \\
-            }{
-                (d, x', y') = EXTENDED-EUCLID(b, a mod b) \\
-                x = y' \\
-                y = x' - ${\lfloor}\frac{a}{b}{\rfloor}$y' \\
-                \Return{(d, x, y)} \\
-            }
-            \caption{EXTENDED-EUCLID}
+            \SetKwFunction{eeuclid}{EXTENDED-EUCLID}
+            \Indm\eeuclid{a, b}\\
+            \Indp
+                \eIf{b == 0}{
+                    \Return{(a, 1, 0)} \\
+                }{
+                    (d, x', y') = \eeuclid{b, a mod b} \\
+                    x = y' \\
+                    y = x' - ${\lfloor}\frac{a}{b}{\rfloor}$y' \\
+                    \Return{(d, x, y)} \\
+                }
+            \caption{EXTENDED-EUCLID algorithm}
             \end{algorithm}
             \\ We start by filling the columns a, b and ${\lfloor}\frac{a}{b}{\rfloor}$ until b = 0.
             \\ d is just the gcd so we can fill the columns with 1s once it is found. \\
@@ -178,7 +185,7 @@ S = [] \\
             \hline
             \end{tabular}
             \end{center}
-            \\ We know that when b = 0, d = a = 1, x = 1 and y = 0 from the algorithm. \\
+            We know that when b = 0, d = a = 1, x = 1 and y = 0 from the algorithm. \\
             \begin{center}
             \begin{tabular}{| c | c | c | c | c | c |} 
             \hline
@@ -194,7 +201,7 @@ S = [] \\
             \hline
             \end{tabular}
             \end{center}
-            \\ Then starting from the bottom: \\
+            Then starting from the bottom: \\
             \begin{itemize}
                 \item We propagate y values from bottom right to top left (x = y')
                 \item We find y = x' - ${\lfloor}\frac{a}{b}{\rfloor}$y'
@@ -215,7 +222,7 @@ S = [] \\
             \hline
             \end{tabular}
             \end{center}
-            \\ So we finally obtain: \\
+            So we finally obtain: \\
             \begin{center}
             \begin{tabular}{| c | c | c | c | c | c |} 
             \hline
@@ -231,7 +238,7 @@ S = [] \\
             \hline
             \end{tabular}
             \end{center}
-            \\ Now, we have 181 $\times$ 1000 + (-357) $\times$ 507 = gcd(507, 1000) = 1.
+            Now, we have 181 $\times$ 1000 + (-357) $\times$ 507 = gcd(507, 1000) = 1.
             \\ As a consequence, (-357)(507) = 1 in $Z_{1000}$.
         \item In $Z_{1000}$, $(-357)(507) = 1 \Rightarrow \frac{1}{507} = -357 = 643$
         \item As a consequence, $\frac{211}{507} = (211)(643) = 135673 = 673$
@@ -273,10 +280,6 @@ S = [] \\
         \end{itemize}
         \\ Therefore $2^{1000} \bmod{1001} = 562$.
     \end{itemize}
-
-
-
-\item \textbf{\textcolor{blue}{Suppose that during Kruskal's Algorithm (for MST) and some point we have $SIZE[v]=37$. What is the interpretation of that in the case when $\pi[v]=v$? What is the interpretation of that in the case when $\pi[v]=u\neq v$? Let $w$ be a vertex. How many different values can $\pi[w]$ have during the course of Kruskal's algorithm? How many different values (as a function of $V$, the number of vertices) can $SIZE[w]$ have during the course of Kruskal's algorithm? (That is, the maximal number possible.)}}
 
 \end{enumerate}
 

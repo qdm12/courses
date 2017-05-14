@@ -4,6 +4,8 @@
 \usepackage{fancyhdr}
 \usepackage{lastpage}
 \usepackage{amsmath}
+\usepackage{minted}
+\usepackage[options]{algorithm2e}
 \pagestyle{fancy}
 \renewcommand{\headrulewidth}{0pt}
 \cfoot[R]{\thepage~of~\pageref{LastPage}}
@@ -23,35 +25,254 @@ What you need is that your brain is open.  -- Paul Erd\H{o}s
 
 \begin{enumerate}
 \item \textbf{\textcolor{blue}{Determine an LCS of $10010101$ and $010110110$ using the algorithm studied.}}
-    \\ Solution
+    \begin{algorithm}
+        \SetKwFunction{lcslength}{LCS-LENGTH}
+        \Indm\lcslength{x, y}\\
+        \Indp
+            m = x.length \\
+            n = y.length \\
+            Let b[1..m, 1..n] and c[0..m, 0..n] be new matrices. \\
+            \tcc{We now set the first row and first column of c to 0.} \\
+            \For{i = 1 to m}{
+                c[i, 0] = 0 \\
+            }
+            \For{i = 0 to n}{
+                c[0, i] = 0 \\
+            }
+            \For{i = 1 to m}{
+                \For{j = 1 to n}{
+                    \uIf{$x_i$ == $y_j$}{
+                        c[i, j] = c[i - 1, j - 1] + 1 \tcp*{Cell = top-left cell, and point to it} \\
+                        b[i, j] = \nwarrow\hspace{-3pt} \\
+                    }
+                    \uElseIf{c[i - 1, j] $\geq$ c[i, j - 1]}{
+                        \tcp{top $\geq$ left} \\
+                        c[i, j] = c[i - 1, j] \tcp*{Cell = top cell, and point to it} \\
+                        b[i, j] = \uparrow\hspace{-3pt} \\
+                    }
+                    \Else{
+                        c[i, j] = c[i, j - 1] \tcp*{Cell = left cell, and point to it} \\
+                        b[i, j] = \leftarrow\hspace{-3pt} \\
+                    }
+                }
+            }
+            \Return{c, b}
+        \caption{LCS-LENGTH, where x and y are two sequences}
+    \end{algorithm}
+    \\ Following this algorithm we have the following table initially:
+    \\
+    \begin{tabular}{ c | c c c c c c c c c c } 
+        - & - & 0 & 1 & 0 & 1 & 1 & 0 & 1 & 1 & 0 \\
+        \hline
+        - & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+        1 & 0 & x & x & x & x & x & x & x & x & x \\
+        0 & 0 & x & x & x & x & x & x & x & x & x \\
+        0 & 0 & x & x & x & x & x & x & x & x & x \\
+        1 & 0 & x & x & x & x & x & x & x & x & x \\
+        0 & 0 & x & x & x & x & x & x & x & x & x \\
+        1 & 0 & x & x & x & x & x & x & x & x & x \\
+        0 & 0 & x & x & x & x & x & x & x & x & x \\
+        1 & 0 & x & x & x & x & x & x & x & x & x \\
+    \end{tabular}
+    $\rightarrow$
+    \begin{tabular}{ c | c c c c c c c c c c } 
+        - & - & 0 & 1 & 0 & 1 & 1 & 0 & 1 & 1 & 0 \\
+        \hline
+        - & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+        1 & 0 & 0 $\leftarrow$ & x & x & x & x & x & x & x & x \\
+        0 & 0 & x & x & x & x & x & x & x & x & x \\
+        0 & 0 & x & x & x & x & x & x & x & x & x \\
+        1 & 0 & x & x & x & x & x & x & x & x & x \\
+        0 & 0 & x & x & x & x & x & x & x & x & x \\
+        1 & 0 & x & x & x & x & x & x & x & x & x \\
+        0 & 0 & x & x & x & x & x & x & x & x & x \\
+        1 & 0 & x & x & x & x & x & x & x & x & x \\
+    \end{tabular}
+    $\rightarrow$ \\
+    \begin{tabular}{ c | c c c c c c c c c c } 
+        - & - & 0 & 1 & 0 & 1 & 1 & 0 & 1 & 1 & 0 \\
+        \hline
+        - & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+        1 & 0 & 0 $\leftarrow$ & 1 $\nwarrow$ & x & x & x & x & x & x & x \\
+        0 & 0 & x & x & x & x & x & x & x & x & x \\
+        0 & 0 & x & x & x & x & x & x & x & x & x \\
+        1 & 0 & x & x & x & x & x & x & x & x & x \\
+        0 & 0 & x & x & x & x & x & x & x & x & x \\
+        1 & 0 & x & x & x & x & x & x & x & x & x \\
+        0 & 0 & x & x & x & x & x & x & x & x & x \\
+        1 & 0 & x & x & x & x & x & x & x & x & x \\
+    \end{tabular}
+    \\ We then continue on that same first row and we obtain: \\
+    \begin{tabular}{ c | c c c c c c c c c c } 
+        - & - & 0 & 1 & 0 & 1 & 1 & 0 & 1 & 1 & 0 \\
+        \hline
+        - & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+        1 & 0 & 0 $\leftarrow$ & 1 $\nwarrow$ & 1 $\leftarrow$ & 1 $\leftarrow$ & 1 $\leftarrow$ & 1 $\leftarrow$ & 1 $\leftarrow$ & 1 $\leftarrow$ & 1 $\leftarrow$ \\
+        0 & 0 & x & x & x & x & x & x & x & x & x \\
+        0 & 0 & x & x & x & x & x & x & x & x & x \\
+        1 & 0 & x & x & x & x & x & x & x & x & x \\
+        0 & 0 & x & x & x & x & x & x & x & x & x \\
+        1 & 0 & x & x & x & x & x & x & x & x & x \\
+        0 & 0 & x & x & x & x & x & x & x & x & x \\
+        1 & 0 & x & x & x & x & x & x & x & x & x \\
+    \end{tabular}
+    \\ We then do the same for the next rows and finally obtain: \\
+    \begin{tabular}{ c | c c c c c c c c c c } 
+        - & - & 0 & 1 & 0 & 1 & 1 & 0 & 1 & 1 & 0 \\
+        \hline
+        - & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+        1 & 0 & 0 $\leftarrow$ & 1 $\nwarrow$ & 1 $\leftarrow$ & 1 $\nwarrow$ & 1 $\nwarrow$ & 1 $\leftarrow$ & 1 $\nwarrow$ & 1 $\nwarrow$ & 1 $\leftarrow$ \\
+        0 & 0 & 1 $\nwarrow$ & 1 $\uparrow$ & 2 $\nwarrow$ & 2 $\leftarrow$ & 2 $\leftarrow$ & 2 $\nwarrow$ & 2 $\leftarrow$ & 2 $\leftarrow$ & 2 $\nwarrow$ \\
+        0 & 0 & 1 $\nwarrow$ & 1 $\uparrow$ & 2 $\nwarrow$ & 2 $\uparrow$ & 2 $\uparrow$ & 3 $\nwarrow$ & 3 $\leftarrow$ & 3 $\leftarrow$ & 3 $\nwarrow$ \\
+        1 & 0 & 1 $\uparrow$ & 2 $\nwarrow$ & 2 $\uparrow$ & 3 $\nwarrow$ & 3 $\nwarrow$ & 3 $\uparrow$ & 4 $\nwarrow$ & 4 $\nwarrow$ & 4 $\leftarrow$ \\
+        0 & 0 & 1 $\nwarrow$ & 2 $\uparrow$ & 3 $\nwarrow$ & 3 $\uparrow$ & 3 $\uparrow$ & 4 $\nwarrow$ & 4 $\uparrow$ & 4 $\uparrow$ & 5 $\nwarrow$ \\
+        1 & 0 & 1 $\uparrow$ & 2 $\nwarrow$ & 3 $\uparrow$ & 4 $\nwarrow$ & 4 $\nwarrow$ & 4 $\uparrow$ & 5 $\nwarrow$ & 5 $\nwarrow$ & 5 $\uparrow$ \\
+        0 & 0 & 1 $\nwarrow$ & 2 $\uparrow$ & 3 $\nwarrow$ & 4 $\uparrow$ & 4 $\uparrow$ & 5 $\nwarrow$ & 5 $\uparrow$ & 5 $\uparrow$ & 6 $\nwarrow$ \\
+        1 & 0 & 1 $\uparrow$ & 2 $\nwarrow$ & 3 $\uparrow$ & 4 $\nwarrow$ & 5 $\nwarrow$ & 5 $\uparrow$ & 6 $\nwarrow$ & 6 $\nwarrow$ & 6 $\uparrow$ \\
+    \end{tabular}
+    \\\\ To go faster:    
+    \begin{itemize}
+        \item Each cell where $x_i$ = $y_i$ has $\nwarrow$. Put it everywhere first.
+        \item When the time comes, $\nwarrow$ cells got the value \textbf{left-up + 1}.
+        \item Each remaining cell is either top (\textbf{priority}) if it is bigger or left otherwise (\textbf{from left to right})
+    \end{itemize}
+    \\ Starting from the bottom right of the table, each time we encounter $\nwarrow$, $x_i = y_i$ is the value of the nth position where n is the value in the cell. In this case, we obtain the following:
+    \begin{itemize}
+        \item Position 6: 0
+        \item Position 5: 1
+        \item Position 4: 1
+        \item Position 3: 0
+        \item Position 2: 0
+        \item Position 1: 1
+    \end{itemize}
+    So one LCS is 100110 \\
+    \begin{tabular}{ c | c c c c c c c c c c } 
+        - & - & 0 & \textcolor{red}{1} & \textcolor{red}{0} & 1 & 1 & \textcolor{red}{0} & \textcolor{red}{1} & \textcolor{red}{1} & \textcolor{red}{0} \\
+        \hline
+        - & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+        1 & 0 & 0 $\leftarrow$ & \textcolor{blue}{\textbf{1} $\nwarrow$} & 1 $\leftarrow$ & 1 $\nwarrow$ & 1 $\nwarrow$ & 1 $\leftarrow$ & 1 $\nwarrow$ & 1 $\nwarrow$ & 1 $\leftarrow$ \\
+        0 & 0 & 1 $\nwarrow$ & 1 $\uparrow$ & \textcolor{blue}{\textbf{2} $\nwarrow$} & \textbf{2} $\leftarrow$ & \textbf{2} $\leftarrow$ & 2 $\nwarrow$ & 2 $\leftarrow$ & 2 $\leftarrow$ & 2 $\nwarrow$ \\
+        0 & 0 & 1 $\nwarrow$ & 1 $\uparrow$ & 2 $\nwarrow$ & 2 $\uparrow$ & 2 $\uparrow$ & \textcolor{blue}{\textbf{3}} $\nwarrow$ & 3 $\leftarrow$ & 3 $\leftarrow$ & 3 $\nwarrow$ \\
+        1 & 0 & 1 $\uparrow$ & 2 $\nwarrow$ & 2 $\uparrow$ & 3 $\nwarrow$ & 3 $\nwarrow$ & 3 $\uparrow$ & \textcolor{blue}{\textbf{4} $\nwarrow$} & 4 $\nwarrow$ & 4 $\leftarrow$ \\
+        0 & 0 & 1 $\nwarrow$ & 2 $\uparrow$ & 3 $\nwarrow$ & 3 $\uparrow$ & 3 $\uparrow$ & 4 $\nwarrow$ & \textbf{4} $\uparrow$ & 4 $\uparrow$ & 5 $\nwarrow$ \\
+        1 & 0 & 1 $\uparrow$ & 2 $\nwarrow$ & 3 $\uparrow$ & 4 $\nwarrow$ & 4 $\nwarrow$ & 4 $\uparrow$ & 5 $\nwarrow$ & \textcolor{blue}{\textbf{5} $\nwarrow$} & 5 $\uparrow$ \\
+        0 & 0 & 1 $\nwarrow$ & 2 $\uparrow$ & 3 $\nwarrow$ & 4 $\uparrow$ & 4 $\uparrow$ & 5 $\nwarrow$ & 5 $\uparrow$ & 5 $\uparrow$ & \textcolor{blue}{\textbf{6} $\nwarrow$} \\
+        1 & 0 & 1 $\uparrow$ & 2 $\nwarrow$ & 3 $\uparrow$ & 4 $\nwarrow$ & 5 $\nwarrow$ & 5 $\uparrow$ & 6 $\nwarrow$ & 6 $\nwarrow$ & \textbf{6} $\uparrow$ \\
+    \end{tabular}
+    
+    \\\\ We can also do this table the other way around, flipping "x" and "y": \\
+    \begin{tabular}{ c | c c c c c c c c c } 
+        - & - & 1 & 0 & \textcolor{red}{0} & \textcolor{red}{1} & \textcolor{red}{0} & \textcolor{red}{1} & \textcolor{red}{0} & \textcolor{red}{1} \\
+        \hline
+        - & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+        0 & 0 & 0 $\uparrow$ & 1 $\nwarrow$ & \textbf{1} $\nwarrow$ & 1 $\leftarrow$ & 1 $\nwarrow$ & 1 $\leftarrow$ & 1 $\nwarrow$ & 1 $\leftarrow$ \\
+        1 & 0 & 1 $\nwarrow$ & 1 $\uparrow$ & 1 $\uparrow$ & \textbf{2} $\nwarrow$ & 2 $\leftarrow$ & 2 $\nwarrow$ & 2 $\leftarrow$ & 2 $\nwarrow$ \\
+        0 & 0 & 1 $\uparrow$ & 2 $\nwarrow$ & 2 $\nwarrow$ & 2 $\uparrow$ & \textbf{3} $\nwarrow$ & 3 $\leftarrow$ & 3 $\nwarrow$ & 3 $\leftarrow$ \\
+        1 & 0 & 1 $\nwarrow$ & 2 $\uparrow$ & 2 $\uparrow$ & 3 $\nwarrow$ & \textbf{3} $\uparrow$ & 4 $\nwarrow$ & 4 $\leftarrow$ & 4 $\nwarrow$ \\
+        1 & 0 & 1 $\nwarrow$ & 2 $\uparrow$ & 2 $\uparrow$ & 3 $\nwarrow$ & 3 $\uparrow$ & \textbf{4} $\nwarrow$ & 4 $\uparrow$ & 5 $\nwarrow$ \\
+        0 & 0 & 1 $\uparrow$ & 2 $\nwarrow$ & 3 $\nwarrow$ & 3 $\uparrow$ & 4 $\nwarrow$ & 4 $\uparrow$ & \textbf{5} $\nwarrow$ & 5 $\uparrow$ \\
+        1 & 0 & 1 $\nwarrow$ & 2 $\uparrow$ & 3 $\uparrow$ & 4 $\nwarrow$ & 4 $\uparrow$ & 5 $\nwarrow$ & \textbf{5} $\uparrow$ & 6 $\nwarrow$ \\
+        1 & 0 & 1 $\nwarrow$ & 2 $\uparrow$ & 3 $\uparrow$ & 4 $\nwarrow$ & 4 $\uparrow$ & 5 $\nwarrow$ & 5 $\uparrow$ & \textbf{6} $\nwarrow$ \\
+        0 & 0 & 1 $\uparrow$ & 2 $\nwarrow$ & 3 $\nwarrow$ & 4 $\uparrow$ & 5 $\nwarrow$ & 5 $\uparrow$ & 6 $\nwarrow$ & \textbf{6} $\uparrow$ \\
+    \end{tabular}
+    \\ And we obtain the LCS 010101. 
+    \\ Note that this is \textbf{equivalent} to switch around $\uparrow$ and $\leftarrow$ in the first table !!
+    \\ Another way is just to go up all the time but when $x_i$ = $y_i$ then go up-left ! So you just have to find out c, not b really.
+    \\ Note that I designed the following Python code to generate the table:
+    \begin{minted}{python}
+def print_matrix(m):
+    for i in range(len(m)):
+        for j in range(len(m[i])):
+            print str(m[i][j]) + " ",
+        print
+    print
+    
+    
+def lcs_length(x, y):
+    m = len(x) + 1 # +1 for zeroes
+    n = len(y) + 1
+    b = [["." for _ in range(n)] for _ in range(m)]
+    c = [[None for _ in range(n)] for _ in range(m)]
+    for i in range(1, m):
+        c[i][0] = 0
+    for i in range(n):
+        c[0][i] = 0
+    for i in range(1,m):
+        for j in range(1,n):
+            if x[i-1] == y[j-1]:
+                c[i][j] = c[i-1][j-1] + 1
+                b[i][j] = '\\'
+            elif c[i-1][j] >= c[i][j-1]:
+                c[i][j] = c[i-1][j]
+                b[i][j] = "|"
+            else:
+                c[i][j] = c[i][j-1]
+                b[i][j] = "<"
+    return c, b
+
+def put_together(c, b, x, y):
+    rows = len(x) + 2 # +1 for zeroes, +1 for x
+    cols = len(y) + 2
+    matrix = [[None for _ in range(cols)] for _ in range(rows)]
+    matrix[0][0] = "-"
+    matrix[1][0] = "-"
+    matrix[0][1] = "-  "
+    for i in range(2, rows):
+        matrix[i][0] = x[i-2]
+    for i in range(2, cols):
+        matrix[0][i] = str(y[i-2]) + "  "
+    for i in range(1, rows):
+        for j in range(1, cols):
+            matrix[i][j] = str(c[i-1][j-1]) + " " + b[i-1][j-1]
+    return matrix
+
+if __name__ == '__main__':
+    y = "10010101"
+    x = "010110110"
+    c, b = lcs_length(x, y)
+    m = put_together(c, b, x, y)
+    print_matrix(c)
+    print_matrix(b)
+    print_matrix(m)
+    \end{minted}
+    \\ Which would print:
+    \begin{minted}{python}
+-  -    1    0    0    1    0    1    0    1   
+-  0 .  0 .  0 .  0 .  0 .  0 .  0 .  0 .  0 . 
+0  0 .  0 |  1 \  1 \  1 <  1 \  1 <  1 \  1 < 
+1  0 .  1 \  1 |  1 |  2 \  2 <  2 \  2 <  2 \ 
+0  0 .  1 |  2 \  2 \  2 |  3 \  3 <  3 \  3 < 
+1  0 .  1 \  2 |  2 |  3 \  3 |  4 \  4 <  4 \ 
+1  0 .  1 \  2 |  2 |  3 \  3 |  4 \  4 |  5 \ 
+0  0 .  1 |  2 \  3 \  3 |  4 \  4 |  5 \  5 | 
+1  0 .  1 \  2 |  3 |  4 \  4 |  5 \  5 |  6 \ 
+1  0 .  1 \  2 |  3 |  4 \  4 |  5 \  5 |  6 \ 
+0  0 .  1 |  2 \  3 \  4 |  5 \  5 |  6 \  6 | 
+    \end{minted}
     
     
 \item \textbf{\textcolor{blue}{Write all the parenthesizations of $ABCDE$.
 Associate them in a natural way with (setting $n=5$) the
 terms $P(i)P(n-i)$, $i=1,2,3,4$ given in the recursion for $P(n)$.}}
-    \\ For $P(1)P(4)$, we have $4$ parenthesizations:
+    \\ Splitting 1 - 4 gives $P(1)P(4) = 5$ parenthesizations:
     \\ $A(B(C(DE)))$
     \\ $A(B((CD)E))$
     \\ $A((BC)(DE))$
     \\ $A((B(CD))E)$
     \\ $A(((BC)D)E)$
-    \\ For $P(2)P(3)$, we have $2$ parenthesizations:
-    \\ $(AB((CD)E)$
-    \\ $(AB)(C(DE))$
-    \\ For $P(3)P(2)$, we have $2$ parenthesizations:
-    \\ $((AB)C)(DE)$
-    \\ $(A(BC))(DE)$
-    \\ For $P(4)P(1)$, we have $5$ parenthesizations:
+    \\ Splitting 4 - 1 gives $P(4)P(1) = 5$ parenthesizations:
     \\ $(A(B(CD)))E$
     \\ $(A((BC)D))E$
     \\ $((AB)(CD))E$
     \\ $(((AB)C)D)E$
     \\ $((A(BC))D)E$
+    \\ Splitting 2 - 3 gives $P(2)P(3) = 2$ parenthesizations:
+    \\ $(AB((CD)E)$
+    \\ $(AB)(C(DE))$
+    \\ Splitting 3 - 2 gives $P(3)P(2) = 2$ parenthesizations:
+    \\ $((AB)C)(DE)$
+    \\ $(A(BC))(DE)$
 
-
-
-    
-    
     
 \item \textbf{\textcolor{blue}{Let $x_1,\ldots,x_m$ be a sequence of distinct real numbers. For $1\leq i\leq m$ let $INC[i]$ denote the length of the longest
 increasing subsequence ending with $x_i$.  Let $DEC[i]$ denote the 
@@ -59,48 +280,212 @@ length of the longest decreasing subsequence ending with $x_i$.
 {\tt Caution:} The subsequence must {\em use} $x_i$.  For example,
 $20,30,4,50, 10$.  Now $INC[5]=2$ because of $4,10$ -- we do
 {\em not} count $20,30,50$.}}
+    \\ \textbf{DYNAMIC PROGRAMMING = Optimal substructures + overlapping subproblems}
     \begin{enumerate}
     \item \textbf{\textcolor{blue}{Find an efficient method for finding the values $INC[i]$, $1\leq i\leq n$. (You should find $INC[i]$ based on the previously found $INC[j]$, $1\leq j< i$.  Your algorithm should take time $O(i)$ for each
     particular $i$ and thus $O(n^2)$ overall.)}}
-        \\ Solution
+        \\ We are searching for INC[i] which is the \textbf{length} of the longest increasing subsequence ending with $x_i$.
+        \begin{itemize}
+            \item If there is no $x_j$ such that $0 < j < i$ and $x_j < x_i$, then INC[i] = 1
+            \item Else, INC[i] = 1 + max(INC[j])
+        \end{itemize}
+        \\ Each INC[i] takes $O(n)$ so the total time is $O(n^2)$. The algorithm has been implemented in Python:
+        \begin{minted}{python}
+def INC(A, i):
+    """ Length of increasing subsequence in A ending at A[i] """
+    for j in range(i - 1, -1, -1):
+        if A[j] < A[i]:
+            return 1 + INC(A, j)
+    return 1
+
+def DEC(A, i):
+    """ Length of decreasing subsequence in A ending at A[i] """
+    for j in range(i - 1, -1, -1):
+        if A[j] > A[i]:
+            return 1 + DEC(A, j)
+    return 1
+
+if __name__ == '__main__':
+    print INC([7,5,3,9,6,7], 3) # 2
+    print DEC([7,5,3,9,6,7], 3) # 1
+        \end{minted}
+
     \item \textbf{\textcolor{blue}{Let $LIS$ denote the length of the longest increasing subsequence of $x_1,\ldots,x_m$.  Show how to find $LIS$ from
     the values $INC[i]$. Your algorithm, {\em starting with} the $INC[i]$,
     should take time $O(n)$. Similarly, let $DIS$ denote the length of the longest
     decreasing subsequence of $x_1,\ldots,x_m$.  Show how to find $DIS$ from
     the values $DEC[i]$. }}
-        \\ Solution
+        \\ $LIS =$ maximum of all $INC[i]$ and $DIS =$ maximum of all $DEC[i]$.
+        \\ Using the Python code, above, these two were implemented in Python:
+        \begin{minted}{python}
+def LIS(A):
+    return max([INC(A, i) for i in range(len(A))])
+
+def DIS(A):
+    return max([DEC(A, i) for i in range(len(A))])
+
+if __name__ == '__main__':
+    print LIS([7,5,3,9,6,2]) # 2
+    print DIS([7,5,3,9,6,2]) # 3
+        \end{minted}
+        
     \item \textbf{\textcolor{blue}{Suppose $i<j$.  {\em Prove} that it is impossible to have $INC[i]=INC[j]$ {\em and} $DEC[i]=DEC[j]$.  ({\tt Hint:} Show that {\em if} $x_i < x_j$ then $INC[j] \geq INC[i] + 1$.)}}
-        \\ Solution
+        \\ $x_i < x_j \Rightarrow INC[j] \geq INC[i] + 1$ since $x_j$ can be appended to the maximal increasing sequence ending with $x_i$. 
+        \\ $x_i > x_j \Rightarrow DEC[j] \geq DEC[i] + 1$ since $x_j$ can be appended to the maximal decreasing sequence ending with $x_i$. 
     \item \textbf{\textcolor{blue}{Deduce the following celebrated result (called the Monotone Subsequence Theorem) of Paul Erd\H{o}s and George Szekeres:  Let $m=ab+1$.  Then any sequence $x_1,\ldots,x_m$ of distinct real numbers either $LIS>a$ or $DIS>b$.  (Idea: Assume not and look at the pairs $(INC[i],DEC[i])$.)  Paul Erd\H{o}s was a great twentieth century mathematician,  whose work remains highly influential in many areas.}}
-        \\ Solution
+        \\ $\left\{
+                \begin{array}{ll}
+                    LIS \leq a \\
+                    DIS \leq b
+                \end{array}
+            \right. \Rightarrow \exist \mbox{ only } ab \mbox{ possibilities for the pair }(INC[i], DEC[i])$
+        \\ However, for the previous part, we obtained $ab + 1$ distinct pairs.
+        
+        
+        
     \end{enumerate}
     
     
 \item \textbf{\textcolor{blue}{Find an optimal parenthesization of a matrix-chain product whose sequence of dimensions is $5,10,3,12,5,50,6$.}}
+    \\ The matrix chain product of $A_1A_2A_3...A_n$ can be broken to $(A_1...A_k)(A_{k+1}...A_n)$.
+    \\ There are two matrices:
+    \begin{itemize}
+        \item s to record the minimum number of operations
+        \item m to record the parenthesization
+    \end{itemize}
+    The algorithm is as follows, where $p$ is an array containing the matrix dimensions such that $A_i$ has the dimensions $p_{i-1}, p_i$.
+    \begin{algorithm}
+        \SetKwFunction{matrixchainorder}{MATRIX-CHAIN-ORDER}
+        \Indm\matrixchainorder{p}\\
+        \Indp
+            n = p.length - 1 \\
+            Let m[1..n, 1..n] and s[1..n-1, 2..n] be matrices \\
+            \For{i = 1 to n}{
+                m[i, i] = 0 \\
+            }
+            \For{l = 2 to n}{
+                \For{i = 1 to n - l + 1}{
+                    j = i + l - 1 \\
+                    m[i, j] = $\infty$ \\
+                    \For{k = i to j - 1}{
+                        q = m[i, k] + m[k+1, j] + $p_{i-1}p_kp_j$ \\
+                        \If{q $<$ m[i, j]}{
+                            m[i, j] = q \\
+                            s[i, j] = k \\
+                        }
+                        
+                    }
+                }
+            }
+            \Return{m and s}
+    \end{algorithm}
+    \\ This algorithm was then implemented in Python (headaches for the 0-based index): \\
+    \begin{minted}{python}
+# Matrix Ai has dimension p[i-1] x p[i] for i = 1..n
+def matrixchainorder(p):
+    n = len(p) - 1
+    m = [[0 for _ in range(n)] for _ in range(n)]
+    s = [[0 for _ in range(n)] for _ in range(n)]
+    for i in range(n):
+        m[i][i] = 0
+    for l in range(1, n): # l is chain length
+        for i in range(0, n-l):
+            j = i + l # max is n-(n-1)-1 + n - 1 = n-1 
+            m[i][j] = float("inf")
+            for k in range(i, j):
+                #q = cost/scalar mutliplications
+                q = m[i][k] + m[k+1][j] + p[i]*p[k+1]*p[j+1]
+                if q < m[i][j]: #always the case here
+                    m[i][j] = q
+                    s[i][j] = k + 1
+    return m, s
+
+    
+
+
+if __name__ == '__main__':
+    m, s = matrixchainorder([5, 10, 3, 12, 5, 50, 6])
+    print_matrix(m)
+    print_matrix(s)
+    \end{minted}
+    \\\\ This program was hence printing m and s as follows:
+    \begin{itemize}
+        \item The matrix m is printed as:
+        \begin{tabular}{ c c c c c c }
+        0 & 150 & 330 & 405 & 1655 & 2010 \\
+        0 & 0 & 360 & 330 & 2430 & 1950 \\
+        0 & 0 & 0 & 180 & 930 & 1770 \\
+        0 & 0 & 0 & 0 & 3000 & 1860 \\
+        0 & 0 & 0 & 0 & 0 & 1500 \\
+        0 & 0 & 0 & 0 & 0 & 0 \\
+        \end{tabular}
+        \item The matrix s is printed as:
+        \begin{tabular}{ c c c c c c }
+        0 & 1 & 2 & 2 & 4 & 2 \\
+        0 & 0 & 2 & 2 & 2 & 2 \\
+        0 & 0 & 0 & 3 & 4 & 4 \\
+        0 & 0 & 0 & 0 & 4 & 4 \\
+        0 & 0 & 0 & 0 & 0 & 5 \\
+        0 & 0 & 0 & 0 & 0 & 0 \\
+        \end{tabular}
+    \end{itemize}
+    \\ Now to do this manually:
+    \begin{itemize}
+        \item Start with the diagonal set to zeroes (m[1,1]=m[2,2]=...=0)
+        \item Start at m[1,2] = $p_0 \times p_1 \times p_2 = 5 \times 10 \times 3 = 150$ then go down diagonally
+        \item m[2,3] = $p_1 \times p_2 \times p_3 = 10 \times 3 \times 12 = 360$
+        \item m[3,4] = $p_2 \times p_3 \times p_4 = 3 \times 12 \times 5 = 180$
+        \item m[4,5] = $p_3 \times p_4 \times p_5 = 12 \times 5 \times 50 = 3000$
+        \item m[5,6] = $p_4 \times p_5 \times p_6 = 5 \times 50 \times 6 = 1500$
+    \end{itemize}
+    We now have 
+    \begin{tabular}{ c c c c c c }
+    0 & 150 & x & x & x & x \\
+    0 & 0 & 360 & x & x & x \\
+    0 & 0 & 0 & 180 & x & x \\
+    0 & 0 & 0 & 0 & 3000 & x \\
+    0 & 0 & 0 & 0 & 0 & 1500 \\
+    0 & 0 & 0 & 0 & 0 & 0 \\
+    \end{tabular}
+    We then calculate using the recurrence relation $m[i,j] = min(m[i,k] + m[k+1, j] + p_{i-1}p_kp_j \mbox{ for } k \mbox{ from } i \mbox{ to } j)$ if $i < j$.
+    \begin{itemize}
+        \item m[1,3]
+        \begin{itemize}
+            \item At $k = 1$, $m[1,3] = min(m[1,1] + m[2, 3] + p_{0}p_1p_3) = 0+360+600 = 960$
+            \item At $k = 2$, $m[1,3] = min(m[1,2] + m[3, 3] + p_{0}p_2p_3) = 150+0+180 = 330$
+        \end{itemize}
+        \\ Therefore $m[1,3] = 330$.
+        \\ Etc.
+    \end{itemize}
+    \textcolor{red}{Conclusion missing !!!}
+    
+    
     
 \item \textbf{\textcolor{blue}{Some exercises in logarithms:}}
+    \\ \textbf{NOTE: } $\lg(x) = \frac{\log(x)}{\log(2)}$ for BST and in binary context!
     \begin{enumerate}
     \item \textbf{\textcolor{blue}{Write $\lg(4^n/\sqrt{n})$ in simplest form.  What is its asymptotic value.}}
-        \\ $\lg(4^n/\sqrt{n}) = \lg(4^n) - \lg(n^{1/2}) = \lg(4)n - \frac{1}{2}\lg(n)$ so its asymptotic value is infinity as $n$ dominates $\lg(n)$.
+        \\ $\lg(4^n/\sqrt{n}) = \lg(4^n) - \lg(n^{1/2}) = n\lg(4) - \frac{1}{2}\lg(n) = 2n - \frac{\lg(n)}{2}$ so its asymptotic value is infinity as $n$ dominates $\lg(n)$.
     \item \textbf{\textcolor{blue}{Which is bigger, $5^{313340}$ or $7^{271251}$? Give reason. (You can use a calculator but you can't use any numbers bigger than $10^9$.)}}
-        \\ Suppose $5^{313340}$ is lower than $7^{271251}$.
-        \\ $5^{313340} < 7^{271251} \Rightarrow 313340\lg(5) < 271251\lg(7) \Rightarrow 219015.26 < 229233.68$
+        \\ Suppose $5^{313340}$ is lower than $7^{271251}$:
+        \\ $5^{313340} < 7^{271251} \Rightarrow 313340\lg(5) < 271251\lg(7) \Rightarrow 727552.9492 < 761497.8299$
         \\ Our assumption was correct, so $7^{271251}$ is bigger.
     \item \textbf{\textcolor{blue}{Simplify $n^2\lg(n^2)$ and $\lg^2(n^3)$.}}
         \\ $n^2\lg(n^2) = 2n^2\lg(n)$
         \\ $\lg^2(n^3) = (3\lg(n))(3\lg(n)) = 9\lg^2(n)$
     \item \textbf{\textcolor{blue}{Solve (for $x$) the equation $e^{-x^2/2}=\frac{1}{n}$.}}
         \\ $e^{-x^2/2}=\frac{1}{n} \Rightarrow 1=\frac{e^{x^2/2}}{n} \Rightarrow \ln(1)=\ln(\frac{e^{x^2/2}}{n}) \Rightarrow 0 = \ln(e^{x^2/2}) - \ln(n) \Rightarrow 0 = \frac{x^2}{2} - \ln(n) \Rightarrow 2\ln(n) = x^2 \Rightarrow x = \mp \sqrt{2\ln(n)}$
-    \item \textbf{\textcolor{blue}{Write $\log_n2^n$ and $\log_nn^2$ in simple form.}}
-        \\ $\log_n2^n = \frac{\log(2^n)}{\log(n)} = \frac{n\log(2)}{\log(n)}$
+    \item \textbf{\textcolor{blue}{Write $\log_n(2^n)$ and $\log_nn^2$ in simple form.}}
+        \\ $\log_n(2^n) = \frac{\log(2^n)}{\log(n)} = \frac{n\log(2)}{\log(n)} = \frac{n}{\lg(n)}$
         \\ $\log_nn^2 = \frac{\log(n^2)}{\log(n)} = \frac{2\log(n)}{\log(n)} = 2$
     \item \textbf{\textcolor{blue}{What is the relationship between $\lg n$ and $\log_3n$?}}
-        \\ $\lg n = \frac{\log(n)}{\log(10)}$ and $\log_3n = \frac{\log(n)}{\log(3)}$.
-        \\\\ So the base of $\lg n$ is 10 whereas the base of $\log_3n$ is 3.
+        \\ $\lg(n) = \frac{\log(n)}{\log(2)}$ and $\log_3(n) = \frac{\log(n)}{\log(3)}$.
+        \\ Now $\frac{\log(3)}{\log(2)} \approx 1.585$ so $\lg(n)$ is $\approx$ 1.58 times the value of $\log_3(n)$.
     \item \textbf{\textcolor{blue}{Assume $i< n$.  How many times need $i$ be doubled before it reaches (or exceeds) $n$?}}
-        \\ $\log_2(\frac{n}{i})$
+        \\ Let $x$ be the number of times we need to double i.
+        \\ We need $i \times 2^x \geq n \Rightarrow x \geq \lg(\frac{n}{i})$ so we need x to be the \textbf{ceiling} of $\lg(\frac{n}{i})$.
     \item \textbf{\textcolor{blue}{Write $\lg[n^ne^{-n}\sqrt{2\pi n}]$ precisely as a sum in simplest form.  What is it asymptotic to as $n\ra \infty$?  What is interesting about the bracketed expression?}}
-        \\ $\lg[n^ne^{-n}\sqrt{2\pi n}] = \lg(n^n) + \lg(e^{-n}) + \lg(\sqrt{2\pi n}) = n\lg(n) - n\lg(e) + 0.5\lg(2\pi n)$ so the asymptotic as $n$ goes to $\infty$ is $\infty$.
+        \\ $\lg[n^ne^{-n}\sqrt{2\pi n}] = \lg(n^n) + \lg(e^{-n}) + \lg(\sqrt{2\pi n}) = n\lg(n) - n\lg(e) + 0.5\lg(2\pi n) = n\lg(n) - n\lg(e) + 0.5\lg(2\pi) + 0.5\lg(n)$. This is a \textbf{Stirling's formula} and is asymptotic to $n!$
     \end{enumerate}
 \end{enumerate}
 
@@ -113,4 +498,3 @@ theory which states that this has already happened.
 \end{quote}
 
 \end{document}
-

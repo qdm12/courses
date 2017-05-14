@@ -373,11 +373,11 @@ class Heap(object):
             Returns:
                 max (int, float): Max element of input Heap tree
         """
-        max = A[0]
+        maxi = A[0]
         A[0] = A[-1]
         del A[-1] #use del so it stays out of the function
         self.max_heapify(A, 0)
-        return max
+        return maxi
         
     def max_heap_insert(self, A, key):
         """ Modifies A to include the new key

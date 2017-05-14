@@ -43,7 +43,9 @@ one instant, in one being.
     \hline
     \end{tabular}
 \end{center}
-
+\textbf{THEOREM:} $\forall L \in NP \mbox{, } L \leq 3-SAT$
+\\ \textbf{COROLLARY: } $3-SAT \in P \Rightarrow P = NP$
+\\ Note: The SAT problem is given the expression, is there some assignment of TRUE and FALSE values to the variables that will make the entire expression true. SAT3 problem is a special case of SAT problem, where Boolean expression must be divided into clauses of containing three literals.
 
 \begin{enumerate}
 \item \textbf{\textcolor{blue}{Which of the following problem classes are in $P$ and which are probably not in $P$.  (By probably not we mean that we do not as of today know that it is in $P$ but of course tomorrow somebody might come up with a clever algorithm.))}}
@@ -62,7 +64,7 @@ one instant, in one being.
         \\ Kruskal's algorithm (requires $O(E\log(V))$ time) or Prim's algorithm (requires $O(E\log(V))$ time with adjacency lists) can be used to solve this problem. Therefore this problem class is in P.
     \item \textbf{\textcolor{blue}{{\tt ALMOSTDAG}. The input here would be a directed graph $G$. Yes would be returned iff there was a set of at most $10$ edges of $G$ that could be removed from $G$ so that the remaining graph is a {\tt DAG}. (Your argument should work with $10$ replaced by any {\em constant} value.)}}
         \begin{itemize}
-            \item For a \textbf{directed graph} with n vertices, there at most $n(n-1)$ edges.
+            \item For a \textbf{directed graph} with n vertices, there are at most $n(n-1)$ edges.
             \item To test if a graph is a DAG, we can use TOP-SORT which requires $O(|V|+|E|) = O(n^2)$ \textcolor{red}{time}.
             \item There are a \textcolor{red}{total of} $(n^2)^{10} = n^{20}$ sets of 10 edges, which is also the number of graphs to test.
             \item So we need $O(n^{22})$ time overall, which is still polynomial
@@ -111,7 +113,6 @@ one instant, in one being.
             \item The answer is \textbf{YES}: $L_1$ is YES, as you add the edge $e$ to the Hamiltonian path.
             \item The answer is always \textbf{NO}: $L_1$ is NO, as a Hamiltonian cycle of length $\leq$ B would have to use some $e = \{x,y\}$, and removing it would give a path of length $< B - w(e)$ with that source and sink.
         \end{itemize}
-        
     \item \textbf{\textcolor{blue}{Let $L_2$ be {\tt CLIQUE}. The input here would be a graph $G$ together with a positive integer $B$. Yes would be returned iff there was a clique with at least $B$ vertices. (A set of vertices in a graph $G$ is a clique if {\em every} pair of them are adjacent.) Let $L_1$ be {\tt INDEPENDENT-SET}. The input here would be a graph $G$ together with a positive integer $B$. Yes would be returned iff there was a independent set with at least $B$ vertices. (A set of vertices in a graph $G$ is an independent set if {\em no} pair of them are adjacent.)}}
         \\ G has an independent set, with size $\geq B \Leftrightarrow G^c$ has a clique of size $\geq B$ ($G^c$ is the complement of $G$).
         \\ Pairs of vertices are adjacent in $G^c \Leftrightarrow$ they are not adjacent in $G$.
@@ -139,6 +140,5 @@ one instant, in one being.
     \end{itemize}
 
 \end{enumerate}
-
 
 \end{document}

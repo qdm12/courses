@@ -64,53 +64,26 @@ The world is teeming; anything can happen
 \end{itemize}
 
 \begin{enumerate}
-\item \textbf{\textcolor{blue}{Suppose we are given the Minimal Spanning Tree $T$ of a graph
-$G$.  Now we take an edge $\{x,y\}$ of $G$ which is not in $T$ and
-reduce its weight $w(x,y)$ to a new value $w$.  Suppose the path from
-$x$ to $y$ in the Minimal Spanning Tree contains an edge whose weight
-is bigger than $w$.  Prove that the old Minimal Spanning Tree is no
-longer the Minimal Spanning Tree.}}
-    \\ It is stated that the path from $x$ to $y$ contains an edge whose weight is bigger than $w$ so the weight of of the path 
-    from $x$ to $y$ must be greater than $w$. On the other hand, we reduce the weight $w$ of the edge $\{x,y\}$ therefore the path from $x$ to $y$ with the lowest weight has now changed with this new graph and has a weight of $w$. The MST based on the initial graph is therefore invalid with this modified graph as there is now a path from $x$ to $y$ with a lower weight.
+\item \textbf{\textcolor{blue}{Suppose we are given the Minimal Spanning Tree $T$ of a graph $G$.  Now we take an edge $\{x,y\}$ of $G$ which is not in $T$ and reduce its weight $w(x,y)$ to a new value $w$.  Suppose the path from $x$ to $y$ in the Minimal Spanning Tree contains an edge whose weight is bigger than $w$.  Prove that the old Minimal Spanning Tree is no longer the Minimal Spanning Tree.}}
+    \\ It is stated that the path from $x$ to $y$ contains an edge whose weight is bigger than $w$ so the weight of of the path from $x$ to $y$ must be greater than $w$. On the other hand, we reduce the weight $w$ of the edge $\{x,y\}$ therefore the path from $x$ to $y$ with the lowest weight has now changed with this new graph and has a weight of $w$. The MST based on the initial graph is therefore invalid with this modified graph as there is now a path from $x$ to $y$ with a lower weight.
     
-\item \textbf{\textcolor{blue}{Suppose we ran Kruskal's algorithm on a graph $G$ with $n$ vertices
-and $m$ edges, no two costs equal.  {\em Assume} that the $n-1$ edges of
-minimal cost form a tree $T$.}}
+\item \textbf{\textcolor{blue}{Suppose we ran Kruskal's algorithm on a graph $G$ with $n$ vertices and $m$ edges, no two costs equal. {\em Assume} that the $n-1$ edges of minimal cost form a tree $T$.}}
 \begin{enumerate}
     \item \textbf{\textcolor{blue}{Argue that $T$ will be the minimal cost tree.}}
         \\ First we know that every edge cost is unique from the problem. From the minimum-cost edge property of the MST, we know that if the minimum cost edge e of a graph is unique, then this edge is included in any MST. Therefore, $T$ is a minimal cost tree.
         \\ From the uniqueness property of the MST and because each edge cost is unique, there is only one MST which must be $T$.
         \\ Therefore $T$ is the minimal cost tree.
-    \item \textbf{\textcolor{blue}{How much time will Kruskal's Algorithm take. {\em Assume} that the
-    edges are {\em given} to you as an array in increasing order of weight.
-    Further, {\em assume} the Algorithm  stops when
-    it finds the MST. Note that the total number $m$ of edges is irrelevant as the
-    algorithm will only look at the first $n-1$ of them.}}
+    \item \textbf{\textcolor{blue}{How much time will Kruskal's Algorithm take. {\em Assume} that the edges are {\em given} to you as an array in increasing order of weight. Further, {\em assume} the Algorithm stops when it finds the MST. Note that the total number $m$ of edges is irrelevant as the algorithm will only look at the first $n-1$ of them.}}
         \\ Because the edges are already sorted in increasing order of weight, we only need to add edges to the MST from the edge with the smallest weight until the edge of the largest weight (or $n-1$ edges) that don't form a cycle. To do this we use disjoint-set data structures which require $n$ UNION[x,y] each taking $O(\ln(n))$ hence we need a total time of $O(n\ln(n))$.
-    \item \textbf{\textcolor{blue}{We define Dumb Kruskal.  It is Kruskal without the SIZE
-    function.  For  $UNION[u,v]$ we follow $u,v$ down to their 
-    roots $x,y$ as with regular Kruskal but now, if $x\neq y$,
-    we simply reset $\pi[y]=x$.  We have the same
-    assumptions on $G$ as above.  How long could dumb Kruskal take.  
-    Describe an example where it takes that long.  (You can imagine that
-    when the edge $u,v$ is given an adversary puts them in the worst
-    possible order to slow down your algorithm.)}}
+    \item \textbf{\textcolor{blue}{We define Dumb Kruskal. It is Kruskal without the SIZE function. For $UNION[u,v]$ we follow $u,v$ down to their roots $x,y$ as with regular Kruskal but now, if $x\neq y$, we simply reset $\pi[y]=x$. We have the same assumptions on $G$ as above. How long could dumb Kruskal take. Describe an example where it takes that long. (You can imagine that when the edge $u,v$ is given an adversary puts them in the worst possible order to slow down your algorithm.)}}
         \\ As there are $n$ vertices, UNION[x,y] takes $O(n)$ time so the algorithm takes $O(n^2)$ time.
         \\ To make this happen, we can suppose the edges are given in the following order: $\{2,1\}$, $\{3,1\}$, ..., $\{n,1\}$.
         We set $\pi[1] = 2$ for the first edge. We follow 1 down to 2 and we set $\pi[2] = 3$. For the $i^{th}$ step we need $i$ time so this would effectively take $\Theta(n^2)$ time overall.
 \end{enumerate}
 
-
-\item \textbf{\textcolor{blue}{Consider Kruskal's Algorithm for MST on a graph with vertex set
-$\{1,\ldots,n\}$.  Assume that the order of the weights of the edges
-begins $\{1,2\}, \{2,3\}, \{3,4\},\ldots, \{n-1,n\}$.  (Note: When 
-$SIZE[x]=SIZE[y]$ make the first value the parent of the second.
-In particular, set $\pi[2]=1$, not the other way around.)}}
+\item \textbf{\textcolor{blue}{Consider Kruskal's Algorithm for MST on a graph with vertex set $\{1,\ldots,n\}$. Assume that the order of the weights of the edges begins $\{1,2\}, \{2,3\}, \{3,4\},\ldots, \{n-1,n\}$. (Note: When $SIZE[x]=SIZE[y]$ make the first value the parent of the second. In particular, set $\pi[2]=1$, not the other way around.)}}
     \begin{enumerate}
-    \item \textbf{\textcolor{blue}{Show the pattern as the edges are processed.  In particular,
-    let $n=100$ and stop the program when the edge $\{72,73\}$ has
-    been processed.  Give the values of $SIZE[x]$ and $\pi[x]$ for all
-    vertices $x$.}}
+    \item \textbf{\textcolor{blue}{Show the pattern as the edges are processed. In particular, let $n=100$ and stop the program when the edge $\{72,73\}$ has been processed. Give the values of $SIZE[x]$ and $\pi[x]$ for all vertices $x$.}}
         \begin{itemize}
             \item We start with $x_i = 1$ and $y_i = 2$. Because $SIZE(x_i) = SIZE(y_i)$, $\pi[y_i] = x_i= \pi[2] = 1$ and $SIZE[x_i] = SIZE[x_i] + SIZE[y_i] = 1 + 1 = SIZE[1] = 2$. 
             \item For $i = 3,4,...$ when we process $1,i$ we have $\pi[i] = i$ and $\pi[i - 1] = 1$.
@@ -120,13 +93,9 @@ In particular, set $\pi[2]=1$, not the other way around.)}}
             \item With $n=100$ after {1,73} is processed we have $\pi[i] = 1$ for $2 \leq i \leq 73$.
             \item For the (untouched) $i$ from 74 to 100 we still have $SIZE[i] = 1$ and $\pi[i] = i$.
         \end{itemize}
-    \item \textbf{\textcolor{blue}{Now let $n$ be large and stop the program after $\{n-1,n\}$ has
-    been processed.  Assume the ordering of the weights of the edges
-    was {\em given} to you, so it took zero time.  How long, as an
-    asymptotic function of $n$, would this program take.  (Reasons, please!)}}
+    \item \textbf{\textcolor{blue}{Now let $n$ be large and stop the program after $\{n-1,n\}$ has been processed. Assume the ordering of the weights of the edges was {\em given} to you, so it took zero time. How long, as an asymptotic function of $n$, would this program take. (Reasons, please!)}}
         \\ At each iteration, the WHILE loop is not applied for 1 and applied one time for $i$ so it takes constant time. This program has to run for $n - 1$ edges so it takes $\Theta(n)$ time.
     \end{enumerate}
-
 
 \item \textbf{\textcolor{blue}{Suppose that during Kruskal's Algorithm (for MST) at some point we have $SIZE[v]=37$.}}
 \begin{enumerate}

@@ -1,8 +1,6 @@
 \documentclass[11pt]{article}
 \pagestyle{empty}
 \usepackage{color}
-\usepackage{listings}
-\usepackage{minted}
 \usepackage{fancyhdr}
 \usepackage{lastpage}
 \usepackage[options]{algorithm2e}
@@ -25,16 +23,9 @@ The search for truth is more precious than its possession
 \end{quote}
 
 \begin{enumerate}
-\item \textbf{\textcolor{blue}{Set $W=\lfloor{\sqrt{N}}\rfloor$.  
-We are {\em given} $PRICE[I]$, $1\leq I\leq W$, the price of a rod of length $I$. 
-Give a program that will output the optimal revenue for a rod of length $N^2$ 
-and give the time, in $\Theta$-land,  of the algorithm.
-Use an auxiliary array $R[J]$, $0\leq J\leq N^2$, where $R[J]$ will give the
-optimal revenue for a rod of length $J$.  You may {\bf not} use
-the term {\tt MAX} nor {\tt MIN} in your program  Explain, in clear words, how your program is working.
-(You can and should use {\tt MAX} in your explanations.)}}
-    \\\\ We have $R[J] = max[PRICE[I] + R[J-I]]$ where $1 \leq I \leq min[I, W]$. \\\\
-    \begin{algorithm}[H]
+\item \textbf{\textcolor{blue}{Set $W=\lfloor{\sqrt{N}}\rfloor$. We are {\em given} $PRICE[I]$, $1\leq I\leq W$, the price of a rod of length $I$. Give a program that will output the optimal revenue for a rod of length $N^2$ and give the time, in $\Theta$-land, of the algorithm. Use an auxiliary array $R[J]$, $0\leq J\leq N^2$, where $R[J]$ will give the optimal revenue for a rod of length $J$. You may {\bf not} use the term {\tt MAX} nor {\tt MIN} in your program  Explain, in clear words, how your program is working. (You can and should use {\tt MAX} in your explanations.)}}
+    \\ We have $R[J] = max[PRICE[I] + R[J-I]]$ where $1 \leq I \leq min[I, W]$. \\\\
+    \begin{algorithm}
         R[0] = 0 \\
         R[1] = PRICE[1] \\
         \For{J = $2$ to $N^2$}{
@@ -42,15 +33,15 @@ the term {\tt MAX} nor {\tt MIN} in your program  Explain, in clear words, how y
             \If{W $\leq$ S}{
                 S = W \\
             }
-            \\ (* So S = min(J,W) *) \\
+            \tcp{So S = min(J,W)} \\
             TEMP = 0 \\
             \For{I = 1 to S}{
                 \If{TEMP $\leq$ PRICE[I] + R[J-I]}{
-                    TEMP $\leftarrow$ PRICE[I] + R[J - I] \\          
+                    TEMP = PRICE[I] + R[J - I] \\          
                 }
             }
-            \\ (* Here TEMP is the maximal value *) \\
-            R[j] $\leftarrow$ TEMP \\
+            \tcp{Here TEMP is the maximal value} \\
+            R[j] = TEMP \\
         }
         \Return{R[$N^2$]}
         \caption{Algorithm to find the optimal revenue for a rod of length I}
@@ -68,35 +59,31 @@ instead select the last activity to start that is compatible with all previously
 selected activities. Describe how this approach works, write a program for it 
 (pseudo-code allowed) and prove that it yields an optimal algorithm.}}
     \\ At each point, the last activity to start is selected. There is a recursion down to the single optimal subproblem to find the optimal solution for all remaining activities compatible (proof by induction). \\
-    \begin{algorithm}[H]
-    RECURSIVE-ACTIVITY-SELECTOR(s, f, i): \\
-    $m \leftarrow i - 1$ \\
-    \While{m $>$ 0 and $s_i < f_m$}{
-        m $\leftarrow$ m - 1   
-    }
-    \eIf{m $>$ 0}{
-        \Return{$\{a_m\}\ \cup $ RECURSIVE-ACTIVITY-SELECTOR(s, f, m)}
-    }{
-        \Return{$\emptyset$}
-    }
+    \begin{algorithm}
+    \SetKwFunction{ras}{RECURSIVE-ACTIVITY-SELECTOR}
+    \Indm\ras{s, f, i}\\
+    \Indp
+        m = i - 1 \\
+        \While{m $>$ 0 and $s_i < f_m$}{
+            m = m - 1   
+        }
+        \eIf{m $>$ 0}{
+            \Return{$\{a_m\}\ \cup $ \ras{s, f, m}}
+        }{
+            \Return{$\emptyset$}
+        }
     \caption{Recursive activity selector}
     \end{algorithm}
     
     \\ We start with i = n (number of tasks). Consider a nonempty subproblem $S_{ij}$ and let $a_m$ be the activity in $S_{ij}$ with the latest start time $s_m = \max(s_k : a_k \in S_{ij})$.
     \begin{itemize}
         \item $a_m$ is used in a maximum-size subset of mutually compatible activities $S_{ij}$.
-        \\ \textbf{Proof: } Suppose $A_{ij}$ is a maximum-size subset of mutually compatible activies of $S_{ij}$.
-        Suppose activities in $A_{ij}$ are ordered in monotonically increasing order of starting time.
-        Let $a_k$ be the last activity of $A_{ij}$. If $a_k = a_m$, we are done since $a_m$ is used in constructing the schedule. Otherwise, we construct $A^{'}_{ij} = A_{ij} - \{a_k\}\ \in \ \{a_m\}$. The activities are disjoint since $a_k$ is the last activity to start and $s_m \geq s_k$. The number of activities in the subset are the same, so it is a maximum-size subset of activities including $a_m$.
+        \\ \textbf{Proof: } Suppose $A_{ij}$ is a maximum-size subset of mutually compatible activies of $S_{ij}$. Suppose activities in $A_{ij}$ are ordered in monotonically increasing order of starting time. Let $a_k$ be the last activity of $A_{ij}$. If $a_k = a_m$, we are done since $a_m$ is used in constructing the schedule. Otherwise, we construct $A^{'}_{ij} = A_{ij} - \{a_k\}\ \in \ \{a_m\}$. The activities are disjoint since $a_k$ is the last activity to start and $s_m \geq s_k$. The number of activities in the subset are the same, so it is a maximum-size subset of activities including $a_m$.
         \item The subproblem $S_{mj}$ is empty, so choosing $a_m$ leaves the subproblem $S_im$ as the only one that may be nonempty.
         \\ \textbf{Proof: } Suppose $S_{mj}$ is non-empty, so there is an activity $a_k$ such that $f_m \leq s_k < f_k \leq s_j < f_j$. As a consequence, $a_k \in S_{ij}$ which has a later start time than $a_m$, contradicting our initial assumption.
     \end{itemize}
-    
-
-
     \\ Let $S$ be the set of activities and $A$ be the maximum-size subset of mutually compatible activities of $S$. We first arrange the activities in order of decreasing start time. Let $a_k = [s_k, f_k)$ be the last activity in $A$. Let $a_m$ be the activity with the earliest finish time. At every step, we discard any overlapping activities with already chosen activities. The latest starting activities remains chosen.
-    \\\\ If $a_k = a_m$ then we found an optimal solution
-    \\ Else, we build the new set starting with $a_k$ and go up until $a_m \leq a_k$. This set has the same number of activities and is mutually compatible with the original set. The optimal solution for $S$ maps directly to the optimal solution in the new set.    
+    \\\\ If $a_k = a_m$ then we found an optimal solution. Otherwise, we build the new set starting with $a_k$ and go up until $a_m \leq a_k$. This set has the same number of activities and is mutually compatible with the original set. The optimal solution for $S$ maps directly to the optimal solution in the new set.    
 
 \item \textbf{\textcolor{blue}{Students (professors too!) often come up with very clever ideas for
 optimization programs.  The problem (often!) is that they (sometimes, but that
@@ -118,7 +105,6 @@ in each case, is to give an example where it yields the wrong answer.}}
     \end{enumerate}
 \end{enumerate}
 
-
 \begin{quote}
 Dear Sir,
 \\  I beg to introduce myself to you as a clerk in the Accounts Department
@@ -129,7 +115,6 @@ been employing the spare time at my disposal to work at Mathematics\ldots
 I am striking out a new path for myself.  I have made a special investigation
 of divergent series in general and the results I get are termed
 by the local mathematicians as ``startling"  \\ -- Ramanujan
-
 \end{quote}
 
 \begin{quote}
@@ -142,4 +127,3 @@ and ingenious one. To have proved what you claimed to have proved would have bee
 \end{quote}
 
 \end{document}
-

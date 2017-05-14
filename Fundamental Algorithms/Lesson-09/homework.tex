@@ -28,10 +28,7 @@ For every complex problem there is a simple solution.  And it's always wrong.
 \end{quote}
 
 \begin{enumerate}
-\item \textbf{\textcolor{blue}{(*) Suppose that the Huffman Code for $\{v,w,x,y,z\}$ has $0$ or $1$ as the
-code word for $z$.  {\em Prove} that the frequency for $z$ cannot be less than
-$\frac{1}{3}$.  {\em Give an example} where the frequency for $z$ is $0.36$ and
-$z$ does get code word $0$ or $1$.}}
+\item \textbf{\textcolor{blue}{(*) Suppose that the Huffman Code for $\{v,w,x,y,z\}$ has $0$ or $1$ as the code word for $z$.  {\em Prove} that the frequency for $z$ cannot be less than $\frac{1}{3}$.  {\em Give an example} where the frequency for $z$ is $0.36$ and $z$ does get code word $0$ or $1$.}}
     \\ \textbf{Proof that $z$'s frequency must be higher than $\frac{1}{3}$}
     \\ For the set $S = \{v,w,x,y,x\}$, there are 4 merges.
     \\ For $z$ to have a single bit code word with $S$, z can only be involved in the two last merges.
@@ -88,23 +85,20 @@ $z$ does get code word $0$ or $1$.}}
         \\ The encoding for the character with the $i^th$ Fibonacci number is $h_i = 1^{n-k}\ 0$.
 \end{enumerate}
 
-\item \textbf{\textcolor{blue}{Suppose that in implementing the Huffman code we weren't
-so clever as to use Min-Heaps.  Rather, at each step we found
-the two letters of minimal frequency and replaced them by
-a new letter with frequency their sum.  How long would that
-algorithm take, in Thetaland, as a function of the initial number of
-letters $n$.}}
+\item \textbf{\textcolor{blue}{Suppose that in implementing the Huffman code we weren't so clever as to use Min-Heaps. Rather, at each step we found the two letters of minimal frequency and replaced them by a new letter with frequency their sum. How long would that algorithm take, in Thetaland, as a function of the initial number of letters $n$.}}
     \begin{itemize}
         \item To find the two letters of minimal frequency, we need $O(n)$ time. Adding them etc. is included in $O(n)$.
         \item As we progress, the number of letters decreases but the first $\frac{n}{2}$ times, there are at least $\frac{n}{2}$ letters and finding the minimum takes $\Omega(n)$. The total time for the first $\frac{n}{2}$ times is thus $\Omega(\frac{n}{2} \times \frac{n}{2}) = \Omega(n^2)$.
         \item From the lower and upper bounds, this gives a total time of $\Theta(n^2)$.
     \end{itemize}
     
-\item \textbf{\textcolor{blue}{Consider the undirected graph with vertices $1,2,3,4,5$ and adjacency
-lists (arrows omitted) $1:25$, $2:1534$, $3:24$, $4:253$, $5:412$.  Show the $d$ and
+\item \textbf{\textcolor{blue}{Consider the undirected graph with vertices $1,2,3,4,5$ and adjacency lists (arrows omitted) $1:25$, $2:1534$, $3:24$, $4:253$, $5:412$.  Show the $d$ and
 $\pi$ values that result from running BFS, using $3$ as a source.  Nice picture, please!}}
     \\ Breadth first search (BFS) starts at the root of a tree and explores the neighbor nodes first, before moving to the next level neighbors.
     \begin{algorithm}
+    \SetKwFunction{bfs}{BFS}
+    \Indm\bfs{G, s}\\
+    \Indp
         \For{each vertex $u \in G.V - \{s\}$}{
             color[u] = WHITE \\
             d[u] = $\infty$ \\
@@ -493,36 +487,10 @@ $\pi$ values that result from running BFS, using $3$ as a source.  Nice picture,
 \end{tikzpicture}
 \\ Finally, we check V which has no new neighbor and we are done.
 
-
-
-
-
     
-\item \textbf{\textcolor{blue}{We are given a set $V$ of boxers. Between any two
-pairs of boxers there may or may not be a rivalry.
-  Assume the rivalries
-form a graph $G$ which is 
-given by an adjacency list representation, that is,
-$Adj[v]$ is a list of the rivals of $v$.  Let $n$ be
-the number of boxers (or nodes) and $r$ the number
-of rivalries (or edges).  Give a $O(n+r)$ time
-algorithm that determines whether it is possible to
-designate some of boxers as {\tt GOOD} and the others
-as {\tt BAD} such that each rivalry is between a {\tt GOOD}
-boxers and a {\tt BAD} boxer.  If it is possible to
-perform such a designation your algorithm should produce it.
-\\ Here is the approach: Create a new
-field ${\tt TYPE}[v]$ with the values {\tt GOOD} and
-${\tt BAD}$.  Assume that the boxers are in a list $L$
-so that you can program: For all $v\in L$.  The idea will
-be to  apply {\tt BFS[v]} -- when you hit a new vertex
-its value will be determined.  A cautionary note: {\tt BFS[v]}
-might not hit all the vertices so, just like we had {\tt DFS}
-and {\tt DFS-VISIT} you should have an overall {\tt BFS-MASTER}
-(that will run through the list $L$) and, when appropriate,
-call {\tt BFS[v]}.
-\\ {\tt Note:} The cognescenti will recognize that we are
-determining if a graph is bipartite!}}
+\item \textbf{\textcolor{blue}{We are given a set $V$ of boxers. Between any two pairs of boxers there may or may not be a rivalry. Assume the rivalries form a graph $G$ which is given by an adjacency list representation, that is, $Adj[v]$ is a list of the rivals of $v$. Let $n$ be the number of boxers (or nodes) and $r$ the number of rivalries (or edges). Give a $O(n+r)$ time algorithm that determines whether it is possible to designate some of boxers as {\tt GOOD} and the others as {\tt BAD} such that each rivalry is between a {\tt GOOD} boxers and a {\tt BAD} boxer. If it is possible to perform such a designation your algorithm should produce it. 
+\\ Here is the approach: Create a new field ${\tt TYPE}[v]$ with the values {\tt GOOD} and ${\tt BAD}$. Assume that the boxers are in a list $L$ so that you can program: For all $v\in L$.  The idea will be to  apply {\tt BFS[v]} -- when you hit a new vertex its value will be determined. A cautionary note: {\tt BFS[v]} might not hit all the vertices so, just like we had {\tt DFS} and {\tt DFS-VISIT} you should have an overall {\tt BFS-MASTER} (that will run through the list $L$) and, when appropriate, call {\tt BFS[v]}.
+\\ {\tt Note:} The cognescenti will recognize that we are determining if a graph is bipartite!}}
     \\ We need to add a field to each node which we call \textbf{type}, which can either be GOOD or BAD.
     \\ The basic idea is that a node should have the opposite type of its adjacents nodes.
     \begin{algorithm}
@@ -530,17 +498,18 @@ determining if a graph is bipartite!}}
         \If{color[v] == WHITE}{
             type[v] = GOOD \\
             BFS[v] but with two additions: \\
-            \ \ \ \ \ If color[u] == WHITE and u $\in$ Adj[w] then type[u] = !type[w] \\
-            \ \ \ \ \ If color[u] != WHITE and type[w] == type[u] then exit (no designation possible)
+            \ \ \ \ \ If color[u] = WHITE and u $\in$ Adj[w] then type[u] = !type[w] \\
+            \ \ \ \ \ If color[u] $\neq$ WHITE and type[u] = type[w] then exit (no designation possible)
         }
     }
     \end{algorithm}
     
-\item \textbf{\textcolor{blue}{Show how DFS works on Figure B.  All lists are alphabetical
-except we put R before Q so it is the first letter.
-Show the discovery and finishing time for each vertex.}}
+\item \textbf{\textcolor{blue}{Show how DFS works on Figure B. All lists are alphabetical except we put R before Q so it is the first letter. Show the discovery and finishing time for each vertex.}}
     \\ DFS explores edges out of the most recently discovered vertex v that still has unexplored edges. Once all v's edges are explored, it backtracks to explore other edges leaving from the vertex v.
     \begin{algorithm}
+    \SetKwFunction{dfs}{DFS}
+    \Indm\dfs{G}\\
+    \Indp
         \For{each vertex u $\in$ G.V}{
             color[u] = WHITE \\
             $\pi$[u] = NIL \\
@@ -553,7 +522,11 @@ Show the discovery and finishing time for each vertex.}}
         }
     \caption{DFS algorithm}
     \end{algorithm}
+    
     \begin{algorithm}
+    \SetKwFunction{dfsvisit}{DFS-VISIT}
+    \Indm\dfsvisit{G, u}\\
+    \Indp
         time = time + 1 \\
         d[u] = time \\
         color[u] = GRAY \\
@@ -566,9 +539,9 @@ Show the discovery and finishing time for each vertex.}}
         color[u] = BLACK \\
         time = time + 1 \\
         f[u] = time \\
-    \caption{DFS-VISIT algorithm}
+        \caption{DFS-VISIT algorithm}
     \end{algorithm}
-    \\ The graph would look as follows: \\
+    The graph would look as follows: \\
     \begin{tikzpicture}[->, auto, node distance=1.5cm,thick,vertex/.style={circle,draw}]
     \tikzset{edge from parent/.append style={->}}
     \node[vertex] (Q) [fill=white, text=black] {Q};
@@ -593,7 +566,7 @@ Show the discovery and finishing time for each vertex.}}
     (U) edge node {} (Y)
     (V) edge node {} (W)
     (W) edge node {} (S)
-    (X) edge [bend right] node node {} (Z)
+    (X) edge [bend right] node {} node {} (Z)
     (Y) edge node {} (Q)
     (Z) edge [bend right] node {} (X);
     \end{tikzpicture}
@@ -621,7 +594,7 @@ Show the discovery and finishing time for each vertex.}}
     (U) edge node {} (Y)
     (V) edge node {} (W)
     (W) edge node {} (S)
-    (X) edge [bend right] node node {} (Z)
+    (X) edge [bend right] node {} node {} (Z)
     (Y) edge node {} (Q)
     (Z) edge [bend right] node {} (X);
     \end{tikzpicture}
@@ -649,7 +622,7 @@ Show the discovery and finishing time for each vertex.}}
     (U) edge node {} (Y)
     (V) edge node {} (W)
     (W) edge node {} (S)
-    (X) edge [bend right] node node {} (Z)
+    (X) edge [bend right] node {} node {} (Z)
     (Y) edge node {} (Q)
     (Z) edge [bend right] node {} (X);
     \end{tikzpicture}
@@ -677,7 +650,7 @@ Show the discovery and finishing time for each vertex.}}
     (U) edge node {} (Y)
     (V) edge node {} (W)
     (W) edge node {} (S)
-    (X) edge [bend right] node node {} (Z)
+    (X) edge [bend right] node {} node {} (Z)
     (Y) edge node {} (Q)
     (Z) edge [bend right] node {} (X);
     \end{tikzpicture}
@@ -705,7 +678,7 @@ Show the discovery and finishing time for each vertex.}}
     (U) edge node {} (Y)
     (V) edge node {} (W)
     (W) edge node {} (S)
-    (X) edge [bend right] node node {} (Z)
+    (X) edge [bend right] node {} node {} (Z)
     (Y) edge node {} (Q)
     (Z) edge [bend right] node {} (X);
     \end{tikzpicture}
@@ -733,7 +706,7 @@ Show the discovery and finishing time for each vertex.}}
     (U) edge node {} (Y)
     (V) edge node {} (W)
     (W) edge node {} (S)
-    (X) edge [bend right] node node {} (Z)
+    (X) edge [bend right] node {} node {} (Z)
     (Y) edge node {} (Q)
     (Z) edge [bend right] node {} (X);
     \end{tikzpicture}
@@ -761,7 +734,7 @@ Show the discovery and finishing time for each vertex.}}
     (U) edge node {} (Y)
     (V) edge node {} (W)
     (W) edge node {} (S)
-    (X) edge [bend right] node node {} (Z)
+    (X) edge [bend right] node {} node {} (Z)
     (Y) edge node {} (Q)
     (Z) edge [bend right] node {} (X);
     \end{tikzpicture}
@@ -789,7 +762,7 @@ Show the discovery and finishing time for each vertex.}}
     (U) edge node {} (Y)
     (V) edge node {} (W)
     (W) edge node {} (S)
-    (X) edge [bend right] node node {} (Z)
+    (X) edge [bend right] node {} node {} (Z)
     (Y) edge node {} (Q)
     (Z) edge [bend right] node {} (X);
     \end{tikzpicture}
@@ -817,7 +790,7 @@ Show the discovery and finishing time for each vertex.}}
     (U) edge node {} (Y)
     (V) edge node {} (W)
     (W) edge node {} (S)
-    (X) edge [bend right] node node {} (Z)
+    (X) edge [bend right] node {} node {} (Z)
     (Y) edge node {} (Q)
     (Z) edge [bend right] node {} (X);
     \end{tikzpicture}
@@ -845,7 +818,7 @@ Show the discovery and finishing time for each vertex.}}
     (U) edge node {} (Y)
     (V) edge node {} (W)
     (W) edge node {} (S)
-    (X) edge [bend right] node node {} (Z)
+    (X) edge [bend right] node {} node {} (Z)
     (Y) edge node {} (Q)
     (Z) edge [bend right] node {} (X);
     \end{tikzpicture}
@@ -873,7 +846,7 @@ Show the discovery and finishing time for each vertex.}}
     (U) edge node {} (Y)
     (V) edge node {} (W)
     (W) edge node {} (S)
-    (X) edge [bend right] node node {} (Z)
+    (X) edge [bend right] node {} node {} (Z)
     (Y) edge node {} (Q)
     (Z) edge [bend right] node {} (X);
     \end{tikzpicture}
@@ -901,7 +874,7 @@ Show the discovery and finishing time for each vertex.}}
     (U) edge node {} (Y)
     (V) edge node {} (W)
     (W) edge node {} (S)
-    (X) edge [bend right] node node {} (Z)
+    (X) edge [bend right] node {} node {} (Z)
     (Y) edge node {} (Q)
     (Z) edge [bend right] node {} (X);
     \end{tikzpicture}
@@ -917,14 +890,13 @@ when it is run on Figure C, with all lists alphabetical.}}
 \begin{center}
     \includegraphics[width=90mm]{figureC.jpg}
 \end{center}
-    \\ \textbf{TOP-SORT(G)}
+    \textbf{TOP-SORT(G)}
     \begin{itemize}
         \item [1.] Call DFS(G) to compute finishing times f[v] for each vertex v.
         \item [2.] As each vertex finishes, insert it onto the front of a linked list.
         \item [3.] Return the linked list of vertices.
     \end{itemize}
-    
-    \\ The first letter is M so we apply DFS starting from M.
+    The first letter is M so we apply DFS starting from M.
     \begin{center}
         \begin{tabular}{|c | c | c |} 
         \hline
@@ -979,47 +951,21 @@ when it is run on Figure C, with all lists alphabetical.}}
     Now, the linked list of the reversed order of vertices according to their finishing times is: PNOSMRYVWZUQTX
     \\ Practically, as soon as a vertex finishes, we just add it to the head of a linked list.
     
-\item \textbf{\textcolor{blue}{Let $G$ be a DAG with a specific designated vertex $v$.
-Uno and Dos (Spanish for One and Two) play the following game.
-A token is placed on $v$.  The players alternate moves, Uno 
-playing first.  On each turn if the token is on $w$ the player
-moves the token to some vertex $u$ with $(w,u)$ an edge of
-the DAG.  When a player has no move, he or she loses.  Except
-for the first part below, we assume Uno and Dos play perfectly.}}
+\item \textbf{\textcolor{blue}{Let $G$ be a DAG with a specific designated vertex $v$. Uno and Dos (Spanish for One and Two) play the following game. A token is placed on $v$.  The players alternate moves, Uno playing first.  On each turn if the token is on $w$ the player moves the token to some vertex $u$ with $(w,u)$ an edge of the DAG. When a player has no move, he or she loses. Except for the first part below, we assume Uno and Dos play perfectly.}}
 \begin{enumerate}
-    \item \textbf{\textcolor{blue}{Argue that the game {\em must} end. Indeed, argue that if
-    $G$ has $n$ vertices then the game {\em cannot} take more than
-    $n-1$ moves. (Key: Its a DAG!)}}
+    \item \textbf{\textcolor{blue}{Argue that the game {\em must} end. Indeed, argue that if     $G$ has $n$ vertices then the game {\em cannot} take more than $n-1$ moves. (Key: Its a DAG!)}}
         \\ \textbf{DAG:} Directed acyclic graph (no loops)
-        \\ Let G have n vertices. 
-        If the game went on for n moves, the chip would hit n+1 positions $v_0, v_1, ..., v_n$.
-        Because there are only n vertices, it means some positions would be hit more than once.
-        However, the graph is acyclic so this is not possible.
-        Hence the game must end after n-1 moves.
-        
-    \item \textbf{\textcolor{blue}{Define {\tt VALUE[z]} to be the winner of the game
-    (either Uno or Dos) where the token is initially placed at vertex $z$ and Uno plays first.  
-    (That is, {\tt VALUE[z]} being Uno means that the player who has the move will win,
-    {\tt VALUE[z]} being Dos means that the player who has the move will lose.)
-    When $z$ is a leaf node and Uno plays first, Uno has no move and so loses and therefore
-    {\tt VALUE[z]} is Dos.  But what if $z$ is {\em not} a leaf node.
-    Suppose the {\tt VALUE[w]} are known for all $w\in Adj[z]$.  
-    How do those values determine {\tt VALUE[z]}?  (To give part of
-    the answer: Suppose there is some $w\in Adj[z]$ with {\tt VALUE[w]}
-    equal Dos.  From $z$ Uno's winning strategy is to move to $w$.)}}
+        \\ Let G have n vertices. If the game went on for n moves, the chip would hit n+1 positions $v_0, v_1, ..., v_n$. Because there are only n vertices, it means some positions would be hit more than once. However, the graph is acyclic so this is not possible. Hence the game must end after n-1 moves.
+    \item \textbf{\textcolor{blue}{Define {\tt VALUE[z]} to be the winner of the game (either Uno or Dos) where the token is initially placed at vertex $z$ and Uno plays first. (That is, {\tt VALUE[z]} being Uno means that the player who has the move will win, {\tt VALUE[z]} being Dos means that the player who has the move will lose.) When $z$ is a leaf node and Uno plays first, Uno has no move and so loses and therefore {\tt VALUE[z]} is Dos.  But what if $z$ is {\em not} a leaf node. Suppose the {\tt VALUE[w]} are known for all $w\in Adj[z]$. How do those values determine {\tt VALUE[z]}? (To give part of the answer: Suppose there is some $w\in Adj[z]$ with {\tt VALUE[w]} equal Dos. From $z$ Uno's winning strategy is to move to $w$.)}}
         \\ Suppose $\exists \ w \in Adj[z]$ with VALUE[w] = Dos.
         \\ Uno makes the move. As the roles are reversed and Dos moves first, Uno wins so VALUE[z] = Uno.
         \\ Otherwise, a position w is reached with VALUE[w] = Uno (whatever Uno does). Dos, who is making the first move, wins so VALUE[z] = Dos.
-        
-    \item \textbf{\textcolor{blue}{Using the above idea modify {\tt DFS-VIST[v]} 
-    to find who wins the original game.  In your modified algorithm
-    there will be an extra function {\tt VALUE[w]} which is originally
-    set to {\tt NIL} for all vertices $w$, representing that the winner
-    of the game starting at $w$ has not yet been determined.  When
-    the unmodified {\tt DFS-VISIT[w]} would be finished add a couple
-    of lines of pseudocode to give  {\tt VALUE[w]}.
-    Give an upper bound on the time of your algorithm.}}
+    \item \textbf{\textcolor{blue}{Using the above idea modify {\tt DFS-VIST[v]} to find who wins the original game.  In your modified algorithm there will be an extra function {\tt VALUE[w]} which is originally set to {\tt NIL} for all vertices $w$, representing that the winner of the game starting at $w$ has not yet been determined. When the unmodified {\tt DFS-VISIT[w]} would be finished add a couple of lines of pseudocode to give {\tt VALUE[w]}. Give an upper bound on the time of your algorithm.}}
+        \\ Apply the following DFS-VISIT-CUSTOM[G, v]. This algorithm requires O(V+E), but could be smaller as the algorithm only reach a small of the graph.
         \begin{algorithm}
+        \SetKwFunction{dfsc}{DFS-VISIT-CUSTOM}
+        \Indm\dfsc{G, v}\\
+        \Indp
             time = time + 1 \\
             d[u] = time \\
             color[u] = GRAY \\
@@ -1038,13 +984,7 @@ for the first part below, we assume Uno and Dos play perfectly.}}
             f[u] = time \\
             \caption{DFS-VISIT-CUSTOM[G, v] algorithm}
         \end{algorithm}
-        \\ Apply the following DFS-VISIT-CUSTOM[G, v]. This algorithm requires O(V+E), but could be smaller as the algorithm only reach a small of the graph.
-        
-        
-    
+    \end{enumerate}
 \end{enumerate}
-
-\end{enumerate}
-
 
 \end{document}

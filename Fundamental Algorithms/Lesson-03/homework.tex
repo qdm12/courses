@@ -39,53 +39,46 @@ and his small frog-like features taking on an astonishing radiance.
 \end{quote}
 
 \begin{enumerate}
-\item \textbf{\textcolor{blue}{Write each of the following functions as $\Theta(g(n))$ where
-$g(n)$ is one of the standard forms:}}
+\item \textbf{\textcolor{blue}{Write each of the following functions as $\Theta(g(n))$ where $g(n)$ is one of the standard forms:}}
     \begin{enumerate}
     \item \textbf{\textcolor{blue}{$2n^4-11n+98$}}
         \\\\ $\Theta(g(n)) = \Theta(n^4)$ \\
     \item \textbf{\textcolor{blue}{$6n + 43n\lg n$}}
-        \\\\ $\Theta(g(n)) = \Theta(nlg\ n)$ \\
+        \\\\ $\Theta(g(n)) = \Theta(n\lg(n))$ \\
     \item \textbf{\textcolor{blue}{$63n^2 + 14n\lg^5n$}}
         \\\\ $\Theta(g(n)) = \Theta(n^2)$ \\
     \item \textbf{\textcolor{blue}{$3 + \frac{5}{n}$}}
         \\\\ $\Theta(g(n)) = \Theta(1)$ \\
     \end{enumerate}
 
-\item \textbf{\textcolor{blue}{Illustrate the operation of {\tt RADIX-SORT} on the
-list: COW, DOG, SEA, RUG, ROW, MOB, BOX, TAB, BAR, EAR, TAR, DIG, BIG,
-TEA, NOW, FOX following the Figure in the Radix-Sort section.
-(Use alphabetical order and sort one letter at a time.)}}
-    \\\\ \textbf{Initial list:} COW, DOG, SEA, RUG, ROW, MOB, BOX, TAB, BAR, EAR, TAR, DIG, BIG, TEA, NOW, FOX
+\item \textbf{\textcolor{blue}{Illustrate the operation of {\tt RADIX-SORT} on the list: COW, DOG, SEA, RUG, ROW, MOB, BOX, TAB, BAR, EAR, TAR, DIG, BIG, TEA, NOW, FOX following the Figure in the Radix-Sort section. (Use alphabetical order and sort one letter at a time.)}} 
+    \\ \textbf{Initial list:}
+    \\ COW, DOG, SEA, RUG, ROW, MOB, BOX, TAB, BAR, EAR, TAR, DIG, BIG, TEA, NOW, FOX
     \\ \textbf{Pass 1:} ['SEA', 'TEA', 'MOB', 'TAB', 'DOG', 'RUG', 'DIG', 'BIG', 'BAR', 'EAR', 'TAR', 'COW', 'ROW', 'NOW', 'BOX', 'FOX']
     \\ \textbf{Pass 2:} ['TAB', 'BAR', 'EAR', 'TAR', 'SEA', 'TEA', 'DIG', 'BIG', 'MOB', 'DOG', 'COW', 'ROW', 'NOW', 'BOX', 'FOX', 'RUG']
     \\ \textbf{Pass 3:} ['BAR', 'BIG', 'BOX', 'COW', 'DIG', 'DOG', 'EAR', 'FOX', 'MOB', 'NOW', 'ROW', 'RUG', 'SEA', 'TAB', 'TAR', 'TEA']
     \\\\ The following Python code was used to generate the several passes:
     \begin{minted}{python}
-    from operator import itemgetter
-                 
-    def radix_sort_alpha(words):
-        l = len(words[0])
-        for w in words:
-            if len(w) != l:
-                raise Exception("Words should have the same length")
-        for i in range(l, 0, -1):
-            words = sorted(words, key=itemgetter(i - 1))
-            words_str = str([''.join(w) for w in words])
-            print "PASS "+str(l - i + 1)+": "+words_str
-        return words_str
-            
-    radix_sort_alpha(["COW", "DOG", "SEA", "RUG", "ROW", "MOB", \
-                      "BOX", "TAB", "BAR", "EAR", "TAR", "DIG", \
-                      "BIG", "TEA", "NOW", "FOX"])
+from operator import itemgetter
+             
+def radix_sort_alpha(words):
+    l = len(words[0])
+    for w in words:
+        if len(w) != l:
+            raise Exception("Words should have the same length")
+    for i in range(l, 0, -1):
+        words = sorted(words, key=itemgetter(i - 1))
+        words_str = str([''.join(w) for w in words])
+        print "PASS "+str(l - i + 1)+": "+words_str
+    return words_str
+        
+radix_sort_alpha(["COW", "DOG", "SEA", "RUG", "ROW", "MOB", \
+                  "BOX", "TAB", "BAR", "EAR", "TAR", "DIG", \
+                  "BIG", "TEA", "NOW", "FOX"])
     \end{minted}
 
-\item \textbf{\textcolor{blue}{Illustrate the operation of {\tt BUCKET-SORT} 
-(with $10$ buckets)
-on the
-array \\ $A=(.79,.13,.16,.64,.39,.20,.89,.53,.71,.43)$ \\  following
-the Figure in the Bucket-Sort section.}}
-    \\\\ Initial input array A: 
+\item \textbf{\textcolor{blue}{Illustrate the operation of {\tt BUCKET-SORT} (with $10$ buckets) on the array \\ $A=(.79,.13,.16,.64,.39,.20,.89,.53,.71,.43)$ \\  following the Figure in the Bucket-Sort section.}}
+    \\ Initial input array A: 
     \\ $[0.79, 0.13, 0.16, 0.64, 0.39, 0.2, 0.89, 0.53, 0.71, 0.43]$
     \\ Initial output buckets array B:
     \\ $[[], [], [], [], [], [], [], [], [], []]$
@@ -95,49 +88,46 @@ the Figure in the Bucket-Sort section.}}
     \\ $[[], [0.13, 0.16], [0.2], [0.39], [0.43], [0.53], [0.64], [0.71, 0.79], [0.89], []]$
     \\ Final output array B:
     \\ $[0.13, 0.16, 0.2, 0.39, 0.43, 0.53, 0.64, 0.71, 0.79, 0.89]$
-    \\ The following Python code was used to generate these stages:
+    \\\\ The following Python code was used to generate these stages:
     \begin{minted}{python}
-    from math import floor
-                 
-    def bucket_sort(A):
-        print "Initial input array A: "+str(A)
-        n = len(A)
-        for i in range(n):
-            assert(A[i] >= 0 and A[i] < 1)
-        B = [[] for _ in range(n)]
-        print "Initial output buckets array B: "+str(B)
-        for i in range(n):
-            place = int(floor(A[i] * n))
-            B[place].append(A[i])
-        print "Output buckets array B with \
-               elements in buckets: "+str(B)
-        for j in range(n):
-            B[j].sort()
-        print "Output buckets array B with \
-               elements sorted in buckets: "+str(B)
-        B_final = []
-        for bucket in B:
-            B_final += bucket
-        print "Final output array B: "+str(B_final)
-        return B_final
-        
-    bucket_sort([.79,.13,.16,.64,.39,.20,.89,.53,.71,.43])
+from math import floor
+             
+def bucket_sort(A):
+    print "Initial input array A: "+str(A)
+    n = len(A)
+    for i in range(n):
+        assert(A[i] >= 0 and A[i] < 1)
+    B = [[] for _ in range(n)]
+    print "Initial output buckets array B: "+str(B)
+    for i in range(n):
+        place = int(floor(A[i] * n))
+        B[place].append(A[i])
+    print "Output buckets array B with \
+           elements in buckets: "+str(B)
+    for j in range(n):
+        B[j].sort()
+    print "Output buckets array B with \
+           elements sorted in buckets: "+str(B)
+    B_final = []
+    for bucket in B:
+        B_final += bucket
+    print "Final output array B: "+str(B_final)
+    return B_final
+    
+bucket_sort([.79,.13,.16,.64,.39,.20,.89,.53,.71,.43])
     \end{minted}
 
 \item \textbf{\textcolor{blue}{Given $A[1\cdots N]$ with $0\leq A[I]<N^N$ for all $I$.}}
     \begin{enumerate}
     \item \textbf{\textcolor{blue}{How long will {\tt COUNTING-SORT} take?}}
-        \\ For {\tt COUNTING-SORT}, $n=N$ and $k=N^N$. Hence it will take $\Theta(n+k)=\Theta(N^N)$ time.
-		Note that we had to go through the array C of length $N^N$, leading to $\Theta(N^N)$
+        \\ For {\tt COUNTING-SORT}, $n=N$ and $k=N^N$. Hence it will take $\Theta(n+k) = \Theta(N^N)$ time. Note that we had to go through the array C of length $N^N$, leading to $\Theta(N^N)$
     \item \textbf{\textcolor{blue}{How long will {\tt RADIX-SORT} take using base $N$?}}
         \\ For {\tt RADIX-SORT}, $n=N$ and $k=N^N$ and $b=N$.
 		Hence it will take $\Theta((n+b)\log_b(k))=\Theta((N+N)\log_N(N^N))=\Theta((N+N)N)=\Theta(N^2)$ time.
 		Note that the array C is of lenght $N$ and that each element has $N$ digits, so this leads to $\Theta(N^2)$
-    \item \textbf{\textcolor{blue}{How long will {\tt RADIX-SORT} take using base $N^{\sqrt{N}}$?
-    (Assume $\sqrt{N}$ integral.)}}
+    \item \textbf{\textcolor{blue}{How long will {\tt RADIX-SORT} take using base $N^{\sqrt{N}}$? (Assume $\sqrt{N}$ integral.)}}
 		\\ Note that there are $\sqrt{N}$ digits per element, and the length of the array C is $N^{\sqrt{N}}$, leading to $\Theta(\sqrt{N}N^{\sqrt{N}})$.
-	\item \textbf{\textcolor{blue}{(*) Argue that for no base $K$ will {\tt RADIX-SORT} do as well
-	as {\tt HEAP-SORT}.}}
+	\item \textbf{\textcolor{blue}{(*) Argue that for no base $K$ will {\tt RADIX-SORT} do as well as {\tt HEAP-SORT}.}}
 		\\ If the base $K$ has $K\geq N^2$ then it takes time
 		$N^2$ or more just to go through the array $C$, which is 
 		worse than the $\Theta(N\lg N)$ of {\tt HEAP-SORT}.
@@ -148,13 +138,8 @@ the Figure in the Bucket-Sort section.}}
 		total time is $\Omega(N^2)$ which is worse than {\tt HEAP-SORT}.
     \end{enumerate}
     
-\item \textbf{\textcolor{blue}{Write the time $T(N)$ (don't worry about the output!) for the following algorithms in the
-form $T(N)=\Theta(g(N))$ for a standard $g(N)$.  
-For time, consider the
-total number of times X++, I=2*I, J++,J=2*J respectively are applied.
-(Note: * means multiplication, ++ means increment one.)  The hardest is the last one,
-there is an outer FOR I loop, write the time it takes inside the loop as a function of $I$ and $N$.
-Then try (!) to add over $I=1$ to $N$.}}
+\item \textbf{\textcolor{blue}{Write the time $T(N)$ (don't worry about the output!) for the following algorithms in the form $T(N)=\Theta(g(N))$ for a standard $g(N)$. For time, consider the
+total number of times X++, I=2*I, J++,J=2*J respectively are applied. (Note: * means multiplication, ++ means increment one.)  The hardest is the last one, there is an outer FOR I loop, write the time it takes inside the loop as a function of $I$ and $N$. Then try (!) to add over $I=1$ to $N$.}}
     \begin{enumerate}
     \item \textbf{\textcolor{blue}{
     X=0
@@ -185,50 +170,26 @@ Then try (!) to add over $I=1$ to $N$.}}
     \\ \hspace*{1cm} J=I
     \\ \hspace*{1cm} WHILE J $<$ N
     \\ \hspace*{2cm} do J=2*J}}
-        \\\\ For a given $I$ the subloop starts at $I$ 
-		and double until reaching $N$.  We double $t$ times, where $t$ 
-		is the smallest integer $I2^t\geq N$, so 
-		$t=\lceil \lg(N/I) \rceil$. So the total time is
-		\begin{equation}TOTAL = O\left( \sum_{i=1}^n \lceil\lg(n/i)\rceil \right)\end{equation}
+        \\\\ For a given $I$ the subloop starts at $I$ and double until reaching $N$. We double $t$ times, where $t$ is the smallest integer $I2^t\geq N$, so $t=\lceil \lg(N/I) \rceil$. So the total time is 
+        \begin{equation}TOTAL = O\left( \sum_{i=1}^n \lceil\lg(n/i)\rceil \right)\end{equation}
 		This is challenging.  
-		\newline Approach One: We get ridof the ceiling by noting that 
-		the ceiling can only affect each term by $1$ and therefore 
-		the sum by at most $n$ and so 
+		\\ Approach One: We get rid of the ceiling by noting that the ceiling can only affect each term by $1$ and therefore the sum by at most $n$ and so 
 		\begin{equation}TOTAL = O(n)+O\left( \sum_{i=1}^n \lg(n/i) \right)\end{equation}
-		Now there are a variety of approaches. One is via Stirling's 
-		Formula. The object in parentheses is precisely $\ln(n^n/n!)$ 
-		and by Stirling $n^n/n! \sim e^n(2\pi n)^{-1/2}$.
-		The square root term is inconsequential and 
-		$\lg(n^n/e^n) \sim n\lg 2 = O(n)$. Thus 
+		Now there are a variety of approaches. One is via Stirling's Formula. The object in parentheses is precisely $\ln(n^n/n!)$ and by Stirling $n^n/n! \sim e^n(2\pi n)^{-1/2}$. The square root term is inconsequential and $\lg(n^n/e^n) \sim n\lg 2 = O(n)$. Thus 
 		\begin{equation}TOTAL = O(n) + O(n ) = O(n)\end{equation}
-		This is a linear time algorithm!  Note that the ceiling 
-		actually does have an effect on the constants buried in 
-		the $O$ as both parts are linear in $n$.
-		{\tt Comment:} How did we know that removing the ceilings 
-		would work? We didn't, we tried it and it turned out its 
-		effect was not dominant so we were OK. This is part of 
-		the {\em art} of doing asymptotics!
-		\newline Approach Two: Similar to the analysis of 
-		BUILD-MAX-HEAP we have $1$ doubling $n/2$ times, 
-		$2$ doublings $n/4$ times ($n/4 < i \leq n/2$), 
-		$3$ doublings $n/8$ times so the total doublings is 
-		$n \sum_u u2^{-u}$ but that sum, even to infinity, is $2$
-		so the total doublings is $\sim 2n$.
+		This is a linear time algorithm! Note that the ceiling actually does have an effect on the constants buried in the $O$ as both parts are linear in $n$. {\tt Comment:} How did we know that removing the ceilings would work? We didn't, we tried it and it turned out its 
+		effect was not dominant so we were OK. This is part of the {\em art} of doing asymptotics!
+		\\ Approach Two: Similar to the analysis of BUILD-MAX-HEAP we have $1$ doubling $n/2$ times, $2$ doublings $n/4$ times ($n/4 < i \leq n/2$), $3$ doublings $n/8$ times so the total doublings is $n \sum_u u2^{-u}$ but that sum, even to infinity, is $2$ so the total doublings is $\sim 2n$.
     \end{enumerate}
     
-\item \textbf{\textcolor{blue}{Prof.\ Squander decides to do Bucket Sort on $n$ items with $n^2$ buckets while
-his student Ima Hogg decides to do Bucket Sort on $n$ items with $n^{1/2}$ buckets.
-Assume that the items are indeed uniformly distributed.  Assume that Ima's algorithm
-for sorting inside a bucket takes time $O(m^2)$ when the bucket has $m$ items.}}
+\item \textbf{\textcolor{blue}{Prof.\ Squander decides to do Bucket Sort on $n$ items with $n^2$ buckets while his student Ima Hogg decides to do Bucket Sort on $n$ items with $n^{1/2}$ buckets. Assume that the items are indeed uniformly distributed. Assume that Ima's algorithm for sorting inside a bucket takes time $O(m^2)$ when the bucket has $m$ items.}}
     \begin{enumerate}
-    \item \textbf{\textcolor{blue}{Argue that Prof.\ Squander has made a poor choice of the number of buckets by
-    looking analyzing the time of Bucket Sort in his case.}}
-        \\\\ For Prof. Squander, we have $n=n$ and $k=n^2$ so we require $\Theta(n + n^2)=\Theta(n^2)$ time, which is the worst case scenario for a bucket sort (upper bond).
+    \item \textbf{\textcolor{blue}{Argue that Prof.\ Squander has made a poor choice of the number of buckets by looking analyzing the time of Bucket Sort in his case.}}
+        \\ For Prof. Squander, we have $n=n$ and $k=n^2$ so we require $\Theta(n + n^2)=\Theta(n^2)$ time, which is the worst case scenario for a bucket sort (upper bond).
     \item \textbf{\textcolor{blue}{Argue that Ima has made a poor choice of the number of buckets by looking analyzing the time of Bucket Sort in her case.}}
-        \\\\ For Ima Hogg's bucket sort, because of the uniform distribution, there should be $n^\frac{1}{2}$ items per bucket so sorting each bucket takes $\Theta((n^\frac{1}{2})^2)=\Theta(n)$ thus we require $\Theta(n^\frac{3}{2})$ which is still worst than $\Theta(n + k)$.
-    \item \textbf{\textcolor{blue}{Argue that Ima uses roughly the same amount of {\em space} as someone
-    using $n$ buckets.}}
-        \\\\ Because there is $n^\frac{1}{2}$ items per bucket and there are $n^{\frac{1}{2}}$ buckets, the total space used is $n^\frac{1}{2}*n^\frac{1}{2}=n$ which is obviously the same as the space used by someone using $n$ buckets.
+        \\ For Ima Hogg's bucket sort, because of the uniform distribution, there should be $n^\frac{1}{2}$ items per bucket so sorting each bucket takes $\Theta((n^\frac{1}{2})^2)=\Theta(n)$ thus we require $\Theta(n^\frac{3}{2})$ which is still worst than $\Theta(n + k)$.
+    \item \textbf{\textcolor{blue}{Argue that Ima uses roughly the same amount of {\em space} as someone using $n$ buckets.}}
+        \\ Because there is $n^\frac{1}{2}$ items per bucket and there are $n^{\frac{1}{2}}$ buckets, the total space used is $n^\frac{1}{2}*n^\frac{1}{2}=n$ which is obviously the same as the space used by someone using $n$ buckets.
     \end{enumerate}
 \end{enumerate}
 

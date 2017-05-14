@@ -2,7 +2,6 @@
 \pagestyle{empty}
 \usepackage{color}
 \usepackage{forest}
-\usepackage{listings}
 \usepackage{minted}
 \usepackage{fancyhdr}
 \usepackage{lastpage}
@@ -40,7 +39,7 @@ right & d & N & g & N & b & N & N & N
 \end{tabular}
 \end{center}}}
     \\ We have the following tree:
-    \\\\
+    \\
     \begin{center}
     \begin{forest}
     for tree={circle,draw, l sep=20pt}
@@ -67,10 +66,8 @@ right & d & N & g & N & b & N & N & N
     \end{center}
 
     \begin{enumerate}
-    \item \textbf{\textcolor{blue}{Which is the successor of $c$.  
-    Illustrate how the program {\tt SUCCESSOR} will find it.}}
-        \\ We want to find the successor of node $150$ on its left side (vertex $x$). We therefore search 
-        for the node with value $150$ and its left child is the successor, otherwise there is no successor.
+    \item \textbf{\textcolor{blue}{Which is the successor of $c$. Illustrate how the program {\tt SUCCESSOR} will find it.}}
+        \\ We want to find the successor of node $150$ on its left side (vertex $x$). We therefore search for the node with value $150$ and its left child is the successor, otherwise there is no successor.
         \\ To do this, the following Python code was implemented with the recursive function SuccessorVerbose.
         \\ Note that you can also implement the SUCCESSOR algorithm in an iterative way or by keeping track of the parent pointer, but this way is neater I think.
         \begin{minted}{python}
@@ -120,14 +117,12 @@ bst.insert(root, bst.Node(148))
 bst.insert(root, bst.Node(143))
 bst.SuccessorVerbose(root, parent_key=150)
         \end{minted}
-        \\\\ The following standard output is thus generated:
+        The following standard output is thus generated:
         \\ Parent's value is on right side of node 80
         \\ Parent's value is on left side of node 200
         \\ Parent found and has left successor 140
         \\\\ The successor of $c$ is thus the node with value $140$.
-        
-    \item \textbf{\textcolor{blue}{Which is the minimal element?
-    Illustrate how the program {\tt MIN} will find it.}}
+    \item \textbf{\textcolor{blue}{Which is the minimal element? Illustrate how the program {\tt MIN} will find it.}}
         \\ To find the minimum, the MIN program has been implemented in Python 2.7.
         \\ It basically starts at the root and searches for the leftmost node.
         \\ It is implemented in the function minValueVerbose(root).
@@ -173,11 +168,10 @@ bst.insert(root, bst.Node(148))
 bst.insert(root, bst.Node(143))
 bst.minValueVerbose(root)
         \end{minted}
-        \\\\\\ The following standard output is hence generated:
+        The following standard output is hence generated:
         \\ There is a node on the left of node with value 80
         \\ No more node on the left of node with value 70
         \\ The minimum is therefore the node with value 70
-        \\
     \item \textbf{\textcolor{blue}{Illustrate the program {\tt DELETE[e]}}}
         \\ The program DELETE[e] searches for the node with the key equal to $e$.
         \\ Once found, there are three cases:
@@ -253,14 +247,13 @@ print
 bst.delete(root, 140)
 bst.print_inOrder(root)
         \end{minted}
-        \\\\\\ As you may see, the delete function is recursive and uses the minValue function previously described.
+        The delete function is recursive and uses the minValue function previously described.
         \\ The standard output generated from running this code is the following:
-        \\\\ 70 80 140 143 148 150 170 200
-        \\ 70 80 143 148 150 170 200
+        \\ 70 80 140 143 148 150 170 200
+        \\\\ 70 80 143 148 150 170 200
     \end{enumerate}
     
-\item \textbf{\textcolor{blue}{Draw binary search trees of height 
-2,3,4,5,6 on the set of keys \{1,4,5,10,16,17,21\}.}}
+\item \textbf{\textcolor{blue}{Draw binary search trees of height 2,3,4,5,6 on the set of keys \{1,4,5,10,16,17,21\}.}}
     \begin{forest}
     for tree={circle,draw, l sep=10pt}
     [10
@@ -355,28 +348,15 @@ bst.print_inOrder(root)
     \end{forest}
     \\ \space Height 2 \hfill Height 3 \hfill Height 4 \hfill Height 5 \hfill Height 6
 
-\item \textbf{\textcolor{blue}{What is the difference between 
-the binary-search property and the heap property?
-(*) Can the heap property be used to print out the keys of 
-an $n$-node tree in sorted order in $O(n)$ time? Explain how or why not.}}
-    \\ Heap property guarantees elements on higher levels are greater (for max-heap) than elements on lower levels.
-    \\ Binary Search property guarantees order, from "left" to "right".
-    \\ The heap property can print out the keys of an $n$-node tree in sorted order in $O(n\ log\ n)$.
-    \\ This is due to the fact that this property will require us to swap and reheapify each time so 
-    it would require $log(n) + log(n-1) + log(n-2) + ... + 1$ which results in $O(n\ log\ n)$.
+\item \textbf{\textcolor{blue}{What is the difference between the binary-search property and the heap property? (*) Can the heap property be used to print out the keys of an $n$-node tree in sorted order in $O(n)$ time? Explain how or why not.}}
+    \begin{itemize}
+    \item Heap property guarantees elements on higher levels are greater (for max-heap) than elements on lower levels.
+    \item Binary Search property guarantees order, from "left" to "right".
+    \item The heap property can print out the keys of an $n$-node tree in sorted order in $O(n\ log\ n)$. This is due to the fact that this property will require us to swap and reheapify each time so it would require $log(n) + log(n-1) + log(n-2) + ... + 1$ which results in $O(n\ log\ n)$.    
+    \end{itemize}    
     
-\item \textbf{\textcolor{blue}{You are given an array $A[1\cdots n]$, 
-whose values come from a universe $\Omega$. (In application, the values 
-would be the keys of records.) You want to test if there are any
-duplicates, if there are any $1\leq i < j \leq n$ such that
-$A[i]=A[j]$.  You are given a hash function $h:\Omega\ra \{1,\ldots,n\}$
-and a table $T[1\cdots n]$ of linked lists, initially all empty.
-Using the hash function,  give an algorithm that returns {\tt BAD}
-if there is a duplicate and {\tt GOOD} if there is no duplicate.
-Discuss the time of the algorithm under the assumption that
-calculating the hash function takes unit time.}}
-    \\\\ The following algorithm adds elements to the table and check for duplicates.
-    \\ If a duplicate is found, the element is not added.
+\item \textbf{\textcolor{blue}{You are given an array $A[1\cdots n]$, whose values come from a universe $\Omega$. (In application, the values would be the keys of records.) You want to test if there are any duplicates, if there are any $1\leq i < j \leq n$ such that $A[i]=A[j]$.  You are given a hash function $h:\Omega\ra \{1,\ldots,n\}$ and a table $T[1\cdots n]$ of linked lists, initially all empty. Using the hash function,  give an algorithm that returns {\tt BAD} if there is a duplicate and {\tt GOOD} if there is no duplicate. Discuss the time of the algorithm under the assumption that calculating the hash function takes unit time.}}
+    \\ The following algorithm adds elements to the table and check for duplicates. If a duplicate is found, the element is not added.
     \\
     \begin{algorithm}[H]
         \For{i from 1 to N}{
@@ -402,21 +382,11 @@ calculating the hash function takes unit time.}}
         \caption{Duplicate check and hash table algorithm}
     \end{algorithm}
     \\ The outer loop is executed $n$ times, and the inner loop is executed $m$ times where
-    $m$ is the number of elements of $A$ hashing to the same index of the table $T$.
-    \\ In the worst case, if all the elements of $A$ hash to the same index in $T$, 
-    the time required is $(n-1)1 + n = 2n - 1$ which is $O(n)$.
-    
-    
-\item \textbf{\textcolor{blue}{What would the BST tree look like if you 
-start with the root $a_1$ with $key[a_1]=1$ (and nothing else)
-and then you apply \[ INSERT[a_2],\ldots,INSERT[a_n] \]  in
-that order where $key[a_i]=i$ for each $2\leq i\leq n$?  
-Suppose the same assumptions of starting with $a_1$ and
-the key values but the INSERT commands were done in
-{\em reverse} order \[ INSERT[a_n],\ldots,INSERT[a_2] \]}}
+    $m$ is the number of elements of $A$ hashing to the same index of the table $T$. In the worst case, if all the elements of $A$ hash to the same index in $T$, the time required is $(n-1)1 + n = 2n - 1$ which is $O(n)$.
+
+\item \textbf{\textcolor{blue}{What would the BST tree look like if you start with the root $a_1$ with $key[a_1]=1$ (and nothing else) and then you apply \[ INSERT[a_2],\ldots,INSERT[a_n] \] in that order where $key[a_i]=i$ for each $2\leq i\leq n$? Suppose the same assumptions of starting with $a_1$ and the key values but the INSERT commands were done in {\em reverse} order \[INSERT[a_n],\ldots,INSERT[a_2] \]}}
     \\ For the first case, the BST tree would then be a straight line from left to right. 
-    Its nodes would be $1, 2, 3, ..., n$ from top to bottom.
-    It would look like the following tree:
+    Its nodes would be $1, 2, 3, ..., n$ from top to bottom. It would look like the following tree:
     \\
     \begin{center}
     \begin{forest}
@@ -460,8 +430,6 @@ the key values but the INSERT commands were done in
     ]
     \end{forest}
     \end{center}
-    
-
 \end{enumerate}
 
 \begin{quote}
