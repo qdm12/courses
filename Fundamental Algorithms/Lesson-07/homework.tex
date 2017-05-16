@@ -19,10 +19,6 @@
 \begin{center} {\Large\bf FA, Homework 7}  \\ Quentin McGaw (qm301) \\ 03/24/17
 \end{center}
 
-\begin{quote}
-What you need is that your brain is open.  -- Paul Erd\H{o}s
-\end{quote}
-
 \begin{enumerate}
 \item \textbf{\textcolor{blue}{Determine an LCS of $10010101$ and $010110110$ using the algorithm studied.}}
     \\ 
@@ -137,7 +133,7 @@ What you need is that your brain is open.  -- Paul Erd\H{o}s
         \item When the time comes, $\nwarrow$ cells got the value \textbf{left-up + 1}.
         \item Each remaining cell is either top (\textbf{priority}) if it is bigger or left otherwise (\textbf{from left to right})
     \end{itemize}
-    \\ Starting from the bottom right of the table, each time we encounter $\nwarrow$, $x_i = y_i$ is the value of the nth position where n is the value in the cell. In this case, we obtain the following:
+    Starting from the bottom right of the table, each time we encounter $\nwarrow$, $x_i = y_i$ is the value of the nth position where n is the value in the cell. In this case, we obtain the following:
     \begin{itemize}
         \item Position 6: 0
         \item Position 5: 1
@@ -160,8 +156,7 @@ What you need is that your brain is open.  -- Paul Erd\H{o}s
         0 & 0 & 1 $\nwarrow$ & 2 $\uparrow$ & 3 $\nwarrow$ & 4 $\uparrow$ & 4 $\uparrow$ & 5 $\nwarrow$ & 5 $\uparrow$ & 5 $\uparrow$ & \textcolor{blue}{\textbf{6} $\nwarrow$} \\
         1 & 0 & 1 $\uparrow$ & 2 $\nwarrow$ & 3 $\uparrow$ & 4 $\nwarrow$ & 5 $\nwarrow$ & 5 $\uparrow$ & 6 $\nwarrow$ & 6 $\nwarrow$ & \textbf{6} $\uparrow$ \\
     \end{tabular}
-    
-    \\\\ We can also do this table the other way around, flipping "x" and "y": \\
+    \\ We can also do this table the other way around, flipping "x" and "y": \\
     \begin{tabular}{ c | c c c c c c c c c } 
         - & - & 1 & 0 & \textcolor{red}{0} & \textcolor{red}{1} & \textcolor{red}{0} & \textcolor{red}{1} & \textcolor{red}{0} & \textcolor{red}{1} \\
         \hline
@@ -178,8 +173,7 @@ What you need is that your brain is open.  -- Paul Erd\H{o}s
     \end{tabular}
     \\ And we obtain the LCS 010101. 
     \\ Note that this is \textbf{equivalent} to switch around $\uparrow$ and $\leftarrow$ in the first table !!
-    \\ Another way is just to go up all the time but when $x_i$ = $y_i$ then go up-left ! So you just have to find out c, not b really.
-    \\ Note that I designed the following Python code to generate the table:
+    \\ Another way is just to go up all the time but when $x_i$ = $y_i$ then go up-left ! So you just have to find out c, not b really. I wrote the following Python code to generate the table:
     \begin{minted}{python}
 def print_matrix(m):
     for i in range(len(m)):
@@ -187,7 +181,6 @@ def print_matrix(m):
             print str(m[i][j]) + " ",
         print
     print
-    
     
 def lcs_length(x, y):
     m = len(x) + 1 # +1 for zeroes
@@ -236,7 +229,7 @@ if __name__ == '__main__':
     print_matrix(b)
     print_matrix(m)
     \end{minted}
-    \\ Which would print:
+    Which would print:
     \begin{minted}{python}
 -  -    1    0    0    1    0    1    0    1   
 -  0 .  0 .  0 .  0 .  0 .  0 .  0 .  0 .  0 . 
@@ -268,7 +261,7 @@ terms $P(i)P(n-i)$, $i=1,2,3,4$ given in the recursion for $P(n)$.}}
     \\ $(((AB)C)D)E$
     \\ $((A(BC))D)E$
     \\ Splitting 2 - 3 gives $P(2)P(3) = 2$ parenthesizations:
-    \\ $(AB((CD)E)$
+    \\ $(AB)((CD)E)$
     \\ $(AB)(C(DE))$
     \\ Splitting 3 - 2 gives $P(3)P(2) = 2$ parenthesizations:
     \\ $((AB)C)(DE)$
@@ -281,7 +274,7 @@ length of the longest decreasing subsequence ending with $x_i$.
 {\tt Caution:} The subsequence must {\em use} $x_i$.  For example,
 $20,30,4,50, 10$.  Now $INC[5]=2$ because of $4,10$ -- we do
 {\em not} count $20,30,50$.}}
-    \\ \textbf{DYNAMIC PROGRAMMING = Optimal substructures + overlapping subproblems}
+    \\ \textbf{DYN. PROG. = Optimal substructures + overlapping subproblems}
     \begin{enumerate}
     \item \textbf{\textcolor{blue}{Find an efficient method for finding the values $INC[i]$, $1\leq i\leq n$. (You should find $INC[i]$ based on the previously found $INC[j]$, $1\leq j< i$.  Your algorithm should take time $O(i)$ for each
     particular $i$ and thus $O(n^2)$ overall.)}}
@@ -317,7 +310,7 @@ if __name__ == '__main__':
     decreasing subsequence of $x_1,\ldots,x_m$.  Show how to find $DIS$ from
     the values $DEC[i]$. }}
         \\ $LIS =$ maximum of all $INC[i]$ and $DIS =$ maximum of all $DEC[i]$.
-        \\ Using the Python code, above, these two were implemented in Python:
+        \\ Using the Python code above, these two were implemented in Python:
         \begin{minted}{python}
 def LIS(A):
     return max([INC(A, i) for i in range(len(A))])
@@ -381,7 +374,7 @@ if __name__ == '__main__':
             }
             \Return{m and s}
     \end{algorithm}
-    This algorithm was then implemented in Python (headaches for the 0-based index): \\
+    This algorithm was then implemented in Python (headaches for the 0-based index):
     \begin{minted}{python}
 # Matrix Ai has dimension p[i-1] x p[i] for i = 1..n
 def matrixchainorder(p):
@@ -401,9 +394,6 @@ def matrixchainorder(p):
                     m[i][j] = q
                     s[i][j] = k + 1
     return m, s
-
-    
-
 
 if __name__ == '__main__':
     m, s = matrixchainorder([5, 10, 3, 12, 5, 50, 6])
@@ -431,7 +421,7 @@ if __name__ == '__main__':
         0 & 0 & 0 & 0 & 0 & 0 \\
         \end{tabular}
     \end{itemize}
-    \\ Now to do this manually:
+    Now to do this manually:
     \begin{itemize}
         \item Start with the diagonal set to zeroes (m[1,1]=m[2,2]=...=0)
         \item Start at m[1,2] = $p_0 \times p_1 \times p_2 = 5 \times 10 \times 3 = 150$ then go down diagonally
@@ -440,25 +430,7 @@ if __name__ == '__main__':
         \item m[4,5] = $p_3 \times p_4 \times p_5 = 12 \times 5 \times 50 = 3000$
         \item m[5,6] = $p_4 \times p_5 \times p_6 = 5 \times 50 \times 6 = 1500$
     \end{itemize}
-    We now have \\
-    \begin{tabular}{ c c c c c c }
-    0 & 150 & x & x & x & x \\
-    0 & 0 & 360 & x & x & x \\
-    0 & 0 & 0 & 180 & x & x \\
-    0 & 0 & 0 & 0 & 3000 & x \\
-    0 & 0 & 0 & 0 & 0 & 1500 \\
-    0 & 0 & 0 & 0 & 0 & 0 \\
-    \end{tabular}
-    \\ We then calculate using the recurrence relation $m[i,j] = min(m[i,k] + m[k+1, j] + p_{i-1}p_kp_j \mbox{ for } k \mbox{ from } i \mbox{ to } j)$ if $i < j$.
-    \begin{itemize}
-        \item m[1,3]
-        \begin{itemize}
-            \item At $k = 1$, $m[1,3] = min(m[1,1] + m[2, 3] + p_{0}p_1p_3) = 0+360+600 = 960$
-            \item At $k = 2$, $m[1,3] = min(m[1,2] + m[3, 3] + p_{0}p_2p_3) = 150+0+180 = 330$
-        \end{itemize}
-        \\ Therefore $m[1,3] = 330$.
-        \\ Etc.
-    \end{itemize}
+    We then calculate the missing cells of the top right triangle using the recurrence relation $m[i,j] = min(m[i,k] + m[k+1, j] + p_{i-1}p_kp_j \mbox{ for } k \mbox{ from } i \mbox{ to } j)$ if $i < j$, but this takes forever.
     \textcolor{red}{Conclusion missing !!!}
     
     
@@ -490,13 +462,5 @@ if __name__ == '__main__':
         \\ $\lg[n^ne^{-n}\sqrt{2\pi n}] = \lg(n^n) + \lg(e^{-n}) + \lg(\sqrt{2\pi n}) = n\lg(n) - n\lg(e) + 0.5\lg(2\pi n) = n\lg(n) - n\lg(e) + 0.5\lg(2\pi) + 0.5\lg(n)$. This is a \textbf{Stirling's formula} and is asymptotic to $n!$
     \end{enumerate}
 \end{enumerate}
-
-\begin{quote}
-There is a theory which states that if ever anybody discovers exactly what
-the Universe is for and why it is here, it will instantly disappear and be
-replaced by something even more bizarre and inexplicable. There is another
-theory which states that this has already happened.
-\\ Douglas Adams
-\end{quote}
 
 \end{document}

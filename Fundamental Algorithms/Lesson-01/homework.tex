@@ -172,25 +172,16 @@ $O(\lg n)$ time for an $n$-element max-heap.}}
                 A[t] = A[A.heapsize] \\
                 A.heapsize$--$ \\
             }
-            \eIf{A[t] $>$ A[$\pi[t]$]}{
-                \While{$\exist \pi[t]$}{ \tcp{While t is not the root}
+            \eIf{$\pi[t] \neq NIL$ and A[t] $>$ A[$\pi[t]$]}{
+                \While{$\pi[t] \neq NIL$ and A[t] $>$ A[$\pi[t]$]}{
                     A[t], A[$\pi[t]$] = A[$\pi[t]$], A[t] \\
                     t = $\pi[t]$
                 }
             }{
-                MAX-HEAPIFY(A, t) \tcp{A[t] is too small !}
+                MAX-HEAPIFY(A, t) \tcp{A[t] is too small is the only problem}
             }
         \caption{HEAP-DELETE, where A is the heap and t is the node to be deleted}
     \end{algorithm}
-    First a simple case: If $t$ is $A.heapsize$ then simply decrement
-    $A.heapsize$.  ELSE first reset $A[t]\leftarrow A[A.heapsize]$ and
-    decrement $A.heapsize$.  Now you have the right elements but $A[t]$
-    may be in the wrong places.  First check if $A[t]> A[parent[t]]$
-    (Ignore this if $t$ is the root.)  If so, we have a WHILE loop,
-    exchanging $A[t]$ and $A[parent[t]]$ and then resetting $t\leftarrow parent[t]$
-    while $t$ is not the root and $A[t]> A[parent[t]]$. ELSE (that is, if
-    we did not have $A[t]> A[parent[t]]$, then the only (possible) problem
-    is that $A[t]$ is too small.  So we apply $MAX-HEAPIFY[A,t]$.
 
 \item \textbf{\textcolor{blue}{Let $A$ be an array of length $127$ in which the values are distinct and in increasing order. In the procedure {\tt BUILD-MAX-HEAP(A)} precisely how many times will two elements of the array be exchanged?}}
     \\ BUILD-MAX-HEAP(A) essentially works as in the following Python code:
@@ -220,7 +211,6 @@ $O(\lg n)$ time for an $n$-element max-heap.}}
             
             Args:
                 A (list): Unsorted array
-                i (int): Array index
         """
         for i in range(len(A)/2, -1, -1):
             self.max_heapify(A, i)

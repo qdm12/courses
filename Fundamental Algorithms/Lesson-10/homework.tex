@@ -48,11 +48,10 @@ The world is teeming; anything can happen
                 $y_i = \pi[y_i]$ (finds its highest parent)
             }
             \If{$x_i \neq y_i$}{
-                \If{$SIZE(x_i) \leq SIZE(y_i)$}{
+                \eIf{$SIZE(x_i) \leq SIZE(y_i)$}{
                     $\pi[x_i] = y_i$ \\
                     $SIZE(y_i) = SIZE(y_i) + SIZE(x_i)$
-                }
-                \Else{
+                }{
                     $\pi[y_i] = x_i$ \\
                     $SIZE(x_i) = SIZE(x_i) + SIZE(y_i)$
                 }

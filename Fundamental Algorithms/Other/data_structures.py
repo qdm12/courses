@@ -334,7 +334,6 @@ class Heap(object):
             
             Args:
                 A (list): Unsorted array
-                i (int): Array index
         """
         for i in range(len(A)/2, -1, -1):
             self.max_heapify(A, i)

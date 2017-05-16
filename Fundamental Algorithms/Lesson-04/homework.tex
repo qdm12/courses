@@ -61,7 +61,7 @@ if __name__ == "__main__":
         \\ Also, $n = 3^i \Rightarrow n^2 = 3^{2i}$
         Hence $T(n) = (1 + \log_3(n))n^2$.
         \\\\ Another way is to use the auxiliary function $S(n) = \frac{T(n)}{n^2}$ so that we have:
-        \\ $T(n)=9T(n/3) + n^2 \Rightarrow \frac{T(n)}{n^2} = \frac{T(\frac{n}{3})}{(\frac{n}{3})^2} + 1 \Rightarrow 
+        \\ $T(n)=9T(\frac{n}{3}) + n^2 \Rightarrow \frac{T(n)}{n^2} = \frac{T(\frac{n}{3})}{(\frac{n}{3})^2} + 1 \Rightarrow 
         S(n) = S(\frac{n}{2}) + 1$ with $S(1)=\frac{T(1)}{1^2}=1$.
         \\ Hence $S(n)=1+\log_3(n)$ and $T(n)=n^2(1+\log_3(n))$.
     \item \textbf{\textcolor{blue}{Now use the Master Theorem to give, in Thetaland, the asymptotics of $T(n)$. Check that the two answers are consistent.}}
@@ -120,7 +120,7 @@ one of the standard functions. In each case give reasonable (they needn't be opt
             \eIf{X $\geq$ 0}{
                 C[i] = X \\
             }{
-                C[i-1]-- \\
+                C[i-1]$--$ \\
                 C[i] = 10 + X \\
             }
         }

@@ -43,87 +43,60 @@ right & d & N & g & N & b & N & N & N
     \begin{center}
     \begin{forest}
     for tree={circle,draw, l sep=20pt}
-    [
-    [80,edge label={node[midway,left] {a}}
-        [70,edge label={node[midway,left] {h}}]
-        [200,edge label={node[midway,right] {d}}
-          [150,edge label={node[midway,left] {e}}
-            [140,edge label={node[midway,left] {c}}
+    [{a}
+        [{h}]
+        [{d}
+          [{e}
+            [{c}
               [,phantom]
-              [148,edge label={node[midway,right] {g}}
-                [143,edge label={node[midway,left] {f}}]
+              [{g}
+                [{f}]
                 [,phantom]
               ]
             ]
-            [170,edge label={node[midway,right] {b}}]
+            [{b}]
           ]
           [,phantom]
         ]
       ] 
-    ]
     ]
     \end{forest}
     \end{center}
 
     \begin{enumerate}
     \item \textbf{\textcolor{blue}{Which is the successor of $c$. Illustrate how the program {\tt SUCCESSOR} will find it.}}
-        \\ We want to find the successor of node $150$ on its left side (vertex $x$). We therefore search for the node with value $150$ and its left child is the successor, otherwise there is no successor.
-        \\ To do this, the following Python code was implemented with the recursive function SuccessorVerbose.
-        \\ Note that you can also implement the SUCCESSOR algorithm in an iterative way or by keeping track of the parent pointer, but this way is neater I think.
-        \begin{minted}{python}
-class BinarySearchTree:
-    class Node(object):
-        def __init__(self, key):
-            self.val = key
-            self.left = None
-            self.right = None
-            
-    def SuccessorVerbose(self, root, parent_key):
-        while root.left is not None:
-            if root.val == parent_key:
-                print "Parent found and has left successor", root.left.val
-                return root.left
-            elif parent_key < root.val:
-                print "Parent's value is on left side of node", root.val
-                return self.SuccessorVerbose(root.left, parent_key)
-            else:
-                print "Parent's value is on right side of node", root.val
-                return self.SuccessorVerbose(root.right, parent_key)
-        print "No successor found."
+        \\ By \textbf{successor}, we mean the node with the smallest key greater than c.key.
+        \\ The following algorithm requires time $O(h)$ for a BST of height $h$. \\
+        \begin{algorithm}[H]
+        \SetKwFunction{mini}{MINIMUM}
+        \SetKwFunction{successor}{SUCCESSOR}
+        \Indm\successor{x} \\
+        \Indp
+            \If{x.right $\neq$ NIL}{
+                \Return{\mini{x.right}}
+            }
+            y = $\pi[x]$ \\
+            \While{y $\neq$ NIL and x = y.right}{
+                x = y \\
+                y = $\pi[y]$ \\
+            }
+            \Return{y}
+        \caption{SUCCESSOR, where x is a node in the BST}  
+        \end{algorithm}
+        In our case, it is straight-forward as c has a right tree, so we search the minimum in this sub-tree which is f.
         
-    def insert(self, root, node):
-        if root is None:
-            root = node
-        else:
-            if root.val < node.val:
-                if root.right is None:
-                    root.right = node
-                else:
-                    self.insert(root.right, node)
-            else:
-                if root.left is None:
-                    root.left = node
-                else:
-                    self.insert(root.left, node)
-            
-bst = BinarySearchTree()
-root = bst.Node(80)
-bst.insert(root, bst.Node(70))
-bst.insert(root, bst.Node(200))
-bst.insert(root, bst.Node(150))
-bst.insert(root, bst.Node(140))
-bst.insert(root, bst.Node(170))
-bst.insert(root, bst.Node(148))
-bst.insert(root, bst.Node(143))
-bst.SuccessorVerbose(root, parent_key=150)
-        \end{minted}
-        The following standard output is thus generated:
-        \\ Parent's value is on right side of node 80
-        \\ Parent's value is on left side of node 200
-        \\ Parent found and has left successor 140
-        \\\\ The successor of $c$ is thus the node with value $140$.
     \item \textbf{\textcolor{blue}{Which is the minimal element? Illustrate how the program {\tt MIN} will find it.}}
-        \\ To find the minimum, the MIN program has been implemented in Python 2.7.
+        \begin{algorithm}[H]
+        \SetKwFunction{mini}{MINIMUM}
+        \Indm\mini{root} \\
+        \Indp
+            \While{root.left $\neq$ NIL}{
+                root = root.left
+            }
+            \Return{root.value}
+        \caption{MINIMUM for BST}  
+        \end{algorithm}
+        To find the minimum, the MIN program has been implemented in Python 2.7.
         \\ It basically starts at the root and searches for the leftmost node.
         \\ It is implemented in the function minValueVerbose(root).
         \begin{minted}{python}

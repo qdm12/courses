@@ -1,0 +1,618 @@
+\documentclass[11pt]{article}
+\pagestyle{empty}
+\usepackage[options]{algorithm2e}
+\usepackage{minted}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{0pt}
+\cfoot[R]{\thepage~of~\pageref{LastPage}}
+\addtolength{\oddsidemargin}{-.875in}
+\addtolength{\evensidemargin}{-.875in}
+\addtolength{\textwidth}{1.75in}
+\addtolength{\topmargin}{-.875in}
+\addtolength{\textheight}{1.75in}
+
+\begin{document}
+\begin{center} {\Large\bf FA algorithms sum up}  \\ Quentin McGaw (qm301) \\ 05/14/17
+\end{center}
+
+\begin{enumerate}
+    \item \textbf{Heap-delete} \\\\    
+    \begin{algorithm}[H]
+        \SetKwFunction{heapdel}{HEAP-DELETE}
+        \Indm\heapdel{A, t}\\
+        \Indp
+            \eIf{t = A.heapsize}{
+                A.heapsize$--$ \\            
+            }{
+                A[t] = A[A.heapsize] \\
+                A.heapsize$--$ \\
+            }
+            \eIf{A[t] $>$ A[$\pi[t]$]}{
+                \While{$\exist \pi[t]$}{ \tcp{While t is not the root}
+                    A[t], A[$\pi[t]$] = A[$\pi[t]$], A[t] \\
+                    t = $\pi[t]$
+                }
+            }{
+                MAX-HEAPIFY(A, t) \tcp{A[t] is too small is the only problem}
+            }
+        \caption{HEAP-DELETE, where A is the heap and t is the node to be deleted}
+    \end{algorithm}
+    
+    \item \textbf{Quick-sort} \\\\
+    \begin{tabular}{c|c|c}
+        Worst & Average & Best \\
+        \hline
+        $O(n^2)$ & $O(n\log(n))$ & $O(n\log(n))$
+    \end{tabular}
+    \\
+    \begin{algorithm}[H]
+        \SetKwFunction{partition}{PARTITION}
+        \Indm\partition{A, p, r} \\
+        \Indp
+            pivot = A[r] \\
+            i = p - 1 \\
+            \For{j from p to r}{
+                \If{A[j] $\leq$ pivot}{
+                    i$++$ \\
+                    A[i], A[j] = A[j], A[i] \\
+                }
+            }
+            \Return{i}
+        \caption{PARTITION}
+    \end{algorithm}
+    \begin{algorithm}[H]
+        \SetKwFunction{quicksort}{QUICK-SORT}
+        \Indm\quicksort{A, p, r} \\
+        \Indp
+            \If{p $<$ r}{
+                q = \partition{A, p, r} \\
+                \quicksort{A, p, q-1} \\
+                \quicksort{A, q+1, r} \\
+            }
+        \caption{QUICK-SORT}
+    \end{algorithm}
+
+    \item \textbf{Counting-sort} \\\\
+    \begin{tabular}{c|c|c}
+        Worst & Average & Best \\
+        \hline
+        $O(n+k)$ & $O(n+k)$ & $O(n+k)$
+    \end{tabular}
+    \\
+    \begin{algorithm}[H]
+        \SetKwFunction{countingsort}{COUNTING-SORT}
+        \Indm\countingsort{A, B, k} \\
+        \Indp
+            n = A.length \\
+            C = [0..n] \\
+            \For{i from 0 to n}{
+                C[i] = 0 \\
+            }
+            \For{i from 1 to n}{
+                C[A[i]]$++$ \\
+            }
+            \tcp{C[i] contains the number of elements = i}
+            \For{i from 1 to k}{
+                C[i] += C[i-1] \\
+            }
+            \tcp{C[i] contains the number of elements <= i}
+            \For{i from n to 1}{
+                place = C[A[i]] \\
+                B[place] = A[i] \\
+                C[A[i]]$--$ \\
+            }          
+        \caption{PARTITION, k should be max(A) and B is the output}
+    \end{algorithm}
+
+    \item \textbf{Radix-sort} \\\\
+    \begin{tabular}{c|c|c}
+        Worst & Average & Best \\
+        \hline
+        $O(nk)$ & $O(nk)$ & $O(nk)$
+    \end{tabular}
+    \begin{itemize}
+        \item $k$ is the base with $D$ digits ($0 \leq A[i] < k^D$)
+        \item input A[1..n] all$0 <= A[i] < k^D$ integers written in base K with D digits
+        \item for j=D to 1, apply sort to jth digit
+    \end{itemize}
+    \begin{minted}{python}
+class RadixSort(object):
+    def sort(self, A, RADIX=10):
+        placement = 1
+        tmp = A[0]
+        while tmp > 0:
+            buckets = [[] for _ in range(RADIX)]
+            for i in range(len(A)):
+                tmp = A[i] / placement
+                buckets[tmp % RADIX].append(A[i])
+            i = 0
+            for bucket in buckets:
+                for x in bucket:
+                    A[i] = x
+                    i += 1
+            placement *= RADIX # move to next digit
+    \end{minted}
+
+    \item \textbf{Merge-sort} \\\\
+    \begin{tabular}{c|c|c}
+        Worst & Average & Best \\
+        \hline
+        $O(n\log(n))$ & $O(n\log(n))$ & $O(n\log(n))$
+    \end{tabular}
+    \\
+    \begin{algorithm}[H]
+        \SetKwFunction{mergesort}{MERGE-SORT}
+        \SetKwFunction{merge}{MERGE}
+        \Indm\mergesort{A, p, r} \\
+        \Indp
+            \If{p $<$ r}{
+                q = $\left \lfloor{\frac{p+r}{2}}\rfloor \right.$ \\
+                \mergesort{A, p, q} \\
+                \mergesort{A, q+1, r} \\
+                \merge{A, p, q, r} \tcp{See Python code in HW 3}
+            }
+        \caption{MERGE-SORT, taking unsorted array A, and p $\leq$ r}
+    \end{algorithm}
+    \begin{minted}{python}
+class MergeSort(object):
+def merge(self, A, l, q, r):
+    n1 = q - l + 1
+    n2 = r - q
+    L = [A[l + i] for i in range(n1)]
+    R = [A[q + 1 + i] for i in range(n2)]
+    i = j = 0 # Initial index of first and second subarrays
+    k = l # Initial index of merged subarray
+    while i < n1 and j < n2:
+        if L[i] <= R[j]:
+            A[k] = L[i]
+            i += 1
+        else:
+            A[k] = R[j]
+            j += 1
+        k += 1
+    # Copy the remaining elements of L[], if there are any
+    while i < n1:
+        A[k] = L[i]
+        i += 1
+        k += 1
+    # Copy the remaining elements of R[], if there are any
+    while j < n2:
+        A[k] = R[j]
+        j += 1
+        k += 1
+
+def mergeSort(self, A, l, r):
+    if l < r:
+        q = (l+r)/2 # this does the floor
+        self.mergeSort(A, l, q)
+        self.mergeSort(A, q+1, r)
+        self.merge(A, l, q, r)
+        
+def run(self):
+    A = [54,26,93,17,77,31,44,55,20]
+    self.mergeSort(A, 0, len(A) - 1)
+    print A
+    \end{minted}
+    
+    \item \textbf{Bucket-sort} \\\\
+    \begin{tabular}{c|c|c}
+        Worst & Average & Best \\
+        \hline
+        $O(n^2)$ & $O(n+k)$ & $O(n+k)$
+    \end{tabular}
+    \\
+    \begin{algorithm}[H]
+        \SetKwFunction{bucketsort}{BUCKET-SORT}
+        \Indm\bucketsort{A}\\
+        \Indp
+            n = A.length \\
+            B = [NIL] * n \\
+            \For{i from 1 to n}{
+                place = $\left \lfloor{A[i] \times n}\rfloor \right.$ \\
+                B[place] = A[i] \\
+            }
+            \For{i from 0 to n-1}{
+                sort(B[i]) \\
+            }
+            \Return{B}
+        \caption{BUCKET-SORT, where A is an array of n unsorted elements}
+    \end{algorithm}
+    
+    \item \textbf{Master theorem}
+    \\ The master theorem \textbf{only} concerns recurrence relations of the form:
+    \begin{equation}T(n)=aT(\frac{n}{b}) + f(n) \textnormal{ where } a \geq 1 \textnormal{ and } b > 1\end{equation}
+    \\ $n$ is the size of the problem, $a$ the number of subproblems in recursion, 
+    $\frac{n}{b}$ the size of each subproblem and $f(n)$ the cost of the work done outside the recursive calls
+    such as dividing the problem or merging the solutions of the subproblems.
+    \begin{itemize}
+        \item Low overhead
+        \begin{equation}
+        \left\{
+            \begin{array}{ll}
+                f(n)=O(n^c) \\
+                log_b\ a > c
+            \end{array}
+        \right. \Rightarrow T(n) = \Theta(n^{log_b\ a})
+        \end{equation}
+        \item Perfect case
+        \begin{equation}
+        \left\{
+            \begin{array}{ll}
+                f(n)=\Theta(n^{c}log^{k}n) \textnormal{ for some constant } k \geq 0 \\
+                log_b\ a = c
+            \end{array}
+        \right. \Rightarrow T(n) = \Theta(n^{c}log^{k+1}\ n)
+        \end{equation}
+        \item High overhead
+        \begin{equation}
+        \left\{
+            \begin{array}{ll}
+                f(n)=\Omega(n^c) \\
+                log_b\ a < c \\
+                af(\frac{n}{b}) \leq kf(n) \textnormal{ for } k < 1 \textnormal{ and sufficiently large n}
+            \end{array}
+        \right. \Rightarrow T(n) = \Theta(f(n))
+        \end{equation}
+    \end{itemize}
+    Let $S(n) = \frac{T(n)}{n^{log_{b}a}}$
+    \\ $\Rightarrow S(\frac{n}{b} = \frac{T(\frac{n}{b})}{\frac{n}{b}^{log_{b}a}}$
+    \\ $\Rightarrow S(\frac{n}{b} = \frac{aT(\frac{n}{b})}{n^{log_{b}a}}$
+    \\ so $S(n) = S(\frac{n}{b}) + \frac{f(n)}{n^{log_{b}a}}$
+    \\ $\Rightarrow S(n) = S(\frac{n}{b}) + g(n)$
+    
+    \item \textbf{Hash and check algorithm} \\\\
+    \begin{algorithm}[H]
+        \SetKwFunction{duplicatecheck}{DUPLICATE-CHECK}
+        \Indm\duplicatecheck{A}\\
+        \Indp
+        \For{i from 1 to N}{
+            index = h(A[i]) \\
+            head = T[index] \\
+            \If{head == NULL}{
+                head.value = A[i] \\
+                head.next = NULL \\
+                \Return "GOOD" \\
+            }
+            node = head \\
+            \While{node $\neq$ NULL}{
+                \If{node.value == A[i]}{
+                    \Return "BAD" \\
+                }
+                \If{node.next == NULL}{
+                    node.next = Node(value=A[i], next=NULL) \\
+                    \Return "GOOD" \\
+                }
+                node = node.next \\
+            }                
+        }
+        \caption{Duplicate check and hash table algorithm}
+    \end{algorithm}
+    
+    \item \textbf{BST SUCCESSOR} \\\\
+    \begin{algorithm}[H]
+    \SetKwFunction{mini}{MINIMUM}
+    \SetKwFunction{successor}{SUCCESSOR}
+    \Indm\successor{x} \\
+    \Indp
+        \If{x.right $\neq$ NIL}{
+            \Return{\mini{x.right}}
+        }
+        y = $\pi[x]$ \\
+        \While{y $\neq$ NIL and x = y.right}{
+            x = y \\
+            y = $\pi[y]$ \\
+        }
+        \Return{y}
+    \caption{SUCCESSOR, where x is a node in the BST}  
+    \end{algorithm}
+    
+    \item \textbf{LCS} \\\\
+    \begin{algorithm}[H]
+        \SetKwFunction{lcslength}{LCS-LENGTH}
+        \Indm\lcslength{x, y}\\
+        \Indp
+            m = x.length \\
+            n = y.length \\
+            Let b[1..m, 1..n] and c[0..m, 0..n] be new matrices. \\
+            \tcc{We now set the first row and first column of c to 0.}
+            \For{i = 1 to m}{
+                c[i, 0] = 0 \\
+            }
+            \For{i = 0 to n}{
+                c[0, i] = 0 \\
+            }
+            \For{i = 1 to m}{
+                \For{j = 1 to n}{
+                    \uIf{$x_i$ == $y_j$}{
+                        c[i, j] = c[i - 1, j - 1] + 1 \tcp*{Cell = top-left cell, and point to it} \\
+                        b[i, j] = \nwarrow\hspace{-3pt} \\
+                    }
+                    \uElseIf{c[i - 1, j] $\geq$ c[i, j - 1]}{
+                        \tcp{top $\geq$ left} \\
+                        c[i, j] = c[i - 1, j] \tcp*{Cell = top cell, and point to it} \\
+                        b[i, j] = \uparrow\hspace{-3pt} \\
+                    }
+                    \Else{
+                        c[i, j] = c[i, j - 1] \tcp*{Cell = left cell, and point to it} \\
+                        b[i, j] = \leftarrow\hspace{-3pt}
+                    }
+                }
+            }
+            \Return{c, b}
+        \caption{LCS-LENGTH, where x and y are two sequences}
+    \end{algorithm}
+    
+    \item \textbf{Number of Parenthesizations:} $P(n) = \sum_{i = 1}^{n-1}P(i)P(n-i)$
+    
+    \item \textbf{INC subsequence}
+    \begin{minted}{python}
+def INC(A, i):
+    """ Length of increasing subsequence in A ending at A[i] """
+    for j in range(i - 1, -1, -1):
+        if A[j] < A[i]:
+            return 1 + INC(A, j)
+    return 1
+    \end{minted}
+    
+    \item \textbf{Matrix chain multiplication} \\\\
+    \begin{algorithm}[H]
+        \SetKwFunction{matrixchainorder}{MATRIX-CHAIN-ORDER}
+        \Indm\matrixchainorder{p}\\
+        \Indp
+            n = p.length - 1 \\
+            Let m[1..n, 1..n] and s[1..n-1, 2..n] be matrices \\
+            \For{i = 1 to n}{
+                m[i, i] = 0 \\
+            }
+            \For{l = 2 to n}{
+                \For{i = 1 to n - l + 1}{
+                    j = i + l - 1 \\
+                    m[i, j] = $\infty$ \\
+                    \For{k = i to j - 1}{
+                        q = m[i, k] + m[k+1, j] + $p_{i-1}p_kp_j$ \\
+                        \If{q $<$ m[i, j]}{
+                            m[i, j] = q \\
+                            s[i, j] = k \\
+                        }
+                        
+                    }
+                }
+            }
+            \Return{m and s}
+    \end{algorithm}
+    
+    \item \textbf{Cutting rod problem} \\\\
+    \begin{algorithm}[H]
+        Let R = [0..$N^2$] \\
+        R[0] = 0 \\
+        R[1] = PRICE[1] \\
+        \For{J = $2$ to $N^2$}{
+            R[j] = 0 \\
+            \For{I = 1 to min(J, W)}{
+                R[j] = max(R[j], PRICE[I] + R[J-I]) \\
+            }
+        }
+        \Return{R[$N^2$]}
+        \caption{Algorithm to find the optimal revenue for a rod of length I}
+    \end{algorithm}
+    
+    \item \textbf{Recursive activity selector} \\\\
+    \begin{algorithm}[H]
+        \SetKwFunction{ras}{RECURSIVE-ACTIVITY-SELECTOR}
+        \Indm\ras{s, f, k, n}\\
+        \Indp
+            m = k + 1 \\
+            \While{m $\leq$ n and $s_m < f_k$}{
+                m$++$ \tcp*{Find the first activity in $S_k$ to finish}
+            }
+            \eIf{m $\leq$ n}{
+                \Return{$\{a_m\}\ \cup $ \ras{s, f, m, n}}
+            }{
+                \Return{$\emptyset$}
+            }
+        \caption{Recursive activity selector}
+    \end{algorithm}
+    In the reverse case, at each point, the last activity to start is selected. There is a recursion down to the single optimal subproblem to find the optimal solution for all remaining activities compatible (proof by induction). \\
+    \begin{algorithm}[H]
+        \SetKwFunction{rasv}{RECURSIVE-ACTIVITY-SELECTOR-REVERSE}
+        \Indm\rasv{s, f, k}\\
+        \Indp
+            m = k - 1 \\
+            \While{m $>$ 0 and $s_k < f_m$}{
+                m$--$ \tcp*{Find the last activity in $S_k$ to start}
+            }
+            \eIf{m $>$ 0}{
+                \Return{$\{a_m\}\ \cup $ \rasv{s, f, m}}
+            }{
+                \Return{$\emptyset$}
+            }
+        \caption{Recursive activity selector (reverse)}
+    \end{algorithm}
+    
+    \item \textbf{BFS} \\\\
+    \begin{algorithm}[H]
+        \SetKwFunction{bfs}{BFS}
+        \Indm\bfs{G, s}\\
+        \Indp
+            \For{each vertex $u \in G.V - \{s\}$}{
+                color[u] = WHITE \\
+                d[u] = $\infty$ \\
+                $\pi$[u] = NIL \\
+            }
+            color[s] = GRAY \\
+            d[s] = 0 \\
+            $\pi$[s] = NIL \\
+            Q = $\emptyset$ \\
+            ENQUEUE(Q, s) \\
+            \While{Q $\neq \emptyset$}{
+                u = DEQUEUE(Q) \\
+                \For{each v $\in$ G.Adj[u]}{
+                    \If{color[v] == WHITE}{
+                        color[v] = GRAY \\
+                        d[v] = d[u] + 1 \\
+                        $\pi$[v] = u \\
+                        ENQUEUE(Q, v) \\
+                    }
+                }
+                color[u] = BLACK \\
+            }
+        \caption{BFS algorithm}
+    \end{algorithm}
+     
+    \item \textbf{DFS} \\\\
+    \begin{algorithm}[H]
+    \SetKwFunction{dfs}{DFS}
+    \Indm\dfs{G}\\
+    \Indp
+        \For{each vertex u $\in$ G.V}{
+            color[u] = WHITE \\
+            $\pi$[u] = NIL \\
+        }
+        time = 0 \\
+        \For{each vertex u $\in$ G.V}{
+            \If{color[u] == WHITE}{
+                DFS-VISIT(G, u) \\
+            }
+        }
+    \caption{DFS algorithm}
+    \end{algorithm}
+    \begin{algorithm}[H]
+    \SetKwFunction{dfsvisit}{DFS-VISIT}
+    \Indm\dfsvisit{G, u}\\
+    \Indp
+        time = time + 1 \\
+        d[u] = time \\
+        color[u] = GRAY \\
+        \For{each vertex v $\in$ G.Adj[u]}{
+            \If{color[v] == WHITE}{
+                $\pi$[v] = u \\
+                DFS-VISIT(G, v) \\
+            }
+        }
+        color[u] = BLACK \\
+        time = time + 1 \\
+        f[u] = time \\
+        \caption{DFS-VISIT algorithm}
+    \end{algorithm}
+    
+    \item \textbf{MST Kruskal}
+    \begin{enumerate}
+        \item sum up:
+        \begin{itemize}
+            \item Sort all the edges in increasing order of their weight in the array $A$
+            \item Pick the smallest edge from $A$. If it does not form a cycle with the spanning tree formed $S$ so far, include it in $S$. Then remove it from $A$.
+            \item Repeat step 2 until there are $V-1$ edges in $S$, where $V$ is the number of vertices in the graph.
+        \end{itemize}
+        \item Pseudocode:
+        \begin{itemize}
+            \item We sort the edges $e_1, ..., e_E$ by weight
+            \item $x_i$ and $y_i$ are the vertices of $e_i$.
+        \end{itemize}
+        \begin{algorithm}[H]
+            \For{each vertex $x$}{
+                $\pi[x] = x$ \\
+                $SIZE(x) = 1$ \\
+            }
+            $S = \{\}$ \\
+            \For{i from 1 to E}{
+                \While{$\pi[x_i] \neq x_i$}{
+                    $x_i = \pi[x_i]$ (finds its highest parent)
+                }
+                \While{$\pi[y_i] \neq y_i$}{
+                    $y_i = \pi[y_i]$ (finds its highest parent)
+                }
+                \If{$x_i \neq y_i$}{
+                    \eIf{$SIZE(x_i) \leq SIZE(y_i)$}{
+                        $\pi[x_i] = y_i$ \\
+                        $SIZE(y_i) = SIZE(y_i) + SIZE(x_i)$
+                    }{
+                        $\pi[y_i] = x_i$ \\
+                        $SIZE(x_i) = SIZE(x_i) + SIZE(y_i)$
+                    }
+                    $S$.add($e_i$)
+                }
+            }
+            \Return{$S$}
+        \end{algorithm}
+    \end{enumerate}
+
+    \item \textbf{MST Prim} \\\\
+    \begin{algorithm}[H]
+    \SetKwFunction{mstprim}{MST-PRIM}
+    \Indm\mstprim{G, w, r} \\
+    \Indp
+        \For{each u $\in$ G.V}{
+            key[u] = $\infty$ \\
+            $\pi$[u] = NIL \\
+        }
+        key[r] = 0 \\
+        Q = G.V \\
+        S = [] \\
+        \While{Q $\neq \emptyset$}{
+            u = EXTRACT-MIN(Q) \\
+            \For{each v $\in$ G.Adj[u]}{
+                \If{v $\in$ Q and key[v] $>$ w(u,v)}{
+                    $\pi$[v] = u \\
+                    key[v] = w(u,v) \\
+                }
+            }
+            S.add(u) \\
+        }
+    \caption{Prim's algorithm}
+    \end{algorithm}
+    
+    \item \textbf{EXTENDED-EUCLID} \\\\
+    \begin{algorithm}[H]
+    \SetKwFunction{eeuclid}{EXTENDED-EUCLID}
+    \Indm\eeuclid{a, b}\\
+    \Indp
+        \eIf{b == 0}{
+            \Return{(a, 1, 0)} \\
+        }{
+            (d, x', y') = \eeuclid{b, a mod b} \\
+            x = y' \\
+            y = x' - ${\lfloor}\frac{a}{b}{\rfloor}$y' \\
+            \Return{(d, x, y)} \\
+        }
+    \caption{EXTENDED-EUCLID algorithm}
+    \end{algorithm}
+
+    \item \textbf{DIJKSTRA} \\\\
+    \begin{algorithm}[H]
+        \SetKwFunction{dijkstra}{DIJKSTRA}
+        \Indm\dijkstra{G, w, s}\\
+        \Indp
+            d[s] = 0 \\
+            \For{all v $\neq$ s}{
+                d[v] = $\infty$ \\
+                $\pi[v]$ = NIL \\
+            }
+            $S = \{s\}$ \\
+            $Q = \emptyset$ \\
+            \For{all v $\in$ ADJ[s]}{
+                d[v] = w[s,v] \tcp*{Takes time $O(ln(V))$ if changed to keep the MIN-HEAP structure} \\        
+                $\pi[v]$ = s \\
+                Q.add(v) \tcp*{Takes time $O(ln(V))$ as the MIN-HEAP structure has to be kept}
+            }
+            \While{$Q \neq \emptyset$}{
+                u = EXTRACT-MIN(Q) \\
+                S.add(u) \\
+                \For{v $\in$ Adj[u] and v $\notin$ S}{
+                    \tcp{RELAX(u, v)} \\
+                    \uIf{$\pi[v]$ = NIL}{
+                        $\pi[v]$ = u \\
+                        d[v] = d[u] + w[u, v] \\
+                        Q.add(v) \\
+                    }
+                    \uElseIf{d[u] + w[u, v] $<$ d[v]}{
+                        $\pi[v]$ = u \\
+                        d[v] = d[u] + w[u, v] \\
+                        RESET Q \\
+                    }
+                }
+            }
+    \end{algorithm}
+\end{enumerate}
+\end{document}

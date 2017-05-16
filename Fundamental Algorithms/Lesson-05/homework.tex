@@ -274,24 +274,22 @@ Draw a nice picture of the tree. Illustrate {\tt INSERT[i]} where {\tt key[i]=$1
     \begin{center}
     \begin{forest}
     for tree={circle,draw, l sep=20pt}
-    [
-    [80,edge label={node[midway,left] {a}}
-        [70,edge label={node[midway,left] {h}}]
-        [200,edge label={node[midway,right] {d}}
-          [150,edge label={node[midway,left] {e}}
-            [140,edge label={node[midway,left] {c}}
+    [{a=80}
+        [{h=70}]
+        [{d=200}
+          [{e=150}
+            [{c=140}
               [,phantom]
-              [148,edge label={node[midway,right] {g}}
-                [143,edge label={node[midway,left] {f}}]
+              [{g=148}
+                [{f=143}]
                 [,phantom]
               ]
             ]
-            [170,edge label={node[midway,right] {b}}]
+            [{b=170}]
           ]
           [,phantom]
         ]
       ] 
-    ]
     ]
     \end{forest}
     \end{center}
@@ -367,24 +365,22 @@ if __name__ == "__main__":
     \begin{center}
     \begin{forest}
     for tree={circle,draw, l sep=20pt}
-    [
-    [80,edge label={node[midway,left] {a}}
-        [70,edge label={node[midway,left] {h}}]
-        [200,edge label={node[midway,right] {d}}
-          [150,edge label={node[midway,left] {e}}
-            [140,edge label={node[midway,left] {c}}
+    [{a=80}
+        [{h=70}]
+        [{d=200}
+          [{e=150}
+            [{c=140}
               [100]
-              [148,edge label={node[midway,right] {g}}
-                [143,edge label={node[midway,left] {f}}]
+              [{g=148}
+                [{f=143}]
                 [,phantom]
               ]
             ]
-            [170,edge label={node[midway,right] {b}}]
+            [{b=170}]
           ]
           [,phantom]
         ]
       ] 
-    ]
     ]
     \end{forest}
     \end{center}
