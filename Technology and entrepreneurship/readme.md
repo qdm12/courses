@@ -12,14 +12,14 @@
         - Revenue Model
         - Go to market strategy
         - Projected revenue vs time
-- Early MVP
+3. Early MVP
     - Feedback and product-market fit
         - Customer discovery, 25 informal interviews
     - Wire frame and MVP specs
     - Dumb version
     - What makes you and your product special?
-- Final MVP
-- Final presentation
+4. Final MVP
+5. Final presentation
 
 ## Pitch Deck
 - 11 to 12 slides deck
@@ -35,10 +35,6 @@
 10. Traction
 11. Funds
 
-## Lean Launchpad canvas
-
-## MVP Specs
-
 ## Customers feedback
 - Indirect questions
 - 25 informal interviews
@@ -48,6 +44,10 @@
     2. Do not pitch
     3. Talk about the problem
     4. Refine
+
+## MVP Specs
+
+## Lean Launchpad canvas
 
 ## Exec summary
 1. Overview (2 - 3 sentences)
@@ -73,6 +73,7 @@
     - Use dimensional graphs with dimensions where you are higher than competitors
 9. Funds & use on 12-24 months
 
+***
 
 # Cases Study
 
