@@ -1,6 +1,80 @@
-# Paul Graham: How to start a startup
+# Startup
+
+## Main early stages
+1. Idea incubation
+    - Team and general area of startup
+    - Problem idea
+2. Idea development
+    - Pitch Deck
+    - First feels
+    - Competition: Should you do it?
+    - How big is the problem
+        - Revenue Model
+        - Go to market strategy
+        - Projected revenue vs time
+- Early MVP
+    - Feedback and product-market fit
+        - Customer discovery, 25 informal interviews
+    - Wire frame and MVP specs
+    - Dumb version
+    - What makes you and your product special?
+- Final MVP
+- Final presentation
+
+## Pitch Deck
+- 11 to 12 slides deck
+1. Problem
+2. Mission statement
+3. Core idea
+4. Why you (team)
+5. Technology and coolness
+6. Competition
+7. Customers value proposition
+8. Go to market strategy
+9. Revenue Model
+10. Traction
+11. Funds
+
+## Lean Launchpad canvas
+
+## MVP Specs
+
+## Customers feedback
+- Indirect questions
+- 25 informal interviews
+- Feedback from and to MVP specs
+- Steps
+    1. Set the stage
+    2. Do not pitch
+    3. Talk about the problem
+    4. Refine
+
+## Exec summary
+1. Overview (2 - 3 sentences)
+2. Problem & opportunity (3 - 4 bullet points)
+    - How big is the problem?
+        - Number of people or percentages
+        - Total potential money
+    - Why no one has solved it?
+    - What would be the impact if solved?
+3. Solution in a nutshell
+    - Coolness
+    - Appropriate
+    - Adoption
+4. Revenue Opportunity
+    - Number of customers X (Revenue/Cost)
+    - Number of customers depends on Growth
+    - Revenue/Cost depends on competitors
+5. Team (1 sentence per name)
+    - End of page 1
+6. Product offering
+7. Traction
+8. Competition
+    - Use dimensional graphs with dimensions where you are higher than competitors
+9. Funds & use on 12-24 months
 
 
+# Cases Study
 
 ## I - A Vision of Startup Culture
 ### Readings
