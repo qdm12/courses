@@ -67,6 +67,7 @@ Also available [here](http://www.northeastern.edu/academic-plan/wp-content/uploa
 - *The Challenges of Wearable Computing*, Thad Starner
 
 [![The Challenges of Wearable Computing Part 1](images/thechallengesofwearablecomputing1.jpg)](http://www.cc.gatech.edu/~thad/p/magazine/published-part1.pdf)
+
 [![The Challenges of Wearable Computing Part 2](images/thechallengesofwearablecomputing2.jpg)](http://www.cc.gatech.edu/~thad/p/magazine/published-part2.pdf)
 
 ### Summary
@@ -104,7 +105,7 @@ Also available [here](http://www.northeastern.edu/academic-plan/wp-content/uploa
 ### Videos
 - **23andMe** *Empowering Consumer-Enabled Research* at Berkeley University of California
 
-[![23andMe Empowering Consumer-Enabled Research at Berkeley University of California Video](images/23andmeBerkeley.jpg)](https://www.youtube.com/watch?v=Q6KUf75bBEQ)
+[![23andMe Empowering Consumer-Enabled Research at Berkeley University of California Video](images/23andmeberkeley.jpg)](https://www.youtube.com/watch?v=Q6KUf75bBEQ)
 
 - **IBM** *Watson* for Healthcare
 
