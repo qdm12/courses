@@ -231,4 +231,10 @@ Also available [here](http://www.northeastern.edu/academic-plan/wp-content/uploa
 
 ### Summary
 - What I learnt
+    - Mayhem to put all hardware on roofs in cities (i.e. Google in NYC)
+    - Data centrers near tracks, fibers
+    - Pumping water to store electricity, for recovery as hydroelectric power
+    - Use of photosynthesis to produce food/fuel from sunlight
+    - Solar energy storage with catalysts and chemicals (hydrogen from water etc.)
+    - Energy from fusion with deuterium from water (oceans) and Lithium (abundant)
 - How it affected me
