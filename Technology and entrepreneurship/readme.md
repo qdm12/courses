@@ -68,6 +68,7 @@
 5. Team (1 sentence per name)
     - End of page 1
 6. Product offering
+    - More details on solution
 7. Traction
 8. Competition
     - Use dimensional graphs with dimensions where you are higher than competitors
@@ -238,3 +239,51 @@ Also available [here](http://www.northeastern.edu/academic-plan/wp-content/uploa
     - Solar energy storage with catalysts and chemicals (hydrogen from water etc.)
     - Energy from fusion with deuterium from water (oceans) and Lithium (abundant)
 - How it affected me
+    - Use cryptocurrency miners to use the unused electricity due to consumption variation (or for solar panels)
+
+## IX - Deep Learning
+### Videos
+- *Yann Lecun*’s Interview (**Facebook**)
+
+[![Yann Lecun, Facebook // Artificial Intelligence // Data Driven #32 (Hosted by FirstMark Capital) Video](images/yannlecun.jpg)](https://www.youtube.com/watch?v=AbjVdBKfkO0)
+
+- *Matt Zieler*’s Talk (**Clarifai**)
+
+[![Matthew Zeiler, Clarifai // Data Driven #31 // Nov 2014 (Hosted by FirstMark Capital) Video](images/matthewzeiler.jpg)](https://www.youtube.com/watch?v=kqEW8Agk0fs)
+
+### Summary
+- What I learnt
+    - Use of GPU for deep learning, and neural networks
+    - Neural Networks are a sub category of deep learning
+    - Deep learning is used for image/video recognition, voice recognition and NLP
+    - We can distribute Deep learning accross machines (GPUs) with TensorFlow/Spark
+    - Neural networks require a lot of GPU memory
+    - We can't distribute neural networks accross machines (so limited to one set of GPUs)
+    - Impact of feature selection
+    - Deep learning is useful for
+        - Non linear modeling
+        - Multi-scalar modeling
+    - Limitations of deep learning
+        - Independent data
+        - Pre-processing is important
+        - Interportability / Reproducibility
+        - Hyperparameter search
+    - Economists vs Data mining
+        - Causality
+        - *Pre-define* your model: linear, log-linear, exponential, logistic
+        - What are the *variables*
+            - Define generic metric to optimize (test across variables)
+            - Define set of variables that minimize error (features)
+- How it affected me
+
+X - Mobile Payments
+
+XI - Bitcoin and the Future of Currency
+
+XII - Secure Cyberspace
+
+XIII - Big Data
+
+XIV - IoT
+
+XV - Urban Sensing and informatics
