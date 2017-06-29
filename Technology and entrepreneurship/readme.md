@@ -93,25 +93,31 @@
 [![How to start a startup](images/howtostartastartup.jpg)](http://www.paulgraham.com/start.html)
 
 ### Summary
-- How to start a startup, Paul Graham
-   1. Start with good people
-       - You want *animals*, passionate and addicted about their job
-       - Three qualities:
-           - Smart
-           - Get things done
-           - Bearable personality
-       - Get them from a network of friends is great
-       - Only business people as founders is bad as they don't know limitations and possibilities
-       - Get **1** business person to focus on what customers want, although tech can do it as well.
-   2. Make something customers actually want
-       - Look at something people are trying to do
-       - Figure out how to do it in a way that does not suck
-       - The idea is worth nothing without its people
-       - Make an MVP ASAP
-   3. Spend as little money as possible
+- What I learnt
+    - History of startups and technology
+    - Computer science is the logical starting place to recapture the reins of progress
+    - Startup is vertical progress while globalization brings horizontal progress
+    - How to start a startup, Paul Graham
+       1. Start with good people
+           - You want *animals*, passionate and addicted about their job
+           - Three qualities:
+               - Smart
+               - Get things done
+               - Bearable personality
+           - Get them from a network of friends is great
+           - Only business people as founders is bad as they don't know limitations and possibilities
+           - Get **1** business person to focus on what customers want, although tech can do it as well.
+       2. Make something customers actually want
+           - Look at something people are trying to do
+           - Figure out how to do it in a way that does not suck
+           - The idea is worth nothing without its people
+           - Make an MVP ASAP
+       3. Spend as little money as possible
+- How it affected me
+    - Listening to the Art of Start 2.0
+    - Change idea to find something people are trying to do (AdsUp to CoDine)
 
-   
-   
+
 ## II - NAE Grand Challenges
 ### Readings
 - **NAE Grand Technical Challenges for the Century**
@@ -122,6 +128,11 @@ Also available [here](http://www.northeastern.edu/academic-plan/wp-content/uploa
 
 ### Summary
 - What I learnt
+    - Distribute engineering gifts evenly across the world
+    - Energy, water, food problems
+    - Renew old infrastructures of cities and services
+    - Carbon sequestration
+    - Manage the nitrogen cycle
 - How it affected me
 
 
@@ -134,9 +145,14 @@ Also available [here](http://www.northeastern.edu/academic-plan/wp-content/uploa
 
 ### Summary
 - What I learnt
-- How it affected me
-
-
+    - Inktomi bubble-like valuation of $25B
+    - Inktomi was acquired by Yahoo in 2003 for $241M
+    - In 2009, Yahoo donated the Traffic Server Technology developed by Inktomi to the Apache Software Foundation
+    - Google's PageRank system outsmarted Inktomi
+    - *Engineers at Inktomi were starting to use Google as their search engine.*
+      The Google **experience** was far superior to Inktomi’s
+- How it affected me    
+    - Focus on the **user experience** rather than on the technical performance
 
 ## IV - Wearable Computing Vision
 ### Readings
@@ -148,8 +164,13 @@ Also available [here](http://www.northeastern.edu/academic-plan/wp-content/uploa
 
 ### Summary
 - What I learnt
+    - History of wearable devices
+    - Different kind of sensors
+    - Many areas of application
+    - Heat issues (linked to power issues though)
+    - Infrastrutures needed for wearable computing
 - How it affected me
-
+    - Had an idea to do a smart belt, but it has already been done
 
 
 ## V - Wearables and Healthcare: Fitbit and Google
@@ -164,6 +185,8 @@ Also available [here](http://www.northeastern.edu/academic-plan/wp-content/uploa
 
 ### Summary
 - What I learnt
+    - Google Diabetes Contact lenses
+    - James Park founded Fitbit in 2007, with Eric Friedman
 - How it affected me
 
 
@@ -189,7 +212,10 @@ Also available [here](http://www.northeastern.edu/academic-plan/wp-content/uploa
 
 ### Summary
 - What I learnt
+    - 23andme makes money mainly by working with insurance companies
+    - Watson was used for jeopardy and they adapted it to healthcare suggestion
 - How it affected me
+    - Now I know my 23andme data I received in 2015 will be used by insurance companies god damnit
 
 ## VII - Personalized learning: Knewton
 ### Readings
@@ -276,14 +302,59 @@ Also available [here](http://www.northeastern.edu/academic-plan/wp-content/uploa
             - Define set of variables that minimize error (features)
 - How it affected me
 
-X - Mobile Payments
+## X - Mobile Payments
+- What I learnt
+    - M-Pesa
+    - Square: Hardware and software
+    - Square used mini jack to plug its low power magnetic card reader hardware
+    - Mini-jack did not require to pay royalties to Apple MiFi
+- How it affected me
 
-XI - Bitcoin and the Future of Currency
 
-XII - Secure Cyberspace
+## XI - Bitcoin and the Future of Currency
+- What I learnt
+    - Zero Cash white paper
+    - OneName
 
-XIII - Big Data
+## XII - Secure Cyberspace
+- What I learnt
+    - Datavisor
+        - Find bad nodes in a network
+        - Bad nodes and good nodes have a weak connection
+    - Damballah
+        - Reputation of a domain name
+            - DNS server records
+            - Name itself
+            - Honeypot
+            - Email, phone number
+            - Twitter and other links            
+        - Avoid scam, malwares, spam, adblocks
+- How it affected me
+    - Might use one of those to find fake accounts in a system
 
-XIV - IoT
+## XIII - Big Data
+- What I learnt
+    - Spark (Apache)
+        - Open source cluster computing framework (from University of California)
+        - Distributed
+        - Abstract
+        - API for Resilient distributed dataset (RDD) (data parallelism and fault tolerance)
+    - Databricks
+        - Founded by the creators of Spark (Ali Ghodsi and 6 others)
+        - Help clients that use Spark in a cloud based big data context
+        - Provide massive open online courses to learn Spark (+ Spark Summit)
 
-XV - Urban Sensing and informatics
+## XIV - IoT
+- What I learnt
+    - Nest
+        - Thermometers that integrated with HVAC optimization in buildings
+        - Brought massive energy savings (less inefficiency, wastage, energy volatile pricing)
+        - Controlled by software and connected to the cloud
+        - Bought by Google to access the smart home industry
+
+## XV - Urban Sensing and informatics
+- What I learnt
+    - Waze: founded in 1994, sold to google in 2009
+    - Waze used location-based ads
+- How it affected me
+    - Use location based ads in CoDine
