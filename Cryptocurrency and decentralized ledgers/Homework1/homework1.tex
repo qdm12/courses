@@ -1,0 +1,222 @@
+\documentclass[11pt]{article}
+\pagestyle{empty}
+\usepackage{color}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{forest}
+\usepackage{tikz}
+\tikzset{el style/.style={midway, font=\scriptsize, inner sep=+1pt, auto=right}}
+\usepackage[options]{algorithm2e}
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{0pt}
+\cfoot[R]{\thepage~of~\pageref{LastPage}}
+\addtolength{\oddsidemargin}{-.875in}
+\addtolength{\evensidemargin}{-.875in}
+\addtolength{\textwidth}{1.75in}
+\addtolength{\topmargin}{-.875in}
+\addtolength{\textheight}{1.75in}
+\usepackage{pgfplots}
+\usepackage{minted}
+
+\title{Cryptocurrencies and Decentralized Ledgers Homework 1}
+\author{quentin.mcgaw (qm301)}
+\date{September 2017}
+
+\begin{document}
+
+\maketitle
+
+\begin{enumerate}
+
+\item \textbf{\textcolor{blue}{Hash functions and proofs of work : In class we discussed two security properties for a hash function, one called collision resistance (no collisions can be found) and the other called proof-of-work security (there is no more efficient algorithm for finding outputs starting with many zeros besides trial. In this question we explore the relation between these two properties. Show (by counterexample) that a collision-resistant hash function is not necessarily proof-of-work secure.}}
+\begin{itemize}
+    \item Let $H$ be a collision resistant hash function with a digest output length of $n = 256$.
+    \item It is therefore not possible to find two different inputs giving the same hash digest.
+    \item Let the difficulty of the proof of work be $d = 2^{256}$.
+    \item Hence the only digest produced by $H$ matching the proof of work requirement would have to be lower than $\frac{2^{n}}{d} = \frac{2^{256}}{2^{256}} = 1$, which is $0$
+    \item For a certain puzzle $p$ and solution $s$, only one digest would work: $0$.
+    \item If $H$ is collision resistant, it is then impossible to obtain the digest $0$ for another problem $p$ and any solution $s$
+    \item As a consequence, a collision resistant hash function is not necessarily proof of work secure.
+\end{itemize}
+
+\item \textbf{\textcolor{blue}{Beyond binary Merkle trees: Alice can use a binary Merkle tree to commit to a set of elements $S = {T_1, ..., T_n}$ so that later she can prove to Bob that some $T_i$ is in $S$ using a proof containing at most $\lceil \log_2(n) \rceil$ hash values. The binding commitment to $S$ is a single hash value. In this question your goal is to explain how to do the same using a k-ary tree, that is, where every non-leaf node has up to k children. The hash value for every non-leaf node is computed as the hash of the concatenation of the values of its children.}}
+\begin{enumerate}
+    \item \textbf{\textcolor{blue}{Suppose $S = \{T_1, ..., T_9\}$. Explain how Alice computes a commitment to S using a ternary Merkle tree (i.e. $k=3$). How can Alice prove that $T_4$ is in $S$ ?}}
+        \\ For $S = \{T_1, ..., T_9\}$ and a ternary Merkle tree, we have the following tree:
+        \\
+        \newline
+        \begin{forest}
+        [Root
+            [$h_{123}$
+                [$h_1$ [$T_1$]]
+                [$h_2$ [$T_2$]]
+                [$h_3$ [$T_3$]]
+            ]
+            [$h_{456}$
+                [$h_4$ [$T_4$]]
+                [$h_5$ [$T_5$]]
+                [$h_6$ [$T_6$]]
+            ]
+            [$h_{789}$
+                [$h_7$ [$T_7$]]
+                [$h_8$ [$T_8$]]
+                [$h_9$ [$T_9$]]
+            ]
+        ]
+        \end{forest}
+        \newline
+        \\ Note that the bottom layer of the tree is actually not in the Merkle tree but is simply included to highlight which hash is computed from which element $T_i$.
+        \\\\ To prove that $T_4$ is in $S$, Alice first computes $h_4$ from $T_4$. She then needs $h_5$ and $h_6$ in order to concatenate $h_4$, $h_5$ and $h_6$ and hash the concatenation to obtain $h_{456}$ as the output digest. She finally has to calculate the root in a similar manner, where she needs $h_{123}$ and $h_{789}$. If the root hence calculated is the same as on the network, then $T_4$ belongs to $S$. Otherwise, it doesn't.  
+        
+    \item \textbf{\textcolor{blue}{Suppose S contains $n$ elements. What is the length of the proof that proves that some $T_i$ is in $S$, as a function of $n$ and $k$ ?}}
+        \\ To proof $T_i$ is in $S$, and if $S$ has $n$ elements and we use a $k$-ary tree, then the length $L$ of the proof is given by $L = \text{Size(hash digest)} \times (k - 1) \times \lceil \log_k(n) \rceil$
+        
+    \item \textbf{\textcolor{blue}{For large $n$, what is the proof size overhead of a $k$-ary tree compared to a binary tree? Can you think of any advantage to using a $k > 2$ ? (Hint: consider computation cost)}}
+        \\ For a $k$-ary tree, the length of the proof is $L_k = \text{Size(hash digest)} \times (k - 1) \times \lceil \frac{\log(n)}{\log(k)} \rceil$
+        \\ For large values of $n$ (relatively to $k$), we can ignore the ceiling so we have $L_k = \text{Size(hash digest)} \times \frac{k-1}{\log(k)}\log(n)$
+        \\ The part we are interested in is the $\frac{k-1}{\log(k)}$ coefficient, which is plotted below:
+        \newline
+        \newline
+        \begin{tikzpicture}
+        \begin{axis}[
+            axis lines = left,
+            xlabel = $k$,
+            ylabel = {$f(k)$},
+        ]
+        \addplot [
+            domain=2:50, 
+            samples=100, 
+            color=red,
+            ]
+            {(x-1)/(ln(x)/ln(10))};
+        \addlegendentry{$\frac{k-1}{\log(k)}$}
+        \end{axis}
+        \end{tikzpicture}
+        \newline
+        \\ We can therefore notice that as $k$ increases, $\frac{k-1}{\log(k)}$ increases as well, hence multiplying the size of the proof by $\frac{k-1}{\log(k)} \approx 0.5k$ for small values of $k$.
+        \\\\ An advantage of using a Merkle k-ary tree with $k > 2$ is that less hash operations would be needed to verify a proof and go back to the Merkle root. As $k$ increases, more and more hashes are concatenated together before hashing the concatenation of them. This effectively reduces the total number of hash operations.
+    
+    \end{enumerate}
+    
+\item \textbf{\textcolor{blue}{Hiding vs. binding commitments : Bob is launching a new secure messaging app, BobCrypt. When Alice installs the app, it creates an account for her on the BobCrypt server using a hash of her phone number. The app then queries the server by sending the hash of each phone number in Alice’s address book to learn which of Alice’s friends already have BobCrypt accounts. The goal is that users can discover their friends’ accounts without the server learning the contents of every user’s address books.}}
+    \begin{enumerate}
+    \item \textbf{\textcolor{blue}{Explain why this scheme does not achieve the intended security goal. How can Bob determine the phone numbers and contacts of all BobCrypt users?}}
+        \\ As one particular phone number always hashes to the same digest, Bob can learn where a particular phone number digest is in other's address books. This hence leaks information to Bob even if he doesn't know the phone number matching the digest.
+        \\\\ Bob can then find out all the phone numbers matching the digests stored on his server by hashing every possible combinations of digits forming a phone number. This is $10^10$ possible combinations as a phone number is composed of 10 digits. A very non-optimized single-threaded code was written in Python:
+        
+        \begin{minted}{python}
+from hashlib import sha256
+
+stored_digests = set(['f338e1ff264d8c6d745caf27dd30a2f4eab4a138de \
+                      1c32e9162a340ac8880fb9']) # number 0000500000
+
+for i in range(pow(10,10)):
+    number = str(i)
+    if len(number) < 10:
+        number = (10 - len(number)) * '0' + number
+    print(number)
+    digest = sha256(number.encode('utf-8')).hexdigest()
+    if digest in stored_digests:
+        print("Found number "+number+" matching digest "+digest)
+        stored_digests.remove(digest)
+        if len(stored_digests) == 0:
+            print("All found.")
+            exit(0)
+        \end{minted}
+        
+    \leavevmode
+    \\ This program takes about 27 hours to hash and compare all phone numbers on a 2.5GHz CPU core. If you optimize the code and make it multi-threaded, this would likely finish in about an hour.
+    
+    \item \textbf{\textcolor{blue}{After learning about hash-based commitments, Bob plans to use them in BobCrypt 2.0. The app now uploads H(phone number, r) where r is a random 128-bit nonce chosen by the app. Explain to Bob why this approach will not work.}}
+        \\ If the app generates a random nonce $r$, then the hash function H would always produce a different digest for the same phone number. This is secure but no user would be able to actually use the application to find other users as their own phone number would result in a different hash digest every time for every address books where it might be stored.
+    \end{enumerate}
+    
+\item \textbf{\textcolor{blue}{Bitcoin script : Alice is on a kayaking trip and is worried that her phone (which contains her private key) might fall overboard. She would like to store her bitcoins in such a way that they can be spent with knowledge of a password. Accordingly, she stores them in the following ScriptPubKey address:}}
+\begin{minted}{python}
+OP_SHA1
+<0x13818a5684a7ed4dce8433c3f57e13b589b88852>
+OP_EQUAL
+\end{minted}
+
+    \begin{enumerate}
+    \item \textbf{\textcolor{blue}{Write a ScriptSig script that will successfully redeem this transaction. [Hint: it should only be one line long.]}}
+        \\ To redeem this transaction, the ScriptSig script concatenated with the ScriptPubKey has to result in true at the end of its execution.
+        In this case, there is no need for a signature as there is no OP\_CHECKSIG for example. We only need a variable that, when hashed with the SHA1 function, will be equal to the hexadecimal digest shown in the ScriptPubKey.
+        \\\\ Hence we need to find an input giving the hexadecimal described when using the SHA1 function. A quick method is to hash with SHA1 all the words in the dictionary, which are 466,545 overall, and compare their result with the digest provided. More details are shown in the next answer.
+        \\\\ This hence gives us the solution \textbf{violet} which can be converted to hexadecimal as \textbf{76 69 6f 6c 65 74}. The final ScriptSig is thus:
+\begin{minted}{python}
+<0x76696f6c6574>
+\end{minted}
+        
+    \item \textbf{\textcolor{blue}{Explain why this is not a secure way to protect bitcoins using a password.}}
+        \\ First of all, a password is always less secured than a 256 bits key generated cryptographically randomly. 
+        \\ In this particular case where the password is simply a dictionary word, a dictionary attack can test all words' digests against the required digest in order to find the password. This only requires 466,545 SHA1 and comparison operations, for the english dictionary. The following Python program was written and ran on a single core at 2.5Ghz and took 17 seconds to find the solution to the problem. It also takes 20 seconds to go through the entire dictionary.
+        
+\begin{minted}{python}
+from hashlib import sha1
+
+target_digest = '13818a5684a7ed4dce8433c3f57e13b589b88852'
+
+with open('words.txt', 'rb') as f:
+	words = f.readlines()
+
+for word in words:
+	print(word)
+	if sha1(word).hexdigest() == target_digest:
+		print('Found password: ' + str(word))
+		input('Press Enter to quit')
+		exit(0)
+print('Password not found in dictionary')
+\end{minted}
+    
+    \leavevmode
+    \\\\ This really shows practically how unsafe it is to use a password in this situation.
+
+    \item \textbf{\textcolor{blue}{Would implementing this using pay-to-script-hash (P2SH) fix the security issue(s) you identified? Why or why not?}}
+    \\ P2SH can solve this issue, where ScriptPubKey is:
+    \begin{minted}{python}
+    OP_HASH160 <scriptHash> OP_EQUAL
+    \end{minted}
+    \leavevmode
+    \\ In this case, scriptHash would simply be the hash of:
+    \begin{minted}{python}
+    <0x76696f6c6574> OP_SHA1 <0x13818a5684a7ed4dce8433c3f57e13b589b88852> OP_EQUAL
+    \end{minted}
+    \leavevmode
+    \\ This would make the search from the script hash to the script itself unfeasible. 
+    \\ As a consequence, it also hides the SHA1 digest of the password, making the search for the password unfeasible as well.
+    \end{enumerate}
+    
+\item \textbf{\textcolor{blue}{Lightweight clients : Suppose Bob runs an ultra lightweight client which receives the current head of the blockchain from a trusted source. This client has very limited memory and so it only permanently stores the most recent blockchain header (deleting any previous headers).}}
+    \begin{enumerate}
+    \item \textbf{\textcolor{blue}{If Alice wants to send a payment to Bob, what information should she include to prove that her payment to Bob has been included in the blockchain?}}
+        \\ Alice should include the proof of her transaction for the Merkle tree of transactions of the block $B_a$  where her transaction was included. That way, Bob can calculate the Merkle root of that block $B_a$. She has also to send the header of the block $B_a$ as well as the headers of every blocks between $B_a$ and the latest block that Bob has already. With this information, Bob can calculate and verify that all the information is valid, going from $B_a$ to the latest block. If the hashes match the hash of the latest block on his ultra lightweight client, then the information is correct.
+    \item \textbf{\textcolor{blue}{Assume Alice's payment was included in a block $k$ blocks before the current head and there are $n$ transactions per block. Estimate how many bytes this proof will require in terms of $n$ and $k$ and compute the proof size for $k=8$, $n=2$}}
+        \\ The Merkle tree proof has a size of $32 \times \log_2(n)$ bytes.
+        \\ A block header (uncompressed) has a size of $80$ bytes.
+        \\ Therefore the proof will require $32 \times \log_2(n) + k \times 80$
+        \\ For $k=8$, $n=2$, the proof requires $32 \times \log_2(2) + 8 \times 80 = 672 \text{ bytes}$
+    \item \textbf{\textcolor{blue}{One proposal is to add an extra field in each block header pointing to the last block which has a 
+    smaller hash value than the current block. Explain how this can be used to reduce the proof size from part (b). What is the expected
+    size of a proof (in bytes) now in terms of $n$ and $k$ ? To simplify your analysis, you may use asymptotic (Big O) notation. What are 
+    the best-case and worst-case sizes?}}
+        \\ 
+    \end{enumerate}
+    
+\item \textbf{\textcolor{blue}{BitcoinLotto: Suppose the nation of Bitcoinia has decided to convert its national lottery to use Bitcoin. A trusted scratch-off ticket printing factory exists and will not keep records of any values printed. Bitcoinia proposes a simple design: a weekly run of tickets is printed with an address holding the jackpot on each ticket. This allows everybody to verify that the jackpot exists. The winning ticket contains the correct private key under the scratch material. There are no additional trusted parties (or judges) in the protocol.}}
+    \begin{enumerate}
+    \item \textbf{\textcolor{blue}{If the winner finds the ticket on Monday and immediately claims the jackpot, this will be bad for sales because players will all realize the lottery has been won. Modify your design to prevent this (of course, you can’t prevent the winner from proving ownership of the correct private key outside of Bitcoin).}}
+        \\ We can set the nLockTime in unix time so that the transaction won't be able to be accepted into a block until that deadline is passed (which should be the end of the week). Note that nSequence must be different than UINT\_MAX for this to work.
+        \\ The ScriptPubKey would look similar to the following:
+        \begin{minted}{python}
+OP_DUP OP_HASH160 <pubKeyHash> OP_EQUALVERIFY OP_CHECKSIG OP_CHECKLOCKTIMEVERIFY
+        \end{minted}
+        
+    \item \textbf{\textcolor{blue}{Some tickets inevitably get lost or destroyed. So you’d like to modify the design to roll forward any unclaimed jackpot from Week $n$ to the winner in Week $n+1$. Can you propose a design that works, without enabling the lottery administrators embezzle funds? Also, you want to make sure that the Week $n$ winner can’t wait until the beginning of Week $n+1$ in an attempt to double their winnings.}}
+    \end{enumerate}
+
+\end{enumerate}
+
+\end{document}
