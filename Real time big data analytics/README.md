@@ -10,3 +10,9 @@ MapReduce program for counting the number of lines a certain word occurs in
 
 ### Homework 3
 Iterative MapReduce program for a simple PageRank
+
+### Homework 4
+Twitter API
+
+### Homework 5
+Pig for counting the number of lines a certain word occurs in
