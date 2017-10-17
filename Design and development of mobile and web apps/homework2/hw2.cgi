@@ -35,33 +35,33 @@ eval  ` ( echo $QUERY_STRING | sed -e "s/\&/ /g") `
 if [ -v ${userid} ]; then
     echo "<br><br><h2>The userid parameter was not passed. Please try again.</h2><br><br>"
 else
-	echo "<div class=\"fullcontainer\">"
+    echo "<div class=\"fullcontainer\">"
     echo "<div style=\"position:absolute;width:70%;left:15%;top:0;font-size:3vw;text-align:center;\">Directory listing for user ${userid}</div>"
     TARGET_PATH=/homedir/grad/${userid:0:1}/$userid/public_html/websys/
     if [ -d "$TARGET_PATH" ]; then
-		echo "<div style=\"position:absolute; width:50%;top:4.5%;left:25%;\">"
-		echo "<ul>"
+        echo "<div style=\"position:absolute; width:50%;top:4.5%;left:25%;\">"
+        echo "<ul>"
         WORDS=($(ls -t))
         # -t to sort by last modified (-c)
-		COLOR=blue
+        COLOR=blue
         for name in "${WORDS[@]}"
         do
-			:
-			if [ -d "$TARGET_PATH/$name" ]; then
-				COLOR=blue
-			else
-				case ${name:(-4)} in
-					".cgi") COLOR=purple ;;
-					"html") COLOR=orange ;;
-					".css") COLOR=pink ;;
-					*) COLOR=green ;;
-				esac
-			fi
-			echo "<li style=\"font-size:2.5vh;margin:0;top:0;padding:0;\"><a style=\"color:$COLOR;\" target=\"_blank\" href=\"http://websys3.stern.nyu.edu/~$userid/websys/$name\">$name</a></li>"
+            :
+            if [ -d "$TARGET_PATH/$name" ]; then
+                COLOR=blue
+            else
+                case ${name:(-4)} in
+                    ".cgi") COLOR=purple ;;
+                    "html") COLOR=orange ;;
+                    ".css") COLOR=pink ;;
+                    *) COLOR=green ;;
+                esac
+            fi
+            echo "<li style=\"font-size:2.5vh;margin:0;top:0;padding:0;\"><a style=\"color:$COLOR;\" target=\"_blank\" href=\"http://websys3.stern.nyu.edu/~$userid/websys/$name\">$name</a></li>"
         done
-		echo "</ul>"
-		echo "</div>"
-		echo "</div>"
+        echo "</ul>"
+        echo "</div>"
+        echo "</div>"
         # maybe use */ to display all sub files
         # ls -1 -t -s -h --color=auto /homedir/grad/${userid:0:1}/$userid/public_html/websys/*
         # -l for displaying one entry per row
