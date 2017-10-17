@@ -57,7 +57,7 @@ else
 					*) COLOR=green ;;
 				esac
 			fi
-			echo "<li style=\"font-size:2.5vh;margin:0;top:0;padding:0;\"><a style=\"color:$COLOR;\" target=\"_blank\" href=\"$name\">$name</a></li>"
+			echo "<li style=\"font-size:2.5vh;margin:0;top:0;padding:0;\"><a style=\"color:$COLOR;\" target=\"_blank\" href=\"http://websys3.stern.nyu.edu/~$userid/websys/$name\">$name</a></li>"
         done
 		echo "</ul>"
 		echo "</div>"
