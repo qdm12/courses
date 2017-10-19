@@ -14,7 +14,7 @@
 ### What is Hadoop?
 - Distributed *storage* and *compute*
 - Developed by Yahoo engineers, and now part of Apache Nutch (web search engine)
-- Components: [**HDFS**](#HDFS) + [**MapReduce**](#MapReduce) (+*Hive*+*HBase*+*ZooKeeper*+*Oozie*+*Flume*+...)
+- Components: [**HDFS**](#hdfs) + [**MapReduce**](#mapreduce) (+*Hive*+*HBase*+*ZooKeeper*+*Oozie*+*Flume*+...)
 
 ### Why do we need Hadoop?
 - Longer read/write times of disks (capacity grew quicker than read time)
@@ -50,8 +50,8 @@
     - Maintain a list of datanodes on which blocks of a given file are located
     - Must be **resilient to failure**
     - Mark bad HDFS blocks and create **new good replicas**
+    - Additional namenode is a *Standby NameNode for **High Availability** * (HA)
     - Not involved in bulk data transfer keeping its overhead minimal
-    - Additional namenode is a *Standby NameNode for **High Availability** (HA)
         - New way is to automatically switch to the HA namenode in case of failure
 - **Datanodes** (workers): `Multiple / cluster`
     - Store and retrieve HDFS blocks
@@ -64,11 +64,11 @@
         
 ### How does HDFS operate?
 - HDFS uses its own file system
-    - Runs in a separate namespace
-    - Comes with its own utilities for file management
-    - Blocks for the HDFS files are in a directory managed by the *DataNode* service
-    - **Replication of each block across 3 machines**
-    - **WORM** model to access file data
+- Runs in a separate namespace
+- Comes with its own utilities for file management
+- Blocks for the HDFS files are in a directory managed by the *DataNode* service
+- **Replication of each block across 3 machines**
+- **WORM** model to access file data
 
 ### What is the advantage of using HDFS in a Hadoop cluster instead of using traditional networked storage?
 - Store replicas of blocks to prevent **data loss from hardware failure**
@@ -114,11 +114,11 @@
             - Monitor the node & its running tasks
             - Communicate with the ApplicationMaster, which is issued *containers* by the ResourceManager
             - ApplicationMaster -> *Containers* (Permission slips) -> NodeManager
-    - Rack-local (all 3 nodes hosting the block replica are saturated)
+    2. Rack-local (all 3 nodes hosting the block replica are saturated)
         - Schedule mapper task to run in the **same rack** containing the desired block replica
-        - >= 1 nodes in the rack contain the desired block replica
+        - At least 1 node in the rack contains the desired block replica
         - **Intra-rack** transfer (cheap) to copy block replica to the node which will run the mapper task
-    - Non-local, otherwise
+    3. Non-local, otherwise
         - **Inter-rack** transfer (expensive) to copy block replica to the right rack
             - Go through multiple switches, use precious network resources: slow and expensive
 - Rack Awareness
@@ -143,12 +143,12 @@
   ```
   /datacenter-id/rack-id/node-id
   ```
-| Distance | Given that                                       |
-| -------- | ------------------------------------------------ |
-| 0        | 2 containers on the same node                    |
-| 2        | 2 containers on different nodes in the same rack |
-| 4        | 2 containers on nodes in different racks         |
-| 6        | 2 containers on nodes in different datacenters   |
+  | Distance | Given that                                       |
+  | -------- | ------------------------------------------------ |
+  | 0        | 2 containers on the same node                    |
+  | 2        | 2 containers on different nodes in the same rack |
+  | 4        | 2 containers on nodes in different racks         |
+  | 6        | 2 containers on nodes in different datacenters   |
 - We basically add 1 each time we move up or back down the hierarchy of (node, rack, datacenter (Network switch))
 
 ### What does a Mapper do?
