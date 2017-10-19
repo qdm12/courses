@@ -11,23 +11,23 @@ public class PageRank{
       System.err.println("Usage: PageRank <input path> <output path>");
       System.exit(-1);
     }
-	Configuration conf = new Configuration();
-	conf.set("mapred.textoutputformat.separator", " ");
+    Configuration conf = new Configuration();
+    conf.set("mapred.textoutputformat.separator", " ");
 
-	Job job = new Job(conf);
-	job.setNumReduceTasks(1);
-	job.setJarByClass(PageRank.class);
-	job.setJobName("Page Rank");
+    Job job = new Job(conf);
+    job.setNumReduceTasks(1);
+    job.setJarByClass(PageRank.class);
+    job.setJobName("Page Rank");
 
-	FileInputFormat.addInputPath(job, new Path(args[0]));
-	FileOutputFormat.setOutputPath(job, new Path(args[1]));
+    FileInputFormat.addInputPath(job, new Path(args[0]));
+    FileOutputFormat.setOutputPath(job, new Path(args[1]));
 
-	job.setMapperClass(PageRankMapper.class);
-	job.setReducerClass(PageRankReducer.class);
+    job.setMapperClass(PageRankMapper.class);
+    job.setReducerClass(PageRankReducer.class);
 
-	job.setOutputKeyClass(Text.class);
-	job.setOutputValueClass(Text.class);
+    job.setOutputKeyClass(Text.class);
+    job.setOutputValueClass(Text.class);
 
-	System.exit(job.waitForCompletion(true) ? 0 : 1);
+    System.exit(job.waitForCompletion(true) ? 0 : 1);
   }
 }

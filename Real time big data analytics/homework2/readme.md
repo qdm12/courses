@@ -10,8 +10,8 @@ Summary:
 - GFS is compatible with inexpensive commodity hardware
 - The GFS is widely used at Google for their services and R&D
 - IO operations and block sizes are adapted:
-	- Sequential read of large files
-	- Large files getting appended instead of overwritten or modified
+    - Sequential read of large files
+    - Large files getting appended instead of overwritten or modified
 - High sustained bandwidth is more important than low latency
 - Flexibility: concurrent atomic append operation with low synchronization overhead, 
 - Architecture consists in a master and multiple chunk servers

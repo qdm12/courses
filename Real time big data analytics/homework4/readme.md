@@ -9,10 +9,10 @@
 5. Click on the **Keys and Access Tokens** tab.
 6. Click on **Create my access token** at the bottom of the page.
 7. Finally copy all the following values in the code (Python or Java):
-	- Set **apiKey** equal to your *Consumer Key (API Key)*
-	- Set **apiSecret** equal to your *Consumer Secret (API Secret)*
-	- Set **accessToken** equal to your *Access Token*
-	- Set **accessTokenSecret** equal to your *Access Token Secret*
+    - Set **apiKey** equal to your *Consumer Key (API Key)*
+    - Set **apiSecret** equal to your *Consumer Secret (API Secret)*
+    - Set **accessToken** equal to your *Access Token*
+    - Set **accessTokenSecret** equal to your *Access Token Secret*
 
 ## Python
 1. Go to the *python* directory and install the required packages with:

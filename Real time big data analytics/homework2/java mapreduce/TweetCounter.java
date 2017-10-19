@@ -12,20 +12,20 @@ public class TweetCounter{
       System.exit(-1);
     }
 
-	Job job = new Job();
-	job.setNumReduceTasks(1);
-	job.setJarByClass(TweetCounter.class);
-	job.setJobName("Tweet counter");
+    Job job = new Job();
+    job.setNumReduceTasks(1);
+    job.setJarByClass(TweetCounter.class);
+    job.setJobName("Tweet counter");
 
-	FileInputFormat.addInputPath(job, new Path(args[0]));
-	FileOutputFormat.setOutputPath(job, new Path(args[1]));
+    FileInputFormat.addInputPath(job, new Path(args[0]));
+    FileOutputFormat.setOutputPath(job, new Path(args[1]));
 
-	job.setMapperClass(TweetCounterMapper.class);
-	job.setReducerClass(TweetCounterReducer.class);
+    job.setMapperClass(TweetCounterMapper.class);
+    job.setReducerClass(TweetCounterReducer.class);
 
-	job.setOutputKeyClass(Text.class);
-	job.setOutputValueClass(IntWritable.class);
+    job.setOutputKeyClass(Text.class);
+    job.setOutputValueClass(IntWritable.class);
 
-	System.exit(job.waitForCompletion(true) ? 0 : 1);
+    System.exit(job.waitForCompletion(true) ? 0 : 1);
   }
 }
