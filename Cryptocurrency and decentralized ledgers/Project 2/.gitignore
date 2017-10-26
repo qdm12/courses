@@ -41,5 +41,5 @@ buildNumber.properties
 
 # bitcoin stuff
 .keys
-main-wallet
-test-wallet
+
+.project

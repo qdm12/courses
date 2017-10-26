@@ -3,7 +3,7 @@
 ## Project 1
 A project by Quentin McGaw (qm301) and Ismail Mustafa (im969)
 
-- Use **Maven** to build the dependencies with:
+- Use [**Maven**](https://maven.apache.org/install.html) to build the dependencies with:
 
    ```
    cd java
