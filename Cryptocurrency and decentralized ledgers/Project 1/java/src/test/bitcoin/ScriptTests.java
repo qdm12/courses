@@ -1,6 +1,7 @@
-package edu.nyu.crypto.csci3033;
+package bitcoin;
 
-import edu.nyu.crypto.csci3033.transactions.*;
+import bitcoin.transactions.*;
+
 import org.bitcoinj.core.*;
 import org.bitcoinj.kits.WalletAppKit;
 import org.bitcoinj.params.MainNetParams;
@@ -14,15 +15,11 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.math.BigInteger;
 
-/**
- * Created by bbuenz on 23.09.15.
- */
 // TESTNET ADDRESS: mzdrXHiUScpg8Hb1D2JNmoPQGdCmnbuP3E
 // TESTNET PRIVATE: cRT4mYCCZgNBRv9JW36AtaQ2Bwp55NoJBYcdiBzjGnxoD1fMRXsG
 public class ScriptTests {
     // TODO: Change this to true to use mainnet.
     private boolean useMainNet = false;
-    // TODO: Change this to the address of the testnet faucet you use.
     // https://testnet.manu.backend.hamburg/faucet
     private static final String faucetAddress = "2N1Xfu1zHDShso2XkfQANQVLMoLRtFeqcF5";
 
@@ -56,7 +53,7 @@ public class ScriptTests {
     }
     
     public void OverwritePrivateKey(String privateKey) {
-    	// creates new key
+        // creates new key
         ECKey newkey;
         if (privateKey.length() == 51 || privateKey.length() == 52) {
             DumpedPrivateKey dumpedPrivateKey = DumpedPrivateKey.fromBase58(networkParameters, privateKey);
@@ -65,10 +62,10 @@ public class ScriptTests {
             BigInteger privKey = Base58.decodeToBigInteger(privateKey);
             newkey = ECKey.fromPrivate(privKey);
         }
-    	// deletes all keys in wallet
-    	for(ECKey key : kit.wallet().getImportedKeys()) {
-    		kit.wallet().removeKey(key);
-    	}
+        // deletes all keys in wallet
+        for(ECKey key : kit.wallet().getImportedKeys()) {
+            kit.wallet().removeKey(key);
+        }
         // Imports key
         kit.wallet().importKey(newkey);
     }
@@ -78,11 +75,11 @@ public class ScriptTests {
         downloadBlockchain();
 //        OverwritePrivateKey("5KGGiSmx1b6HVCgPyC4oAyNYffzxoH9L5m5yAjFKfYMd2LTtRjH");
 //        OverwritePrivateKey("cRT4mYCCZgNBRv9JW36AtaQ2Bwp55NoJBYcdiBzjGnxoD1fMRXsG");
-	    	for(ECKey key : kit.wallet().getImportedKeys()) {
-	            LOGGER.info("Found address " + key.toAddress(networkParameters).toString() + 
-	            		" with public key " + key.getPublicKeyAsHex() + 
-	            		" and private key " + key.getPrivateKeyAsHex());
-	    	}
+            for(ECKey key : kit.wallet().getImportedKeys()) {
+                LOGGER.info("Found address " + key.toAddress(networkParameters).toString() + 
+                        " with public key " + key.getPublicKeyAsHex() + 
+                        " and private key " + key.getPrivateKeyAsHex());
+            }
         LOGGER.info("Your address is {}", kit.wallet().currentReceiveAddress());
         kit.stopAsync();
         kit.awaitTerminated();

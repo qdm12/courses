@@ -1,12 +1,10 @@
-package edu.nyu.crypto.csci3033.transactions;
+package bitcoin.transactions;
 
 import com.google.common.collect.ImmutableSet;
 import org.bitcoinj.core.*;
 import org.bitcoinj.crypto.TransactionSignature;
 import org.bitcoinj.kits.WalletAppKit;
-import org.bitcoinj.params.MainNetParams;
 import org.bitcoinj.script.Script;
-import org.bitcoinj.script.ScriptBuilder;
 import org.bitcoinj.wallet.Wallet;
 import org.bitcoinj.wallet.SendRequest;
 import org.slf4j.Logger;
@@ -17,9 +15,6 @@ import java.io.File;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
-/**
- * Created by bbuenz on 24.09.15.
- */
 public abstract class ScriptTransaction implements AutoCloseable {
 
     private final WalletAppKit kit;
@@ -86,7 +81,7 @@ public abstract class ScriptTransaction implements AutoCloseable {
     }
 
     public void sendTransaction(Transaction transaction) throws InsufficientMoneyException {
-        SendRequest request = SendRequest.forTx(transaction);
+        SendRequest.forTx(transaction);
         LOGGER.info("Transaction hex you can directly submit this to a block explorer:\n{}", new String(Hex.encode(transaction.bitcoinSerialize())));
         kit.wallet().commitTx(transaction);
         kit.peerGroup().broadcastTransaction(transaction);

@@ -1,4 +1,4 @@
-package edu.nyu.crypto.csci3033.transactions;
+package bitcoin.transactions;
 
 import org.bitcoinj.core.*;
 import org.bitcoinj.crypto.DeterministicKey;
@@ -7,14 +7,9 @@ import org.bitcoinj.script.Script;
 import org.bitcoinj.script.ScriptBuilder;
 
 import java.io.File;
-import java.math.BigInteger;
-import java.security.interfaces.ECKey;
 
 import static org.bitcoinj.script.ScriptOpCodes.*;
 
-/**
- * Created by bbuenz on 24.09.15.
- */
 public class PayToPubKey extends ScriptTransaction {
     private DeterministicKey key;
 
