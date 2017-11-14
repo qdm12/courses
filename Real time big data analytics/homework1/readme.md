@@ -64,8 +64,7 @@ This paper concerns the MapReduce programming model for large data sets and was 
 1. Log into Dumbo with:
 
    ```bash
-   ssh -L 8026:prince:22 qm301@hpc2.nyu.edu
-   ssh -Y qm301@dumbo.es.its.nyu.edu
+   ssh -t qm301@hpc2.nyu.edu ssh qm301@dumbo.es.its.nyu.edu
    ```
    
 2. Paste the content of the Python files and the input with the following:
@@ -123,8 +122,7 @@ This paper concerns the MapReduce programming model for large data sets and was 
 1. Log into Dumbo with:
 
    ```bash
-   ssh -L 8026:prince:22 qm301@hpc2.nyu.edu
-   ssh -Y qm301@dumbo.es.its.nyu.edu
+   ssh -t qm301@hpc2.nyu.edu ssh qm301@dumbo.es.its.nyu.edu
    ```
    
 2. Paste the content of the Java files and the input with the following:

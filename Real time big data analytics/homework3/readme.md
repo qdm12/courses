@@ -9,8 +9,7 @@ Follow the same procedure for the iterative PageRank (only PageRank.java is modi
 1. Log into Dumbo with:
 
    ```bash
-   ssh -L 8026:prince:22 qm301@hpc2.nyu.edu
-   ssh -Y qm301@dumbo.es.its.nyu.edu
+   ssh -t qm301@hpc2.nyu.edu ssh qm301@dumbo.es.its.nyu.edu
    ```
    
 2. Paste the content of the Java files and the input with the following:
@@ -60,8 +59,7 @@ Follow the same procedure for the iterative PageRank (only PageRank.java is modi
 1. Log into Dumbo with:
 
    ```bash
-   ssh -L 8026:prince:22 qm301@hpc2.nyu.edu
-   ssh -Y qm301@dumbo.es.its.nyu.edu
+   ssh -t qm301@hpc2.nyu.edu ssh qm301@dumbo.es.its.nyu.edu
    ```
    
 2. Paste the content of the Python files and the input with the following:

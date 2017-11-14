@@ -21,12 +21,6 @@
    pip install -r requirements.txt
    ```
    
-   or, for python 3:
-   
-   ```bash
-   pip3 install -r requirements.txt
-   ```
-   
 2. Add your credentials to the code as explained above.
 
 3. Simply run the program, either in STREAM mode or in API search mode (see variable `mode`)
