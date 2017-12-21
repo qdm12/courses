@@ -1,6 +1,7 @@
 # Real time Big Data Analytics: Homework 8
 
 ## Summary of research paper
+
 *A Fistful of Bitcoins: Characterizing Payments Among Men with No Names*
 
 See [homework.tex](homework.tex) for the summary
@@ -70,8 +71,6 @@ See [homework.tex](homework.tex) for the summary
     SHOW TABLES;   
     ```
     
-### 
-    
 3. Create a table
     ```sql
     CREATE EXTERNAL TABLE w10 (data1 string, year int, data2 string, temperature int, quality tinyint, data3 string)
@@ -89,6 +88,7 @@ See [homework.tex](homework.tex) for the summary
     ```
     
 ### Impala on Dumbo
+
 1. Log into Dumbo with:
    ```bash
    ssh -t qm301@hpc2.nyu.edu ssh qm301@dumbo.es.its.nyu.edu
