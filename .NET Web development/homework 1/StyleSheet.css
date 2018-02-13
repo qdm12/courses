@@ -1,0 +1,86 @@
+body {
+    padding: 11%;
+    padding-top: 3%;
+    font-size: 20px;
+}
+
+#banner > div:first-child {
+    text-align: center;
+}
+
+#banner span {
+    display: block;
+    font-weight: bold;
+}
+
+#banner > #address {
+    float: left;
+}
+
+#banner > #contact {
+    float: right;
+}
+
+#banner > .clear {
+    clear: both;
+}
+
+#content {
+    margin-top: 9%;
+}
+
+#content > h2 {
+    margin-left: 3%;
+    font-size: 28px;
+}
+
+#content > .objective {
+    margin-left: 7%;
+}
+
+#content > .education-block {
+    clear: right;
+    margin-left: 7%;
+    margin-right: 25%;
+    padding-bottom:10%; /* meh */
+}
+
+#content > .education-block span {
+    display: block;
+}
+
+#content > .education-block > .left {
+    float: left;
+}
+
+#content > .education-block > .right {
+    float: right;
+    width:40%;
+}
+
+#content > .education-block .degree {
+    font-weight: bold;
+}
+
+#content > .education-block .fieldofstudy {
+    font-style: italic;
+}
+
+#content .companyitem > .position {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 1.8%;
+}
+
+#content .companyitem > .company {
+    font-style: italic;
+}
+
+#content > p {
+    margin-left: 8%;
+}
+
+#content > #resume {
+    display: block;
+    text-align: center;
+}
