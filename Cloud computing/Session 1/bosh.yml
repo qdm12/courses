@@ -1,0 +1,144 @@
+---
+name: bosh
+
+releases:
+- name: bosh
+  url: https://bosh.io/d/github.com/cloudfoundry/bosh?v=264.7.0
+  sha1: 11433d7530eea34d9ae2385ce2a7cb13912928bf
+- name: bosh-aws-cpi
+  url: https://bosh.io/d/github.com/cloudfoundry-incubator/bosh-aws-cpi-release?v=69
+  sha1: 8abe70219244896ea6f7208fc01f2eac56179170
+
+resource_pools:
+- name: vms
+  network: private
+  stemcell:
+    url: https://bosh.io/d/stemcells/bosh-aws-xen-hvm-ubuntu-trusty-go_agent?v=3541.2
+    sha1: 2d69223d780ac4e18bebf51423ac8e4f328731ab
+  cloud_properties:
+    instance_type: m3.xlarge
+    ephemeral_disk: {size: 25_000, type: gp2}
+    availability_zone: AVAILABILITY-ZONE # <--- Replace with Availability Zone
+
+disk_pools:
+- name: disks
+  disk_size: 20_000
+  cloud_properties: {type: gp2}
+
+networks:
+- name: private
+  type: manual
+  subnets:
+  - range: 10.0.0.0/24
+    gateway: 10.0.0.1
+    dns: [10.0.0.2]
+    cloud_properties: {subnet: SUBNET-ID} # <--- Replace with Subnet ID
+- name: public
+  type: vip
+
+jobs:
+- name: bosh
+  instances: 1
+
+  templates:
+  - {name: nats, release: bosh}
+  - {name: postgres, release: bosh}
+  - {name: blobstore, release: bosh}
+  - {name: director, release: bosh}
+  - {name: health_monitor, release: bosh}
+  - {name: registry, release: bosh}
+  - {name: aws_cpi, release: bosh-aws-cpi}
+
+  resource_pool: vms
+  persistent_disk_pool: disks
+
+  networks:
+  - name: private
+    static_ips: [10.0.0.6]
+    default: [dns, gateway]
+  - name: public
+    static_ips: [ELASTIC-IP] # <--- Replace with Elastic IP
+
+  properties:
+    nats:
+      address: 127.0.0.1
+      user: nats
+      # password: nats-password # <--- Uncomment & change
+
+    postgres: &db
+      listen_address: 127.0.0.1
+      host: 127.0.0.1
+      user: postgres
+      # password: postgres-password # <--- Uncomment & change
+      database: bosh
+      adapter: postgres
+
+    registry:
+      address: 10.0.0.6
+      host: 10.0.0.6
+      db: *db
+      http:
+        user: admin
+        # password: admin # <--- Uncomment & change
+        port: 25777
+      username: admin
+      # password: admin # <--- Uncomment & change
+      port: 25777
+
+    blobstore:
+      address: 10.0.0.6
+      port: 25250
+      provider: dav
+      director:
+        user: director
+        # password: director-password # <--- Uncomment & change
+      agent:
+        user: agent
+        # password: agent-password # <--- Uncomment & change
+
+    director:
+      address: 127.0.0.1
+      name: my-bosh
+      db: *db
+      cpi_job: aws_cpi
+      max_threads: 10
+      user_management:
+        provider: local
+        local:
+          users:
+          # - {name: admin, password: admin} # <--- Uncomment & change
+          # - {name: hm, password: hm-password} # <--- Uncomment & change
+
+    hm:
+      director_account:
+        user: hm
+        # password: hm-password # <--- Uncomment & change
+      resurrector_enabled: true
+
+    aws: &aws
+      access_key_id: ACCESS-KEY-ID # <--- Replace with AWS Access Key ID
+      secret_access_key: SECRET-ACCESS-KEY # <--- Replace with AWS Secret Key
+      default_key_name: bosh
+      default_security_groups: [bosh]
+      region: REGION  # <--- Replace with Region
+
+    # agent: {mbus: "nats://nats:nats-password@10.0.0.6:4222"} # <--- Uncomment & change
+
+    ntp: &ntp [0.pool.ntp.org, 1.pool.ntp.org]
+
+cloud_provider:
+  template: {name: aws_cpi, release: bosh-aws-cpi}
+
+  ssh_tunnel:
+    host: ELASTIC-IP # <--- Replace with your Elastic IP address
+    port: 22
+    user: vcap
+    private_key: ./bosh.pem # Path relative to this manifest file
+
+  # mbus: "https://mbus:mbus-password@ELASTIC-IP:6868" # <--- Uncomment & change
+
+  properties:
+    aws: *aws
+    # agent: {mbus: "https://mbus:mbus-password@0.0.0.0:6868"} # <--- Uncomment & change
+    blobstore: {provider: local, path: /var/vcap/micro_bosh/data/cache}
+    ntp: *ntp
