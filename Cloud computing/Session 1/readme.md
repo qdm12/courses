@@ -137,10 +137,10 @@ bbl destroy --aws-access-key-id YOUR-ACCESS-KEY-ID --aws-secret-access-key YOUR-
     bosh log-in
     ```
     
-1. Check the last 3 lines of *cf-deployment.yml*:
+1. Check the last line of *cf-deployment.yml*:
 
     ```bash
-    cat cf-deployment.yml
+    tail -1 cf-deployment.yml
     ```
     
     Note the version number, say it is `3541.2`.
