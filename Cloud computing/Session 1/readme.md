@@ -93,8 +93,15 @@
     sudo docker build -t boshaws ./
     sudo docker run -it --rm boshaws
     ```
+    
+This virtual machine contains the following tools:
+- Terraform
+- Bosh CLI 2
+- Bosh Bootloader for Cloud Foundry
+- Cloud Foundry CLI
+- All necessary compilation tools (gcc, ruby, etc.)
 
-### Bosh infrastructure and connecting
+### Bosh infrastructure
 
 1. In the Docker VM, create the infrastructure and deploy a Bosh Director with the following commands. 
     In all the next commands, replace YOUR-ACCESS-KEY-ID, YOUR-SECRET-ACCESS-KEY and YOUR-AWS-REGION.
@@ -104,12 +111,12 @@
     bbl up --aws-access-key-id YOUR-ACCESS-KEY-ID --aws-secret-access-key YOUR-SECRET-ACCESS-KEY
     ```
     
-1. Connect to it with:
+1. Export environment variables generated with:
 
     ```bash
     eval "$(bbl print-env)"
     ```
-    
+   
 You can delete the Bosh Director infrastructure with:
 
 ```bash
@@ -118,4 +125,35 @@ bbl destroy --aws-access-key-id YOUR-ACCESS-KEY-ID --aws-secret-access-key YOUR-
 
 ### Cloud Foundry
 
+1. Clone the repository with:
+
+    ```bash
+    git clone https://github.com/cloudfoundry/cf-deployment.git && cd cf-deployment
+    ```
+
+1. Check you can log in to your BOSH Director with:
+
+    ```bash
+    bosh log-in
+    ```
+    
+1. Check the last 3 lines of *cf-deployment.yml*:
+
+    ```bash
+    cat cf-deployment.yml
+    ```
+    
+    Note the version number, say it is `3541.2`.
+    
+1. Upload the corresponding stemcell with (make sure it's the same version !):
+
+    ```bash
+    bosh upload-stemcell https://bosh.io/d/stemcells/bosh-aws-xen-hvm-ubuntu-trusty-go_agent?v=3541.2
+    ```
+    
+1. Deploy with:
+
+    ```bash
+    bosh -d cf deploy cf-deployment/cf-deployment.yml
+    ```
 
