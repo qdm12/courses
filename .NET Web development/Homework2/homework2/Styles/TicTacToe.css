@@ -1,0 +1,106 @@
+.level1 {
+    font-size: 2.3vmin;
+    color: white;
+    background-color: gray;
+    border: 0.5vmin solid black;
+    
+}
+
+/* Default.aspx */
+h2 {
+    margin-left: 5%;
+    font-size: 3vmin;
+}
+
+#logindiv {
+    margin-left: 5%;
+    margin-bottom: 5%;
+}
+#logindiv * {
+    color: gray;
+    font-size: 2vmin;
+    font-weight: bold;
+    transition: all 3s ease-out;
+    -moz-transition: all 3s ease-out;
+    -webkit-transition: all 3s ease-out;
+    -o-transition: all 3s ease-out;
+}
+#logindiv *:focus {
+    color: white;
+    background-color: aqua;
+}
+#Login_LoginButton {
+    padding: 5%;
+    transition: all 0.6s ease-out;
+    -moz-transition: all 0.6s ease-out;
+    -webkit-transition: all 0.6s ease-out;
+    -o-transition: all 0.6s ease-out;
+}
+#Login_LoginButton:hover {
+    color: white;
+    background-color: green;
+}
+#logoutdiv {
+    margin-left: 5%;
+    margin-bottom: 5%;
+}
+#logoutdiv * {
+    color: red;
+    font-size: 2vmin;
+    font-weight: bold;
+    padding: 2%;
+}
+#infomessage {
+    margin-left: 5%;
+}
+
+/* TicTacToe.aspx */
+#error {
+    font-size: 3vmin;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 3%;
+}
+#game {
+    position: absolute;
+    width: 99%;
+    height: 75%;
+    margin-top: 5%;
+}
+
+#status {
+    font-size: 3vmin;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 3%;
+}
+#board {
+    position: absolute;
+    left: 32%;  
+}
+.square {
+    float:left;
+    width: 12vw;
+    height: 12vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: white;
+    border: 2px solid #5479FD;
+    font-size: 8vmin;
+    color: #ffffff00;
+    transition: all 0.6s ease-out;
+    -moz-transition: all 0.6s ease-out;
+    -webkit-transition: all 0.6s ease-out;
+    -o-transition: all 0.6s ease-out;
+}
+
+.square:hover{
+    background: #93ffb770;
+}
+
+.square:active {
+    background: green;
+}
