@@ -1,0 +1,22 @@
+version: '3'
+services:
+    glassfish-fortress:
+        build: ./glassfish-fortress
+        image: glassfish-fortress
+        container_name: glassfish-fortress
+        ports:
+            - 4848:4848
+            - 8080:8080
+            - 8389:389
+        environment:
+            - GLASSFISH_PASSWORD=password
+        depends_on:
+            - database
+    database:
+        image: mariadb
+        container_name: archemy_database
+        hostname: archemy_database
+        volumes:
+            - ./database-init:/docker-entrypoint-initdb.d
+        environment:
+            - MYSQL_ALLOW_EMPTY_PASSWORD=yes
