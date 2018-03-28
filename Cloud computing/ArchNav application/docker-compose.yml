@@ -1,9 +1,9 @@
 version: '3'
 services:
-    glassfish-fortress:
+    glassfish:
         build: ./glassfish-fortress
         image: glassfish-fortress
-        container_name: glassfish-fortress
+        container_name: glassfish
         ports:
             - 4848:4848
             - 8080:8080
@@ -19,4 +19,4 @@ services:
         volumes:
             - ./database-init:/docker-entrypoint-initdb.d
         environment:
-            - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+            - MYSQL_ROOT_PASSWORD=password
